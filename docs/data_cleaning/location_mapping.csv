@@ -1,0 +1,28 @@
+raw_pattern,normalized_location,notes
+ha.?noi|hà.?nội|\bhn\b,Hà Nội,Hanoi capital (uppercase/lowercase/unaccented/abbreviation)
+ho.?chi.?minh|hồ.?chí.?minh|\bhcm\b|hcmc|tp\.?\s*hcm|sài.?gòn|sai.?gon,Hồ Chí Minh,Ho Chi Minh City
+da.?nang|đà.?nẵng|\bdn\b,Đà Nẵng,Da Nang City
+can.?tho|cần.?thơ,Cần Thơ,Can Tho City
+hai.?phong|hải.?phòng,Hải Phòng,Hai Phong City
+binh.?duong|bình.?dương,Bình Dương,Binh Duong Province
+dong.?nai|đồng.?nai,Đồng Nai,Dong Nai Province
+quận\s*1\b|quan\s*1\b,Hồ Chí Minh,District 1 (HCMC)
+quận\s*3\b|quan\s*3\b,Hồ Chí Minh,District 3 (HCMC)
+quận\s*4\b|quan\s*4\b,Hồ Chí Minh,District 4 (HCMC)
+quận\s*7\b|quan\s*7\b,Hồ Chí Minh,District 7 (HCMC)
+quận\s*10\b|quan\s*10\b,Hồ Chí Minh,District 10 (HCMC)
+tân\s*bình|tan\s*binh,Hồ Chí Minh,Tan Binh District (HCMC)
+phú\s*nhuận|phu\s*nhuan,Hồ Chí Minh,Phu Nhuan District (HCMC)
+thủ\s*đức|thu\s*duc,Hồ Chí Minh,Thu Duc City (HCMC)
+bình\s*thạnh|binh\s*thanh,Hồ Chí Minh,Binh Thanh District (HCMC)
+thanh\s*xuân|thanh\s*xuan,Hà Nội,Thanh Xuan District (Hanoi)
+cầu\s*giấy|cau\s*giay,Hà Nội,Cau Giay District (Hanoi)
+đống\s*đa|dong\s*da,Hà Nội,Dong Da District (Hanoi)
+ba\s*đình|ba\s*dinh,Hà Nội,Ba Dinh District (Hanoi)
+tây\s*hồ|tay\s*ho,Hà Nội,Tay Ho District (Hanoi)
+nam\s*từ\s*liêm|nam\s*tu\s*liem,Hà Nội,Nam Tu Liem District (Hanoi)
+bắc\s*từ\s*liêm|bac\s*tu\s*liem,Hà Nội,Bac Tu Liem District (Hanoi)
+hai\s*bà\s*trưng|hai\s*ba\s*trung,Hà Nội,Hai Ba Trung District (Hanoi)
+hoàng\s*mai|hoang\s*mai,Hà Nội,Hoang Mai District (Hanoi)
+remote|wfh|work.?from.?home|làm.?việc.?từ.?xa|online,Remote,Fully remote work
+toàn.?quốc|nationwide|cả.?nước,Toàn quốc,Nationwide recruitment
