@@ -8,133 +8,133 @@
 
 ---
 
-## 1. Mục đích
+## 1. Purpose
 
-Tài liệu này định nghĩa **cái gì được tính là kỹ năng kỹ thuật (technical skill)** trong dự án và cách chuẩn hóa các cách viết khác nhau về cùng một kỹ năng.
+This document defines **what counts as a technical skill** in this project and how different surface forms referring to the same skill should be normalized.
 
-Mục tiêu của guideline là giúp việc gán nhãn có tính:
+The guideline is intended to make the annotation process:
 
-- **Nhất quán:** cùng một trường hợp được xử lý giống nhau giữa các JD.
-- **Tái lập:** người khác có thể đọc guideline và đưa ra quyết định gần giống.
-- **Giải thích được:** mỗi skill được giữ hoặc loại theo một rule rõ ràng.
-- **Phù hợp với RQ2–RQ4:** tạo representation theo skill mà không áp đặt trước occupational taxonomy.
+- **Consistent:** the same type of case should be handled in the same way across job descriptions (JDs).
+- **Reproducible:** another annotator should be able to read the guideline and make similar decisions.
+- **Interpretable:** each skill should be included or excluded according to an explicit rule.
+- **Aligned with RQ2–RQ4:** skill-based representations should be created without imposing a predefined occupational taxonomy.
 
-> **Lưu ý quan trọng:** `skill_group` trong taxonomy chỉ là nhóm tổ chức từ vựng để quản lý taxonomy. Nó **không phải occupational taxonomy** và không được dùng để ép job postings vào các nghề định sẵn trước khi clustering.
-
----
-
-## 2. Pilot sample dùng để xây v0.1
-
-Từ **51 link** được cung cấp, pilot này sử dụng **48 JD hợp lệ và duy nhất**:
-
-- **ITviec:** 43 JD
-- **CareerViet:** 5 JD
-- **Loại #14:** trang nhà tuyển dụng OCB, không phải một JD cụ thể.
-- **Loại #18:** trang search/listing của ITviec, không phải canonical URL của một JD cụ thể.
-- **#48:** trùng hoàn toàn với #47, nên chỉ tính một lần.
-
-Kết quả pilot tạo ra **327 canonical skills**. Trong đó **191 skill chỉ xuất hiện ở 1 JD** và **244 skill xuất hiện tối đa 2 JD**. Long tail lớn là bình thường ở bản bottom-up đầu tiên; chưa dùng ngưỡng tần suất để xóa skill ở v0.1.
-
-### Cách hiểu `observed_count`
-
-`observed_count` trong `skills_taxonomy_v0.1.csv` là **document frequency**:
-
-> số JD duy nhất trong pilot có nhắc rõ skill đó ít nhất một lần.
-
-Một skill xuất hiện 5 lần trong cùng một JD vẫn chỉ cộng **1**. Alias được map về cùng canonical skill trước khi đếm.
-
-**Không được diễn giải `observed_count` của pilot này thành tỷ lệ nhu cầu của toàn thị trường Việt Nam**, vì đây là mẫu induction ban đầu và nguồn đang lệch mạnh về ITviec.
+> **Important note:** `skill_group` in the taxonomy is only a vocabulary-management category. It is **not an occupational taxonomy** and must not be used to force job postings into predefined occupations before clustering.
 
 ---
 
-## 3. Định nghĩa “technical skill”
+## 2. Pilot Sample Used to Build v0.1
 
-Trong dự án này, một **technical skill** là:
+From the **51 links** provided, this pilot uses **48 valid, unique job descriptions**:
 
-> **Một năng lực, phương pháp, công cụ, ngôn ngữ, framework/library, nền tảng, hệ thống dữ liệu, kỹ thuật phân tích hoặc miền kỹ thuật có thể học được và được JD nhắc rõ như một phần của việc thực hiện công việc Data/AI.**
+- **ITviec:** 43 JDs
+- **CareerViet:** 5 JDs
+- **Excluded #14:** OCB employer page, not a specific job posting.
+- **Excluded #18:** ITviec search/listing page, not the canonical URL of a specific job posting.
+- **#48:** exact duplicate of #47, so it is counted only once.
 
-Một item không nhất thiết phải là software/tool mới được tính là skill. Các phương pháp như `Machine Learning`, `ETL`, `Data Modeling`, `A/B Testing`, `Feature Engineering`, `RAG` hoặc `MLOps` vẫn được giữ nếu được nhắc trong ngữ cảnh chuyên môn.
+The pilot produced **327 canonical skills**. Of these, **191 skills appear in only one JD**, and **244 skills appear in at most two JDs**. A large long tail is expected in an initial bottom-up taxonomy; no frequency threshold is used to remove skills in v0.1.
+
+### Interpreting `observed_count`
+
+`observed_count` in `skills_taxonomy_v0.1.csv` represents **document frequency**:
+
+> the number of unique JDs in the pilot that explicitly mention the skill at least once.
+
+If a skill appears five times within the same JD, it still contributes only **1** to the count. Aliases are mapped to the same canonical skill before counting.
+
+**The `observed_count` values in this pilot must not be interpreted as market-wide demand shares for Vietnam**, because this is an initial taxonomy-induction sample and the source distribution is heavily skewed toward ITviec.
 
 ---
 
-## 4. Quyết định scope v0.1
+## 3. Definition of a “Technical Skill”
 
-| Loại thông tin | Quyết định | Ví dụ |
+In this project, a **technical skill** is:
+
+> **A learnable capability, method, tool, language, framework/library, platform, data system, analytical technique, or technical domain that is explicitly mentioned in a JD as part of performing Data/AI work.**
+
+An item does not need to be a software product or tool to count as a skill. Methods such as `Machine Learning`, `ETL`, `Data Modeling`, `A/B Testing`, `Feature Engineering`, `RAG`, or `MLOps` are also retained when they are mentioned in a professional/technical context.
+
+---
+
+## 4. Scope Decisions for v0.1
+
+| Information type | Decision | Examples |
 |---|---|---|
 | Programming/query languages | **INCLUDE** | Python, SQL, Java, C++, R |
 | Frameworks/libraries | **INCLUDE** | PyTorch, TensorFlow, Pandas, scikit-learn, LangChain |
 | Databases/data platforms | **INCLUDE** | PostgreSQL, MongoDB, BigQuery, Databricks |
 | Cloud platforms/services | **INCLUDE** | AWS, Azure, GCP, S3, SageMaker, Vertex AI |
 | DevOps/MLOps tooling | **INCLUDE** | Docker, Kubernetes, MLflow, Kubeflow, CI/CD |
-| High-level technical methods | **INCLUDE nếu đủ cụ thể và operational** | Machine Learning, NLP, Computer Vision, ETL, Data Modeling, MLOps |
+| High-level technical methods | **INCLUDE if sufficiently specific and operational** | Machine Learning, NLP, Computer Vision, ETL, Data Modeling, MLOps |
 | Statistical/analytical methods | **INCLUDE** | A/B Testing, Regression, Forecasting, Hypothesis Testing |
 | Technical data/AI architectures | **INCLUDE** | Data Lakehouse, RAG, Event-Driven Architecture, Multi-Agent Systems |
-| Data formats khi được yêu cầu chuyên môn | **INCLUDE** | JSON, Parquet, XML |
+| Data formats when technically required | **INCLUDE** | JSON, Parquet, XML |
 | Soft skills | **EXCLUDE** | communication, teamwork, leadership, problem solving |
 | Personality traits | **EXCLUDE** | proactive, hard-working, ownership, curiosity |
-| Human languages | **EXCLUDE khỏi technical taxonomy** | English, Japanese |
-| Education/certification requirement alone | **EXCLUDE** | Bachelor's degree, TOEIC; một chứng chỉ chỉ được giữ nếu tên công nghệ bên trong cũng là skill độc lập |
+| Human languages | **EXCLUDE from the technical taxonomy** | English, Japanese |
+| Education/certification requirements alone | **EXCLUDE** | Bachelor's degree, TOEIC; a certification is retained only if the technology named within it is also an independent skill |
 | Years of experience/seniority | **EXCLUDE** | 3+ years, Senior, Lead |
 | Job/occupation labels | **EXCLUDE** | Data Engineer, Data Scientist, AI Engineer |
-| Generic umbrella labels quá rộng | **EXCLUDE mặc định** | AI, Technology, Data |
-| Company/product marketing text | **EXCLUDE** nếu không phải requirement/responsibility của role | công nghệ chỉ được mô tả như sản phẩm/culture của công ty |
+| Overly broad umbrella labels | **EXCLUDE by default** | AI, Technology, Data |
+| Company/product marketing text | **EXCLUDE** unless it is a requirement/responsibility of the role | technology mentioned only as part of the company's product or culture |
 
-### Phân biệt role label và competency
+### Distinguishing Role Labels from Competencies
 
-- `Data Engineer` trong title → **không phải skill**.
-- `Data Engineering` chỉ như tên nghề/chuyên môn → **không tự động annotate**.
-- `Data Analysis` trong câu “perform data analysis / strong data analysis skills” → **có thể annotate**, vì đây là năng lực cụ thể.
-- `AI` đứng một mình → quá rộng, **không đưa vào taxonomy v0.1**.
-- `Generative AI`, `Machine Learning`, `Computer Vision`, `NLP` → đủ cụ thể để giữ.
+- `Data Engineer` in a job title → **not a skill**.
+- `Data Engineering` used only as an occupation/specialization label → **do not automatically annotate**.
+- `Data Analysis` in a statement such as “perform data analysis” or “strong data analysis skills” → **may be annotated**, because it describes a concrete capability.
+- `AI` on its own → too broad, **do not include in taxonomy v0.1**.
+- `Generative AI`, `Machine Learning`, `Computer Vision`, `NLP` → sufficiently specific to retain.
 
 ---
 
-## 5. Vùng văn bản được dùng để annotate
+## 5. Text Regions Used for Annotation
 
 ### INCLUDE
 
-Ưu tiên đọc các vùng:
+Prioritize the following sections:
 
-1. `Requirements / Yêu cầu công việc`
-2. `Responsibilities / Mô tả công việc`
+1. `Requirements`
+2. `Responsibilities`
 3. `Nice to have / Preferred`
-4. Employer-provided `Kỹ năng`/skill tags của chính vacancy
-5. Title **chỉ khi title chứa technology/skill cụ thể**, ví dụ `Data Engineer (Python, Kafka)`.
+4. Employer-provided `Skills` tags for the specific vacancy
+5. The job title **only when the title explicitly contains a technology/skill**, e.g. `Data Engineer (Python, Kafka)`.
 
 ### EXCLUDE
 
-Không lấy skill chỉ vì nó xuất hiện trong:
+Do not include a skill solely because it appears in:
 
-- mô tả chung về công ty;
-- phúc lợi;
-- văn hóa/công cụ được quảng bá nhưng không liên quan trực tiếp tới role;
-- danh sách việc làm tương tự;
-- navigation/footer;
-- tên nghề tự thân.
+- general company descriptions;
+- benefits;
+- company culture or advertised tools unrelated to the specific role;
+- similar-job lists;
+- navigation/footer content;
+- the occupation title itself.
 
-Nếu một công nghệ xuất hiện ở phần marketing **và** đồng thời là requirement/responsibility của role, vẫn annotate dựa trên phần role.
+If a technology appears in marketing text **and** is also explicitly mentioned as a requirement or responsibility of the role, annotate it based on the role-specific section.
 
 ---
 
-## 6. Required và Nice-to-have
+## 6. Required vs. Nice-to-Have Skills
 
-Ở v0.1, **cả required và preferred/nice-to-have đều được tính**, vì mục tiêu hiện tại là **taxonomy induction**: khám phá vocabulary kỹ năng mà thị trường sử dụng.
+In v0.1, **both required and preferred/nice-to-have skills are counted**, because the current goal is **taxonomy induction**: discovering the vocabulary of skills used by the market.
 
-Tuy nhiên, khi bước sang demand analysis chính thức, nên lưu thêm trường như:
+However, for the formal demand analysis, additional fields should be stored, such as:
 
 - `requirement_level = required`
 - `requirement_level = preferred`
 - `requirement_level = responsibility/context`
 
-để không đánh đồng mức độ bắt buộc.
+This prevents mandatory and optional skills from being treated as equivalent.
 
 ---
 
-## 7. Abbreviation rules
+## 7. Abbreviation Rules
 
-### 7.1. Abbreviation chuẩn, không mơ hồ
+### 7.1. Standard, Unambiguous Abbreviations
 
-Map về một canonical skill:
+Map them to a canonical skill:
 
 - `ML` → `Machine Learning`
 - `DL` → `Deep Learning`
@@ -146,28 +146,28 @@ Map về một canonical skill:
 - `GCP` → `Google Cloud Platform`
 - `OCR` → `Optical Character Recognition`
 - `MLOps`, `ML Ops`, `MLops` → `MLOps`
-- `ETL` và `ELT` là **hai skill khác nhau**, không merge.
+- `ETL` and `ELT` are **two different skills** and must not be merged.
 
-### 7.2. Abbreviation mơ hồ: chỉ map khi context đủ rõ
+### 7.2. Ambiguous Abbreviations: Map Only When Context Is Sufficient
 
-Ví dụ `CV` có thể là:
+For example, `CV` may mean:
 
-- `Computer Vision`, hoặc
+- `Computer Vision`, or
 - curriculum vitae.
 
-Chỉ map `CV` → `Computer Vision` khi ngữ cảnh kỹ thuật xác nhận, ví dụ đi cùng `OpenCV`, image/video models, object detection, hoặc câu nói rõ Computer Vision.
+Map `CV` → `Computer Vision` only when the technical context confirms the meaning, for example when it appears with `OpenCV`, image/video models, object detection, or an explicit mention of Computer Vision.
 
-### 7.3. Không suy diễn acronym không xuất hiện
+### 7.3. Do Not Infer Unmentioned Acronyms or Concepts
 
-Nếu JD chỉ viết `Retrieval-Augmented Generation`, canonicalize về RAG concept. Nhưng nếu JD không nhắc concept đó thì không suy ra từ việc job dùng LLM.
+If a JD writes `Retrieval-Augmented Generation`, normalize it to the RAG concept. However, if the JD does not mention that concept, do not infer it simply because the role uses LLMs.
 
 ---
 
-## 8. Synonym và spelling normalization
+## 8. Synonym and Spelling Normalization
 
-Các biến thể chỉ khác case, space, hyphen hoặc tên phổ biến được map về cùng canonical item.
+Variants that differ only in capitalization, spacing, hyphenation, or common naming conventions should be mapped to the same canonical item.
 
-Ví dụ:
+Examples:
 
 - `Postgres`, `Postgre SQL` → `PostgreSQL`
 - `PowerBI` → `Power BI`
@@ -176,9 +176,9 @@ Ví dụ:
 - `K8s` → `Kubernetes`
 - `GenAI` → `Generative AI`
 
-Không merge hai công nghệ chỉ vì chúng thường đi cùng nhau.
+Do not merge two technologies simply because they frequently co-occur.
 
-Ví dụ:
+Examples:
 
 - `PyTorch` ≠ `TensorFlow`
 - `AWS` ≠ `Azure`
@@ -188,57 +188,57 @@ Ví dụ:
 
 ---
 
-## 9. Parent–child technology rule
+## 9. Parent–Child Technology Rule
 
-Không tự động suy diễn parent hoặc child skill.
+Do not automatically infer parent or child skills.
 
-Ví dụ:
+Examples:
 
-- JD chỉ viết `SageMaker` → annotate `Amazon SageMaker`; **không tự động thêm AWS**.
-- JD viết `AWS SageMaker` → cả `Amazon Web Services` và `Amazon SageMaker` đều được coi là explicit.
-- JD viết `Kubernetes` → không suy ra `Docker`.
-- JD viết `LangChain` → không suy ra `RAG`.
-- JD viết `LLM` → không suy ra `Prompt Engineering`.
+- JD mentions only `SageMaker` → annotate `Amazon SageMaker`; **do not automatically add AWS**.
+- JD explicitly writes `AWS SageMaker` → both `Amazon Web Services` and `Amazon SageMaker` are treated as explicit.
+- JD mentions `Kubernetes` → do not infer `Docker`.
+- JD mentions `LangChain` → do not infer `RAG`.
+- JD mentions `LLM` → do not infer `Prompt Engineering`.
 
-Lý do: project cần đo **những gì nhà tuyển dụng thực sự viết**, không đo kiến thức mà annotator cho rằng “đương nhiên phải biết”.
-
----
-
-## 10. Implicit skill rule
-
-**Mặc định: KHÔNG annotate implicit skills ở v0.1.**
-
-Ví dụ:
-
-- “Build dashboards” → annotate `Dashboarding`; **không suy ra Power BI/Tableau**.
-- “Deploy models to production” → có thể annotate `Model Deployment`; **không suy ra Docker/Kubernetes/AWS**.
-- “Build recommendation systems” → annotate `Recommendation Systems`; **không suy ra Python/PyTorch**.
-- “Work with relational databases” → annotate `Relational Databases`; **không suy ra PostgreSQL/MySQL**.
-
-Rule-based extractor và gold annotation phải bám vào evidence hiển thị trong text.
+Reason: the project aims to measure **what employers actually write**, not what the annotator believes a candidate would “obviously need to know.”
 
 ---
 
-## 11. Composite mentions và alternatives
+## 10. Implicit Skill Rule
 
-Nếu JD liệt kê nhiều công nghệ rõ ràng bằng `/`, `or`, `and`, mỗi technology được annotate riêng.
+**Default rule: DO NOT annotate implicit skills in v0.1.**
 
-Ví dụ:
+Examples:
+
+- “Build dashboards” → annotate `Dashboarding`; **do not infer Power BI/Tableau**.
+- “Deploy models to production” → may annotate `Model Deployment`; **do not infer Docker/Kubernetes/AWS**.
+- “Build recommendation systems” → annotate `Recommendation Systems`; **do not infer Python/PyTorch**.
+- “Work with relational databases” → annotate `Relational Databases`; **do not infer PostgreSQL/MySQL**.
+
+The rule-based extractor and gold annotation should be grounded in evidence explicitly present in the text.
+
+---
+
+## 11. Composite Mentions and Alternatives
+
+If a JD clearly lists multiple technologies using `/`, `or`, or `and`, annotate each technology separately.
+
+Examples:
 
 - `C/C++` → `C` + `C++`
 - `PyTorch/TensorFlow` → `PyTorch` + `TensorFlow`
-- `AWS/GCP/Azure` → ba cloud skills
-- `Airflow, Dagster or Prefect` → ba skills
+- `AWS/GCP/Azure` → three cloud skills
+- `Airflow, Dagster or Prefect` → three skills
 
-Điều này áp dụng kể cả khi JD nói “one of”.
+This applies even when the JD says “one of”.
 
 ---
 
-## 12. Context-dependent cases
+## 12. Context-Dependent Cases
 
-### 12.1. Applied business/analytics skills
+### 12.1. Applied Business/Analytics Skills
 
-Các use case được giữ **khi role yêu cầu người làm phải xây dựng/phân tích chúng như một năng lực kỹ thuật**, ví dụ:
+Applied use cases are retained **when the role requires the employee to build, model, or analyze them as a technical capability**, for example:
 
 - Fraud Detection
 - Risk Scoring
@@ -247,11 +247,11 @@ Các use case được giữ **khi role yêu cầu người làm phải xây d�
 - Cohort Analysis
 - Dynamic Pricing
 
-Không giữ nếu cụm từ chỉ mô tả ngành kinh doanh hoặc mục tiêu business chung.
+Do not retain them if the phrase only describes a business domain or general business objective.
 
-### 12.2. Data governance / quality / security
+### 12.2. Data Governance / Quality / Security
 
-Giữ khi JD yêu cầu thực hiện hoặc thiết kế:
+Retain these when the JD requires the employee to implement, design, or perform them:
 
 - Data Governance
 - Data Quality
@@ -259,39 +259,39 @@ Giữ khi JD yêu cầu thực hiện hoặc thiết kế:
 - Data Security
 - Data Lineage
 
-Không giữ các từ pháp lý/compliance chung nếu không thể hiện một nhiệm vụ kỹ thuật cụ thể.
+Do not retain generic legal/compliance terminology unless it represents a concrete technical task.
 
 ### 12.3. Cloud
 
-- `AWS`, `Azure`, `GCP` → giữ.
-- `cloud` → chỉ giữ dưới canonical `Cloud Computing` khi JD yêu cầu kiến thức/kinh nghiệm cloud.
-- “cloud company / cloud product” trong mô tả doanh nghiệp → không giữ.
+- `AWS`, `Azure`, `GCP` → retain.
+- `cloud` → retain under the canonical skill `Cloud Computing` only when the JD requires cloud knowledge/experience.
+- “cloud company / cloud product” in a company description → do not retain.
 
-### 12.4. Generic software practices
+### 12.4. Generic Software Practices
 
-Các capability kỹ thuật rõ ràng như `API Design`, `Microservices`, `CI/CD`, `Observability`, `Debugging` được giữ.
+Clearly technical capabilities such as `API Design`, `Microservices`, `CI/CD`, `Observability`, and `Debugging` are retained.
 
-Soft/management practices như stakeholder management, mentoring, communication, ownership không nằm trong taxonomy technical v0.1.
+Soft/management practices such as stakeholder management, mentoring, communication, and ownership are not part of the v0.1 technical taxonomy.
 
 ---
 
-## 13. Counting rule
+## 13. Counting Rule
 
-Đối với mỗi JD:
+For each JD:
 
-1. Normalize raw mention → canonical skill.
-2. Deduplicate trong cùng JD.
-3. Mỗi canonical skill có giá trị 0/1 cho JD đó.
-4. `observed_count` = tổng số JD có giá trị 1.
-5. Exact duplicate postings chỉ tính một lần.
+1. Normalize the raw mention → canonical skill.
+2. Deduplicate within the same JD.
+3. Each canonical skill receives a 0/1 value for that JD.
+4. `observed_count` = total number of JDs with value 1.
+5. Exact duplicate postings are counted only once.
 
-Ví dụ nếu một JD nhắc `Python` 8 lần:
+Example: if one JD mentions `Python` eight times:
 
 ```text
 Python document count = 1
 ```
 
-Nếu ba JD lần lượt viết `Postgres`, `PostgreSQL`, `Postgre SQL`:
+If three JDs respectively use `Postgres`, `PostgreSQL`, and `Postgre SQL`:
 
 ```text
 canonical = PostgreSQL
@@ -300,9 +300,9 @@ observed_count = 3
 
 ---
 
-## 14. Skill groups v0.1
+## 14. Skill Groups v0.1
 
-Các group trong CSV dùng để quản lý vocabulary:
+The groups in the CSV are used to organize the vocabulary:
 
 - Programming & Query Languages
 - Data Analysis & BI
@@ -320,13 +320,13 @@ Các group trong CSV dùng để quản lý vocabulary:
 - Applied Analytics & Business Platforms
 - Engineering Tools & Collaboration
 
-**Không sử dụng các group này làm occupational labels trong RQ4.** Clustering nghề vẫn phải dựa trên representation của skill ở cấp job posting.
+**Do not use these groups as occupational labels in RQ4.** Occupational clustering must still be based on the skill representation of each job posting.
 
 ---
 
-## 15. Sanity check từ pilot
+## 15. Pilot Sanity Check
 
-Top 10 canonical skills theo `observed_count` của 48-JD pilot:
+Top 10 canonical skills by `observed_count` in the 48-JD pilot:
 
 | Rank | Canonical skill | JD count |
 |---:|---|---:|
@@ -341,59 +341,58 @@ Top 10 canonical skills theo `observed_count` của 48-JD pilot:
 | 9 | Data Warehouse | 11 |
 | 10 | Apache Airflow | 9 |
 
-Bảng này chỉ là **sanity check của taxonomy pilot**, chưa phải kết quả RQ2 chính thức.
+This table is only a **sanity check for the pilot taxonomy**, not an official RQ2 result.
 
 ---
 
-## 16. Quy trình annotation đề xuất cho các batch tiếp theo
+## 16. Recommended Annotation Workflow for Future Batches
 
-1. Đọc JD và highlight raw technical mentions.
-2. Áp dụng include/exclude rules trước khi nhìn taxonomy.
-3. Nếu concept đã có trong taxonomy → map về `canonical_name`.
-4. Nếu concept mới và hợp lệ → thêm canonical skill mới, append `skill_id` mới.
-5. Ghi alias mới nếu chỉ là biến thể của skill cũ.
-6. Không thêm implicit skill.
-7. Mỗi JD deduplicate trước khi cộng count.
-8. Flag trường hợp không chắc chắn để review thay vì tự đoán.
-9. Định kỳ review các singleton/rare skills để phát hiện:
-   - typo;
-   - alias chưa merge;
-   - item quá chi tiết;
-   - business phrase bị nhầm thành technical skill.
-
----
-
-## 17. Các quyết định nên review ở v0.2
-
-Sau khi annotate thêm dữ liệu, cần xem lại:
-
-- có giữ tất cả data formats (`CSV`, `XML`, `JSON`) như skill riêng không;
-- có tách platform và service ở nhiều level không;
-- có giữ các applied use cases tần suất thấp không;
-- có tạo hierarchy chính thức `parent_skill_id` không;
-- có thêm `requirement_level` và `evidence_span` không;
-- có cần minimum document frequency cho downstream modeling không.
-
-**Không nên xóa singleton chỉ vì hiếm ở bước induction.** Việc pruning nên xảy ra sau khi đã kiểm tra liệu singleton là skill thật, alias hay noise.
+1. Read the JD and highlight raw technical mentions.
+2. Apply the include/exclude rules before consulting the taxonomy.
+3. If the concept already exists in the taxonomy → map it to `canonical_name`.
+4. If the concept is new and valid → add a new canonical skill and append a new `skill_id`.
+5. Record a new alias if the mention is only a variant of an existing skill.
+6. Do not add implicit skills.
+7. Deduplicate skills within each JD before incrementing counts.
+8. Flag uncertain cases for review instead of guessing.
+9. Periodically review singleton/rare skills to detect:
+   - typos;
+   - aliases that have not yet been merged;
+   - items that are overly granular;
+   - business phrases incorrectly classified as technical skills.
 
 ---
 
-## 18. Quan hệ với LLM comparator
+## 17. Decisions to Review in v0.2
 
-Nếu thực hiện optional LLM experiment, cả rule-based extractor và LLM phải được đánh giá trên **cùng held-out set, cùng guideline và cùng canonical taxonomy**.
+After annotating more data, revisit whether:
 
-LLM không được nhận credit chỉ vì trả về một concept nằm ngoài scope. Prediction phải normalize về taxonomy trước khi tính Precision / Recall / F1.
+- all data formats (`CSV`, `XML`, `JSON`) should remain separate skills;
+- platforms and services should be represented at multiple hierarchical levels;
+- low-frequency applied use cases should be retained;
+- a formal `parent_skill_id` hierarchy should be introduced;
+- `requirement_level` and `evidence_span` should be added;
+- a minimum document-frequency threshold is needed for downstream modeling.
 
-Điều này giúp câu hỏi so sánh thực sự là:
+**Do not remove a singleton simply because it is rare during taxonomy induction.** Pruning should happen only after checking whether the singleton is a genuine skill, an unmerged alias, or noise.
 
-> Với **cùng một định nghĩa skill và cùng corpus**, LLM cải thiện extraction quality bao nhiêu so với Dictionary + Regex + Fuzzy, và đổi lại phải trả giá gì về cost, dependency, reproducibility và interpretability?
+---
+
+## 18. Relationship to the LLM Comparator
+
+If the optional LLM experiment is performed, both the rule-based extractor and the LLM must be evaluated on **the same held-out set, using the same annotation guideline and the same canonical taxonomy**.
+
+The LLM should not receive credit simply for returning a concept that falls outside the defined scope. Predictions must be normalized to the taxonomy before calculating Precision / Recall / F1.
+
+This ensures that the comparison genuinely asks:
+
+> With **the same skill definition and the same corpus**, how much does an LLM improve extraction quality over Dictionary + Regex + Fuzzy matching, and what are the trade-offs in cost, dependency, reproducibility, and interpretability?
 
 ---
 
 ## 19. Versioning
 
-- `v0.1`: bottom-up taxonomy từ 48 unique usable JDs của pilot.
-- Khi bổ sung skill mới, **không tái sử dụng `skill_id` cũ cho concept khác**.
-- Alias có thể mở rộng nhưng canonical name chỉ đổi khi có lý do rõ ràng và phải ghi migration.
-- Trước khi dùng cho analysis chính thức, nên freeze một version (ví dụ `v1.0`) và lưu changelog.
-
+- `v0.1`: bottom-up taxonomy built from 48 unique, usable JDs in the pilot.
+- When adding new skills, **never reuse an existing `skill_id` for a different concept**.
+- Aliases may be expanded, but canonical names should only be changed for a clear reason, with a recorded migration.
+- Before using the taxonomy for formal analysis, freeze a version (for example, `v1.0`) and maintain a changelog.
