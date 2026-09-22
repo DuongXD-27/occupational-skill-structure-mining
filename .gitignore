@@ -58,3 +58,8 @@ data/processed/*
 !data/processed/.gitkeep
 data/interim/*
 !data/interim/.gitkeep
+
+# Local skill-taxonomy recount artifacts
+/reports/skill_extraction/skills_taxonomy_v0.1_evidence.csv
+/scripts/recount_taxonomy.py
+/tests/test_recount_taxonomy.py
