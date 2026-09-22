@@ -23,27 +23,23 @@ The guideline is intended to make the annotation process:
 
 ---
 
-## 2. Pilot Sample Used to Build v0.1
+## 2. Official Sample Used for v0.1 Counts
 
-From the **51 links** provided, this pilot uses **48 valid, unique job descriptions**:
+The authoritative sample is `data/sample/sample_jobs.jsonl`, containing **45 unique job descriptions**, all from **ITviec**. This is the ground-truth sample prepared in PR #3 and is the only corpus used to calculate `observed_count` in `skills_taxonomy_v0.1.csv`.
 
-- **ITviec:** 43 JDs
-- **CareerViet:** 5 JDs
-- **Excluded #14:** OCB employer page, not a specific job posting.
-- **Excluded #18:** ITviec search/listing page, not the canonical URL of a specific job posting.
-- **#48:** exact duplicate of #47, so it is counted only once.
+CareerViet records are not part of this sample. The approved source scope uses ITviec as the primary source and TopCV only as a fallback.
 
-The pilot produced **327 canonical skills**. Of these, **191 skills appear in only one JD**, and **244 skills appear in at most two JDs**. A large long tail is expected in an initial bottom-up taxonomy; no frequency threshold is used to remove skills in v0.1.
+The taxonomy retains **327 canonical skills** to preserve stable skill IDs from the initial draft. Against the official 45-JD corpus, **81 skills have an observed count of zero**, **102 skills appear in exactly one JD**, and **231 skills appear in at most two JDs**. Zero-count rows are retained for version stability and must not be treated as skills observed in the official sample.
 
 ### Interpreting `observed_count`
 
 `observed_count` in `skills_taxonomy_v0.1.csv` represents **document frequency**:
 
-> the number of unique JDs in the pilot that explicitly mention the skill at least once.
+> the number of unique JDs in the official 45-record ITviec sample that explicitly mention the skill at least once.
 
-If a skill appears five times within the same JD, it still contributes only **1** to the count. Aliases are mapped to the same canonical skill before counting.
+If a skill appears five times within the same JD, it still contributes only **1** to the count. Canonical names, abbreviations, and aliases are mapped to the same canonical skill before counting.
 
-**The `observed_count` values in this pilot must not be interpreted as market-wide demand shares for Vietnam**, because this is an initial taxonomy-induction sample and the source distribution is heavily skewed toward ITviec.
+**The `observed_count` values must not be interpreted as market-wide demand shares for Vietnam**, because this is a small taxonomy-validation sample from one source.
 
 ---
 
@@ -131,6 +127,22 @@ This prevents mandatory and optional skills from being treated as equivalent.
 ---
 
 ## 7. Abbreviation Rules
+
+The taxonomy CSV uses the following schema:
+
+```text
+skill_id,canonical_name,abbreviation,aliases,skill_group,observed_count
+```
+
+`abbreviation` stores standard shortened forms of the canonical name. `aliases` stores other spelling, wording, spacing, or naming variants; abbreviations must not be duplicated in `aliases`. Multiple values in either field are separated by `; `.
+
+Example:
+
+```text
+canonical_name = Natural Language Processing
+abbreviation = NLP
+aliases = text processing; xử lý ngôn ngữ tự nhiên
+```
 
 ### 7.1. Standard, Unambiguous Abbreviations
 
@@ -285,6 +297,8 @@ For each JD:
 4. `observed_count` = total number of JDs with value 1.
 5. Exact duplicate postings are counted only once.
 
+Counts are generated from `raw_job_title`, `job_description`, and `job_requirements` in the official sample. When a shorter term overlaps a longer explicit taxonomy term, the longer term wins; for example, `BI` inside `Power BI` does not independently increment `Business Intelligence`. Context-sensitive abbreviations and short language names are handled conservatively to avoid matches such as `CV` meaning curriculum vitae, `R` inside `R&D`, or `Go` in ordinary prose.
+
 Example: if one JD mentions `Python` eight times:
 
 ```text
@@ -326,20 +340,20 @@ The groups in the CSV are used to organize the vocabulary:
 
 ## 15. Pilot Sanity Check
 
-Top 10 canonical skills by `observed_count` in the 48-JD pilot:
+Top 10 canonical skills by `observed_count` in the official 45-JD ITviec sample:
 
 | Rank | Canonical skill | JD count |
 |---:|---|---:|
-| 1 | Python | 33 |
-| 2 | SQL | 26 |
-| 3 | Machine Learning | 18 |
-| 4 | ETL | 16 |
-| 5 | Large Language Models | 15 |
-| 6 | Apache Spark | 13 |
-| 7 | Amazon Web Services | 13 |
-| 8 | ELT | 11 |
-| 9 | Data Warehouse | 11 |
-| 10 | Apache Airflow | 9 |
+| 1 | Python | 31 |
+| 2 | Data Pipelines | 23 |
+| 3 | SQL | 23 |
+| 4 | Cloud Computing | 21 |
+| 5 | Data Quality | 20 |
+| 6 | Machine Learning | 19 |
+| 7 | Amazon Web Services | 17 |
+| 8 | ETL | 17 |
+| 9 | CI/CD | 16 |
+| 10 | Business Intelligence | 15 |
 
 This table is only a **sanity check for the pilot taxonomy**, not an official RQ2 result.
 
@@ -392,7 +406,7 @@ This ensures that the comparison genuinely asks:
 
 ## 19. Versioning
 
-- `v0.1`: bottom-up taxonomy built from 48 unique, usable JDs in the pilot.
+- `v0.1`: taxonomy counts validated against 45 unique ITviec JDs in `data/sample/sample_jobs.jsonl`.
 - When adding new skills, **never reuse an existing `skill_id` for a different concept**.
 - Aliases may be expanded, but canonical names should only be changed for a clear reason, with a recorded migration.
 - Before using the taxonomy for formal analysis, freeze a version (for example, `v1.0`) and maintain a changelog.
