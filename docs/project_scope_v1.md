@@ -143,31 +143,16 @@ Excluded records must not be deleted from the raw dataset; they must be flagged 
 
 ## 8. Data Source Scope
 
-### Candidate Sources
+### Final Source Selection
 
-Anticipated candidate sources to survey:
+- Primary source: ITviec;
+- Backup source: TopCV.
 
-- ITviec
-- TopCV
-- CareerViet
+ITviec is the official primary source and is used for normal dataset collection. Sample data, taxonomy, data-quality checks, and downstream analysis must be traceable to the primary dataset unless the project explicitly approves another dataset.
 
-During the initial phase, the team will evaluate each candidate source based on:
+TopCV is a fallback source. It is activated only if ITviec becomes inaccessible, technically unusable, cannot provide sufficient valid records, or otherwise cannot satisfy the collection target. The selection of TopCV as a backup does not make the project an automatically combined multi-source dataset.
 
-- Terms of service and robots.txt;
-- Public accessibility of data;
-- Suitability for Data/AI positions;
-- Volume and quality of job postings;
-- Available data fields;
-- Technical scraping feasibility;
-- Duplication rate and noise level;
-- Compliance with data storage and reuse policies.
-
-Following the survey, the team will select:
-
-- 1 primary source;
-- at most 1 secondary source.
-
-The Leader approves the final selection based on the team's survey findings.
+If TopCV is activated, its records must satisfy the same inclusion and exclusion criteria, follow the same data schema and data-quality rules, and preserve the `source` and `source_url` provenance fields so downstream analysis can distinguish records by source.
 
 Prior to large-scale data collection, the team must verify:
 
@@ -179,7 +164,7 @@ Prior to large-scale data collection, the team must verify:
 - Terms governing data reuse and publication;
 - Technical characteristics and stability of the platform.
 
-If the primary source proves unfeasible, the team pivots to the backup source.
+If ITviec proves unfeasible under the conditions above, the team pivots to TopCV.
 
 If both prove unfeasible, the team prioritizes surveying public corporate career portals rather than attempting to bypass website defensive measures.
 
@@ -187,7 +172,17 @@ The project strictly uses a maximum of two data sources.
 
 ---
 
-## 9. Expected Data Scale
+## 9. Data Requirements
+
+Project data fields are classified as required or optional according to `docs/data_schema_v1.md`, which is the authoritative field-level specification.
+
+Required fields must satisfy the retention and validation rules defined in the schema for a job posting to be accepted into the project dataset. Optional fields may be missing without automatically invalidating the entire record, subject to the schema and cleaning rules.
+
+Raw and original source data must be preserved according to the schema. Normalized and derived fields must be stored separately and must not overwrite original raw data.
+
+---
+
+## 10. Expected Data Scale
 
 Initial targets:
 
@@ -200,7 +195,7 @@ Data quality, provenance, and auditability take precedence over raw volume.
 
 ---
 
-## 10. Job Title Principles
+## 11. Job Title Principles
 
 Must simultaneously store:
 
@@ -215,7 +210,7 @@ The occupational structure will be investigated downstream via skills and cluste
 
 ---
 
-## 11. Mandatory Scope
+## 12. Mandatory Scope
 
 The following components are strictly required:
 
@@ -245,7 +240,7 @@ The following components are strictly required:
 
 ---
 
-## 12. Optional Scope
+## 13. Optional Scope
 
 To be undertaken only after all mandatory requirements are fully completed.
 
@@ -259,7 +254,7 @@ Optional features must never delay mandatory milestones.
 
 ---
 
-## 13. Out of Scope
+## 14. Out of Scope
 
 The project does NOT aim to:
 
@@ -275,7 +270,7 @@ The project does NOT aim to:
 
 ---
 
-## 14. Data Publishing Principles
+## 15. Data Publishing Principles
 
 Raw data and verbatim job descriptions may only be stored or published within boundaries permitted by source platform terms.
 
@@ -293,7 +288,7 @@ Do not by default publish full HTML payloads or verbatim job descriptions to pub
 
 ---
 
-## 15. Known Research Limitations
+## 16. Known Research Limitations
 
 Findings are representative only of:
 
@@ -318,7 +313,7 @@ Anticipated limitations include:
 
 ---
 
-## 16. Criteria for Core Project Completion
+## 17. Criteria for Core Project Completion
 
 The core project is deemed complete when:
 
