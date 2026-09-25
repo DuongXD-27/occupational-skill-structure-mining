@@ -29,7 +29,7 @@ The authoritative sample is `data/sample/sample_jobs.jsonl`, containing **45 uni
 
 CareerViet records are not part of this sample. The approved source scope uses ITviec as the primary source and TopCV only as a fallback.
 
-The taxonomy retains **327 canonical skills** to preserve stable skill IDs from the initial draft. Against the official 45-JD corpus, **81 skills have an observed count of zero**, **102 skills appear in exactly one JD**, and **231 skills appear in at most two JDs**. Zero-count rows are retained for version stability and must not be treated as skills observed in the official sample.
+The taxonomy contains **246 canonical skills**, and every retained skill appears in at least one JD in the official 45-JD corpus. Of these, **102 skills appear in exactly one JD**, and **150 skills appear in at most two JDs**. Skills with an `observed_count` of zero are excluded because they are not evidenced by the official sample.
 
 ### Interpreting `observed_count`
 
@@ -298,6 +298,8 @@ For each JD:
 5. Exact duplicate postings are counted only once.
 
 Counts are generated from `raw_job_title`, `job_description`, and `job_requirements` in the official sample. When a shorter term overlaps a longer explicit taxonomy term, the longer term wins; for example, `BI` inside `Power BI` does not independently increment `Business Intelligence`. Context-sensitive abbreviations and short language names are handled conservatively to avoid matches such as `CV` meaning curriculum vitae, `R` inside `R&D`, or `Go` in ordinary prose.
+
+Run `python scripts/recount_taxonomy.py` from the repository root to reproduce the taxonomy counts and remove skills that are not observed in the official sample.
 
 Example: if one JD mentions `Python` eight times:
 
