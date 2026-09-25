@@ -1,0 +1,247 @@
+skill_id,canonical_name,abbreviation,aliases,skill_group,observed_count
+SK0001,A/B Testing,,AB testing; A-B testing,"Machine Learning, Statistics & Optimization",1
+SK0003,AI Agents,,AI Agent; AI agents,Generative AI & Agentic Systems,4
+SK0004,API Design,,API architecture,Software Engineering & APIs,1
+SK0006,AWS Glue,,Glue,Cloud Platforms & Services,2
+SK0007,AWS Lambda,,Lambda,Cloud Platforms & Services,3
+SK0008,AWS Step Functions,,Step Functions,Cloud Platforms & Services,1
+SK0010,Agentic AI,,agentic AI,Generative AI & Agentic Systems,2
+SK0011,Airbyte,,,Data Engineering & Architecture,1
+SK0012,Alerting,,,"Data Quality, Testing & Observability",2
+SK0013,Amazon Athena,,Athena,Cloud Platforms & Services,3
+SK0014,Amazon Bedrock,,Bedrock,Cloud Platforms & Services,1
+SK0015,Amazon Redshift,,Redshift,Cloud Platforms & Services,5
+SK0016,Amazon S3,S3,,Cloud Platforms & Services,6
+SK0017,Amazon SageMaker,,SageMaker,Cloud Platforms & Services,2
+SK0018,Amazon Web Services,AWS,,Cloud Platforms & Services,17
+SK0020,Anomaly Detection,,,"Machine Learning, Statistics & Optimization",2
+SK0021,Anthropic API,,Anthropic; Claude API,Generative AI & Agentic Systems,2
+SK0022,Apache Airflow,,Airflow,Data Engineering & Architecture,12
+SK0023,Apache Flink,,Flink,"Distributed, Streaming & Big Data",5
+SK0024,Apache Hadoop,,Hadoop,"Distributed, Streaming & Big Data",4
+SK0025,Apache Hudi,,Hudi,"Databases, Storage & Data Formats",2
+SK0026,Apache Iceberg,,Iceberg,"Databases, Storage & Data Formats",5
+SK0027,Apache Kafka,,Kafka,"Distributed, Streaming & Big Data",7
+SK0028,Apache Spark,,Spark,"Distributed, Streaming & Big Data",13
+SK0029,Asynchronous Programming,,async programming,Software Engineering & APIs,2
+SK0031,AutoGen,,,Generative AI & Agentic Systems,1
+SK0032,Automation Engineering,,,Software Engineering & APIs,1
+SK0034,Azure AI Services,,Azure AI; Azure Cognitive Services,Cloud Platforms & Services,1
+SK0036,Azure Data Factory,ADF,,Cloud Platforms & Services,4
+SK0037,Azure Data Lake Storage,ADLS,Azure Data Lake,Cloud Platforms & Services,1
+SK0038,Azure SQL,,,Cloud Platforms & Services,2
+SK0040,BI Publisher,,,Data Analysis & BI,1
+SK0043,Big Data,,,"Distributed, Streaming & Big Data",7
+SK0044,BigQuery,,,"Databases, Storage & Data Formats",7
+SK0045,BigQuery ML,BQML,,Cloud Platforms & Services,2
+SK0046,Business Intelligence,BI,,Data Analysis & BI,15
+SK0047,C,,,Programming & Query Languages,1
+SK0048,C#,,,Programming & Query Languages,3
+SK0049,C++,,,Programming & Query Languages,3
+SK0050,CI/CD,,CI CD; Continuous Integration/Continuous Delivery; Continuous Integration and Continuous Delivery,"DevOps, MLOps & Infrastructure",16
+SK0051,CRM,,,Applied Analytics & Business Platforms,4
+SK0052,CSV,,,"Databases, Storage & Data Formats",3
+SK0053,Caching,,,Software Engineering & APIs,2
+SK0055,Celery,,,Software Engineering & APIs,1
+SK0056,ChatGPT,,,Generative AI & Agentic Systems,2
+SK0059,Claude,,,Generative AI & Agentic Systems,5
+SK0060,Claude Code,,,Generative AI & Agentic Systems,3
+SK0061,ClickHouse,,,"Databases, Storage & Data Formats",5
+SK0062,Cloud Computing,,cloud,Cloud Platforms & Services,21
+SK0063,Clustering,,,"Machine Learning, Statistics & Optimization",2
+SK0064,Codex,,,Generative AI & Agentic Systems,1
+SK0065,Cohort Analysis,,cohort analysis,Applied Analytics & Business Platforms,1
+SK0066,Computer Vision,CV,,"NLP, Vision & Multimodal AI",3
+SK0067,Confluence,,,Engineering Tools & Collaboration,2
+SK0068,Convolutional Neural Networks,CNN,CNNs,"Machine Learning, Statistics & Optimization",1
+SK0069,Credit Scoring,,,Applied Analytics & Business Platforms,1
+SK0070,CrewAI,,,Generative AI & Agentic Systems,1
+SK0071,Customer Analytics,,,Applied Analytics & Business Platforms,1
+SK0072,Customer Data Platform,CDP,,Applied Analytics & Business Platforms,2
+SK0074,Cybersecurity,,,Security Engineering,1
+SK0075,Dagster,,,Data Engineering & Architecture,3
+SK0076,Dashboarding,,dashboard development; dashboards,Data Analysis & BI,7
+SK0077,Data API,,,Data Engineering & Architecture,1
+SK0078,Data Analysis,,,Data Analysis & BI,3
+SK0079,Data Architecture,,,Data Engineering & Architecture,5
+SK0080,Data Catalog,,,Data Engineering & Architecture,2
+SK0082,Data Governance,DG,,"Data Quality, Testing & Observability",7
+SK0084,Data Lake,,,Data Engineering & Architecture,6
+SK0085,Data Lakehouse,,lakehouse; data lake house,Data Engineering & Architecture,7
+SK0087,Data Management,,,"Databases, Storage & Data Formats",2
+SK0088,Data Mapping,,,Data Engineering & Architecture,1
+SK0089,Data Mart,,,Data Engineering & Architecture,2
+SK0090,Data Mining,,,"Machine Learning, Statistics & Optimization",2
+SK0091,Data Modeling,,data modelling,Data Engineering & Architecture,9
+SK0092,Data Orchestration,,,Data Engineering & Architecture,1
+SK0093,Data Pipelines,,data pipeline,Data Engineering & Architecture,23
+SK0094,Data Quality,DQ,,"Data Quality, Testing & Observability",20
+SK0095,Data Reconciliation,,reconciliation,"Data Quality, Testing & Observability",5
+SK0096,Data Science Pipelines,,,Data Engineering & Architecture,1
+SK0097,Data Security,,data security,Security Engineering,3
+SK0099,Data Validation,,data validation,"Data Quality, Testing & Observability",3
+SK0100,Data Vault,,DataVault; Data Vault modeling,Data Engineering & Architecture,1
+SK0101,Data Visualization,,data viz; visualization,Data Analysis & BI,2
+SK0102,Data Warehouse,DWH,data warehousing,Data Engineering & Architecture,10
+SK0107,Databases,,,"Databases, Storage & Data Formats",6
+SK0108,Databricks,,,Cloud Platforms & Services,6
+SK0109,Debezium,,,"Distributed, Streaming & Big Data",1
+SK0110,Debugging,,,Software Engineering & APIs,3
+SK0112,Deep Graph Library,DGL,,"Machine Learning, Statistics & Optimization",1
+SK0113,Deep Learning,DL,,"Machine Learning, Statistics & Optimization",5
+SK0114,DeepSeek,,,Generative AI & Agentic Systems,1
+SK0115,Delta Lake,,Delta,"Databases, Storage & Data Formats",4
+SK0116,Detection Engineering,,,Security Engineering,1
+SK0118,DevOps,,,"DevOps, MLOps & Infrastructure",9
+SK0119,Developer Tooling,,,Software Engineering & APIs,1
+SK0120,Devin,,,Generative AI & Agentic Systems,1
+SK0123,Distributed Systems,,,"Distributed, Streaming & Big Data",4
+SK0124,Django,,,Software Engineering & APIs,1
+SK0125,Docker,,,"DevOps, MLOps & Infrastructure",6
+SK0127,ELT,,Extract Load Transform; Extract-Load-Transform,Data Engineering & Architecture,11
+SK0128,ETL,,Extract Transform Load; Extract-Transform-Load,Data Engineering & Architecture,17
+SK0129,Elasticsearch,,,"Databases, Storage & Data Formats",2
+SK0130,Embeddings,,,Generative AI & Agentic Systems,1
+SK0133,Event-Time Processing,,,"Distributed, Streaming & Big Data",1
+SK0136,FastAPI,,,Software Engineering & APIs,2
+SK0137,Feature Engineering,,,"Machine Learning, Statistics & Optimization",2
+SK0138,Feature Pipelines,,,Data Engineering & Architecture,2
+SK0139,Feature Store,,feature stores,Data Engineering & Architecture,4
+SK0140,Fine-Tuning,,fine tuning; fine-tuning,Generative AI & Agentic Systems,3
+SK0141,Flask,,,Software Engineering & APIs,1
+SK0142,Forecasting,,demand forecasting,"Machine Learning, Statistics & Optimization",3
+SK0143,Fraud Detection,,fraud analytics,Applied Analytics & Business Platforms,1
+SK0144,Funnel Analysis,,funnel analytics,Applied Analytics & Business Platforms,1
+SK0145,Gemini,,,Generative AI & Agentic Systems,2
+SK0146,Generative AI,GenAI,Generative Artificial Intelligence,Generative AI & Agentic Systems,6
+SK0149,Git,,,"DevOps, MLOps & Infrastructure",8
+SK0150,Git Flow,,,"DevOps, MLOps & Infrastructure",1
+SK0151,Go,,,Programming & Query Languages,1
+SK0154,Google Cloud Platform,GCP,,Cloud Platforms & Services,9
+SK0156,Google Compute Engine,GCE,Compute Engine,Cloud Platforms & Services,1
+SK0157,Google Sheets,GSheets,,Data Analysis & BI,2
+SK0159,Grafana,,,"DevOps, MLOps & Infrastructure",1
+SK0163,Incident Response,,,Security Engineering,2
+SK0165,Infrastructure as Code,IaC,,"DevOps, MLOps & Infrastructure",3
+SK0167,JSON,,,"Databases, Storage & Data Formats",2
+SK0168,Java,,,Programming & Query Languages,8
+SK0169,Jira,,,Engineering Tools & Collaboration,3
+SK0170,Jupyter Notebook,,,Data Analysis & BI,1
+SK0173,Kimball Modeling,,Kimball,Data Engineering & Architecture,1
+SK0174,Kubeflow,,,"DevOps, MLOps & Infrastructure",2
+SK0175,Kubernetes,K8s,,"DevOps, MLOps & Infrastructure",6
+SK0176,LLM Evaluation,,LLM eval; LLM evaluation,Generative AI & Agentic Systems,1
+SK0177,LangChain,,,Generative AI & Agentic Systems,3
+SK0178,LangGraph,,,Generative AI & Agentic Systems,1
+SK0179,Large Language Models,LLM,LLMs; Large Language Model,Generative AI & Agentic Systems,14
+SK0183,Linux/Unix Shell,,Linux shell; Unix shell; shell scripting,"DevOps, MLOps & Infrastructure",1
+SK0184,Llama,,,Generative AI & Agentic Systems,1
+SK0185,Logging,,,"Data Quality, Testing & Observability",3
+SK0187,Looker,,,Data Analysis & BI,3
+SK0188,Looker Studio,,Google Data Studio,Data Analysis & BI,2
+SK0190,MITRE ATT&CK,,MITRE ATTACK,Security Engineering,1
+SK0193,MLOps,,ML Ops; MLops; AI/ML Ops,"DevOps, MLOps & Infrastructure",8
+SK0194,MLflow,,,"DevOps, MLOps & Infrastructure",2
+SK0195,Machine Learning,ML,,"Machine Learning, Statistics & Optimization",19
+SK0196,Medallion Architecture,,,Data Engineering & Architecture,1
+SK0197,Message Queues,,message queue,Software Engineering & APIs,1
+SK0199,Metabase,,,Data Analysis & BI,2
+SK0200,Microservices,,,Software Engineering & APIs,1
+SK0201,Microsoft Azure,,Azure,Cloud Platforms & Services,11
+SK0202,Microsoft Excel,,Excel; MS Excel,Data Analysis & BI,3
+SK0203,Microsoft SQL Server,MSSQL,SQL Server; MS SQL Server,"Databases, Storage & Data Formats",2
+SK0204,Mistral,,,Generative AI & Agentic Systems,1
+SK0205,Model Context Protocol,MCP,,Generative AI & Agentic Systems,2
+SK0206,Model Deployment,,model deployment,"DevOps, MLOps & Infrastructure",1
+SK0208,Model Evaluation,,model evaluation,"Machine Learning, Statistics & Optimization",2
+SK0210,Model Monitoring,,model monitoring,"DevOps, MLOps & Infrastructure",1
+SK0212,Model Serving,,,"DevOps, MLOps & Infrastructure",4
+SK0215,MongoDB,,,"Databases, Storage & Data Formats",3
+SK0216,Monitoring,,,"Data Quality, Testing & Observability",11
+SK0217,Multi-Agent Systems,,,Generative AI & Agentic Systems,2
+SK0218,MySQL,,,"Databases, Storage & Data Formats",2
+SK0220,Natural Language Processing,NLP,text processing; xử lý ngôn ngữ tự nhiên,"NLP, Vision & Multimodal AI",5
+SK0221,Neo4j,,,"Databases, Storage & Data Formats",1
+SK0222,Nessus,,,Security Engineering,1
+SK0223,Nmap,,,Security Engineering,1
+SK0225,Nuclei,,,Security Engineering,1
+SK0226,NumPy,,,Data Analysis & BI,2
+SK0227,ONNX,,,"DevOps, MLOps & Infrastructure",1
+SK0228,Object Storage,,,"Databases, Storage & Data Formats",1
+SK0229,Object-Oriented Programming,OOP,,Software Engineering & APIs,2
+SK0230,Observability,,,"Data Quality, Testing & Observability",6
+SK0231,OpenAI API,,OpenAI,Generative AI & Agentic Systems,3
+SK0232,OpenCode,,,Generative AI & Agentic Systems,1
+SK0233,OpenSearch,,,"Databases, Storage & Data Formats",2
+SK0234,Optical Character Recognition,OCR,,"NLP, Vision & Multimodal AI",1
+SK0235,Optimization,,,"Machine Learning, Statistics & Optimization",9
+SK0236,Oracle Database,,,"Databases, Storage & Data Formats",2
+SK0237,PEP 8,,,Software Engineering & APIs,1
+SK0238,Pandas,,,Data Analysis & BI,2
+SK0239,Parquet,,,"Databases, Storage & Data Formats",3
+SK0240,Penetration Testing,,pentesting; pen testing,Security Engineering,1
+SK0241,Personalization,,,"Machine Learning, Statistics & Optimization",1
+SK0242,Pivot Tables,,,Data Analysis & BI,1
+SK0243,PostgreSQL,,Postgres; Postgre SQL,"Databases, Storage & Data Formats",5
+SK0244,Power BI,,PowerBI,Data Analysis & BI,9
+SK0246,Predictive Modeling,,,"Machine Learning, Statistics & Optimization",1
+SK0247,Prefect,,,Data Engineering & Architecture,3
+SK0248,Prometheus,,,"DevOps, MLOps & Infrastructure",1
+SK0249,Prompt Caching,,,Generative AI & Agentic Systems,1
+SK0250,Prompt Engineering,,prompting; prompt engineering,Generative AI & Agentic Systems,5
+SK0251,Prompt Testing,,,Generative AI & Agentic Systems,1
+SK0252,PySpark,,,"Distributed, Streaming & Big Data",5
+SK0254,PyTorch,,,"Machine Learning, Statistics & Optimization",2
+SK0255,PyTorch Geometric,PyG,,"Machine Learning, Statistics & Optimization",1
+SK0256,Python,,,Programming & Query Languages,31
+SK0257,Query Optimization,,SQL optimization; query tuning,"Databases, Storage & Data Formats",2
+SK0258,R,,,Programming & Query Languages,4
+SK0262,ReAct,,,Generative AI & Agentic Systems,1
+SK0263,Real-Time Applications,,,Software Engineering & APIs,1
+SK0264,Real-Time Processing,,realtime processing; real-time data processing,"Distributed, Streaming & Big Data",1
+SK0265,Recommendation Systems,,,"Machine Learning, Statistics & Optimization",1
+SK0266,Recurrent Neural Networks,RNN,RNNs,"Machine Learning, Statistics & Optimization",1
+SK0267,Red Teaming,,,Security Engineering,1
+SK0268,Redis,,,"Databases, Storage & Data Formats",2
+SK0269,Regression,,,"Machine Learning, Statistics & Optimization",1
+SK0270,Reinforcement Learning,,,"Machine Learning, Statistics & Optimization",1
+SK0271,Relational Databases,RDBMS,,"Databases, Storage & Data Formats",5
+SK0272,Reporting,,,Data Analysis & BI,10
+SK0273,Retrieval-Augmented Generation,RAG,Retrieval Augmented Generation,Generative AI & Agentic Systems,3
+SK0276,Risk Scoring,,risk score; risk scoring,Applied Analytics & Business Platforms,1
+SK0277,SIEM,,,Security Engineering,1
+SK0278,SQL,,,Programming & Query Languages,23
+SK0279,STL,,,Software Engineering & APIs,1
+SK0280,Scala,,,Programming & Query Languages,3
+SK0281,Segmentation,,,Applied Analytics & Business Platforms,1
+SK0282,Semi-Structured Data,,,"Databases, Storage & Data Formats",1
+SK0285,Sigma Rules,,Sigma,Security Engineering,1
+SK0286,SingleStore,,,"Databases, Storage & Data Formats",1
+SK0287,Snowflake,,,"Databases, Storage & Data Formats",4
+SK0288,Snowflake Schema,,snowflake schema,Data Engineering & Architecture,1
+SK0290,Star Schema,,star schema,Data Engineering & Architecture,1
+SK0291,State Management,,,"Distributed, Streaming & Big Data",1
+SK0292,Statistical Analysis,,,"Machine Learning, Statistics & Optimization",2
+SK0295,Statistics,,,"Machine Learning, Statistics & Optimization",1
+SK0297,Stream Processing,,streaming processing,"Distributed, Streaming & Big Data",1
+SK0300,Structured Streaming,,Spark Structured Streaming,"Distributed, Streaming & Big Data",1
+SK0301,Supervised Learning,,,"Machine Learning, Statistics & Optimization",1
+SK0302,Support Vector Machines,SVM,SVMs,"Machine Learning, Statistics & Optimization",1
+SK0303,System Architecture,,,Software Engineering & APIs,1
+SK0304,Tableau,,,Data Analysis & BI,7
+SK0305,TensorFlow,,,"Machine Learning, Statistics & Optimization",3
+SK0306,TensorFlow Serving,TF Serving,,"DevOps, MLOps & Infrastructure",1
+SK0307,Terraform,,,"DevOps, MLOps & Infrastructure",4
+SK0310,Time-Series Forecasting,,time series forecasting,"Machine Learning, Statistics & Optimization",1
+SK0311,Tool Calling,,,Generative AI & Agentic Systems,1
+SK0313,Trino,,,"Distributed, Streaming & Big Data",3
+SK0314,TypeScript,,,Programming & Query Languages,3
+SK0317,Vector Database,vector DB,vector database; VectorDB,Generative AI & Agentic Systems,1
+SK0318,Vector Search,,,Generative AI & Agentic Systems,1
+SK0319,Vertex AI,,Google Vertex AI,Cloud Platforms & Services,3
+SK0322,Vulnerability Assessment,,,Security Engineering,1
+SK0323,Windowing,,,"Distributed, Streaming & Big Data",1
+SK0324,XML,,,"Databases, Storage & Data Formats",2
+SK0325,dbt,,,Data Engineering & Architecture,7
+SK0326,gRPC,,GRPC,Software Engineering & APIs,1
+SK0327,scikit-learn,,sklearn; scikit learn; Scikit-learn,"Machine Learning, Statistics & Optimization",2
