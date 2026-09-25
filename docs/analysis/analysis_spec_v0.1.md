@@ -25,15 +25,17 @@ RQ4 is the headline. RQ1–RQ3 build up to it.
 
 # 2. WHAT THE DATA MUST LOOK LIKE
 
-Fields: `job_id` · `raw_job_title` · `normalized_job_title` · `company` · `location` · `description` · `requirements` · `skills_extracted` · `source` · `source_url` · `crawl_date`
+Field names follow `docs/data_schema_v1.md` sections 5, 8 and 13. This spec uses those names exactly — no aliases.
 
-Not every question uses all of them — RQ2 needs only `job_id` and `skills_extracted`.
+Fields: `job_id` · `raw_job_title` · `normalized_job_title` · `company` · `raw_location` · `normalized_location` · `job_description` · `job_requirements` · `extracted_skills` · `skill_count` · `relevance_flag` · `source` · `source_url` · `crawl_timestamp`
 
-## Four rules
+Not every question uses all of them — RQ2 needs only `job_id` and `extracted_skills`.
+
+## Four rules for `extracted_skills` and `raw_job_title`
 
 | Rule | Why |
 |---|---|
-| `skills_extracted` is a list, not one string | A string has to be split later, and a skill name containing a comma breaks the split |
+| `extracted_skills` is a list, not one string | A string has to be split later, and a skill name containing a comma breaks the split |
 | It holds taxonomy codes, not the raw words | `sklearn` and `scikit-learn` arriving separately splits one skill into two and hides its real demand |
 | Found nothing → empty list, never null | Empty list = posting is badly written. Null = extractor never ran. Different problems, different fixes |
 | `raw_job_title` is never overwritten | RQ1 counts distinct raw titles; overwriting destroys the measurement (also scope §10) |
@@ -192,6 +194,6 @@ Reproducibility: one fixed seed, all thresholds in one config file, every result
 
 3 — Taxonomy owner. Will there be a `skill_group` column? Section 6 uses it for comparison only.
 
-4 — Collection owner. Are description and requirements separate at the source, or merged? The quality checks need to know which field may legitimately be empty.
+4 — Collection owner. Answered by the sample: `job_description` and `job_requirements` are separate and populated on all 45. Remaining question: `relevance_flag` and `exclusion_reason` are null on all 45 — does collection set them, or cleaning?
 
 5 — Leader. Add a title-prediction model as an extra RQ3 measure? It would reduce RQ3 to one headline number. Not in scope §11, not proposed to jump the priority order in §12 — raised for a decision, not assumed.
