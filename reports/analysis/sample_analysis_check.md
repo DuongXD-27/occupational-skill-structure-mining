@@ -18,16 +18,16 @@
 | RQ1 — break down by location | **No** | 24 of 45 locations unusable |
 | RQ2 — which skills are common | **No** | Skills not extracted yet |
 | RQ2 — which skills go together | **No** | Same, plus too few postings |
-| RQ3 — same title, different skills | **No** | **No title has 5 postings** |
+| RQ3 — same title, different skills | **No** | **No title has 5 postings**, and no skills extracted |
 | RQ3 — different titles, same skills | **No** | Skills not extracted yet |
 | RQ4 — let the algorithm group jobs | **No** | 45 postings, we need 300 |
 | RQ4 — PCA chart | **No** | It draws the RQ4 result, which does not exist |
 
 ## Three reasons
 
-**One real defect.** Job titles are stored incorrectly. This is ours to fix and it blocks RQ3 — see section 2.
+**One real defect.** Job titles are stored incorrectly. This is ours to fix — see section 2. It is one of the two things blocking RQ3.
 
-**Waiting on the extractor.** Skills have not been extracted, so nothing that needs skills can run — RQ2, and the second half of RQ3.
+**Waiting on the extractor.** Skills have not been extracted, so nothing that needs skills can run — RQ2, and **both halves of RQ3**.
 
 **Waiting on volume.** RQ4 needs roughly 300 postings. We have 45.
 
@@ -147,9 +147,9 @@ If the brackets had been kept, the same 45 postings would group like this:
 
 ## What follows from this
 
-The title problem in section 2 is the only thing keeping RQ3 from running.
+**RQ3 needs two things, and both are missing:** groups of at least 5 postings sharing a title, and extracted skills to compare inside those groups. The grouping above shows the first one is ours and fixable now. The second is waiting on the extractor.
 
-**Fixing the crawler is worth more right now than collecting another 45 postings.** Crawling again without the fix would just produce 45 more unusable titles.
+**Fixing the crawler is still worth more right now than collecting another 45 postings.** Crawling again without the fix would just produce 45 more unusable titles.
 
 This grouping was done by hand, to show where the problem is. It is not a proposed rule for normalising titles — that is the cleaning stage's job.
 
@@ -218,12 +218,14 @@ Three more are genuinely hard to call and need the leader to decide:
 
 # 8. CONCLUSION
 
-**Not ready yet. One defect is blocking, and it can be fixed without crawling again.**
+**Not ready yet. Two things block RQ3, and only one of them is ours to fix now.**
 
-The structure of the data is sound and the pipeline works from end to end. Descriptions and requirements are complete and correctly separated.
+The data structure is sound and every field collection is responsible for is populated. Descriptions and requirements are complete and correctly separated. **The skill extraction step has not been built, so the pipeline has not yet run end to end.**
 
-**Blocking:** technology lists ending up inside job titles, 19 of 45. This is why no title reaches 5 postings and why RQ3 cannot run.
+**Blocking, and fixable now:** technology lists ending up inside job titles, 19 of 45. This is why no title reaches 5 postings.
 
-**Not our problem to fix — just not ready:** RQ2 and the second half of RQ3 need the skill extractor. RQ4 needs around 300 postings.
+**Blocking, and not ours:** `extracted_skills` is null on all 45. RQ2 and both halves of RQ3 need it. RQ4 additionally needs around 300 postings.
+
+Fixing the titles alone does not unblock RQ3 — it removes one of the two blockers.
 
 **Next step:** run this check again after the title fix and after skills have been extracted. RQ1 counts and RQ2 skill frequency become checkable then. RQ3 becomes checkable if the title fix produces groups of 5 — and the grouping in section 4 says it should.
