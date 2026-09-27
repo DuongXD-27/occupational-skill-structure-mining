@@ -1,231 +1,231 @@
-# SAMPLE ANALYSIS CHECK
+# BÁO CÁO KIỂM TRA DỮ LIỆU MẪU CHO PHÂN TÍCH (SAMPLE ANALYSIS CHECK)
 
-**Owner:** Hồ Nhật Triều (20236003) · **Version:** v0.2 · **Date:** 2026-09-24
+**Người phụ trách:** Hồ Nhật Triều (20236003) · **Ngày thực hiện:** 2026-09-24
 
-**Dataset:** `data/sample/sample_jobs.jsonl` — 45 postings, ITviec, parser v0.1, posted 2026-08-13 to 2026-09-15
+**Tập dữ liệu:** `data/sample/sample_jobs.jsonl` — 45 tin tuyển dụng, nguồn ITviec, parser_version: "v0.1", thời gian đăng từ 2026-08-13 đến 2026-09-15
 
-**Question:** can we run the analyses in `analysis_spec_v0.1.md` on this data yet?
+**Câu hỏi cốt lõi:** chúng ta đã có thể chạy các phân tích trong [docs/analysis/analysis_spec.md](docs/analysis/analysis_spec.md) trên tập dữ liệu này hay chưa?
 
 ---
 ---
 
-# 1. VERDICT
+# 1. KẾT LUẬN CHUNG (VERDICT)
 
-| Analysis | Can we run it? | Why not |
+| Phép phân tích | Có thể chạy chưa? | Lý do nếu chưa |
 |---|---|---|
-| RQ1 — count the job titles | As a test only | — |
-| RQ1 — measure title fragmentation | **No** | Titles are not read correctly |
-| RQ1 — break down by location | **No** | 24 of 45 locations unusable |
-| RQ2 — which skills are common | **No** | Skills not extracted yet |
-| RQ2 — which skills go together | **No** | Same, plus too few postings |
-| RQ3 — same title, different skills | **No** | **No title has 5 postings**, and no skills extracted |
-| RQ3 — different titles, same skills | **No** | Skills not extracted yet |
-| RQ4 — let the algorithm group jobs | **No** | 45 postings, we need 300 |
-| RQ4 — PCA chart | **No** | It draws the RQ4 result, which does not exist |
+| **RQ1** — đếm số lượng chức danh | Chỉ chạy thử nghiệm pipeline | — |
+| **RQ1** — đo mức độ phân mảnh chức danh | **Chưa** | Chức danh bị crawler thu thập sai định dạng |
+| **RQ1** — phân bổ theo địa điểm | **Chưa** | 24/45 địa điểm không thể sử dụng trực tiếp |
+| **RQ2** — kỹ năng nào phổ biến | **Chưa** | Kỹ năng chưa được trích xuất |
+| **RQ2** — kỹ năng nào đi cùng nhau | **Chưa** | Kỹ năng chưa trích xuất, và quá ít tin tuyển dụng |
+| **RQ3** — cùng chức danh, khác kỹ năng | **Chưa** | **Không có chức danh nào đạt 5 tin**, và chưa có kỹ năng |
+| **RQ3** — khác chức danh, cùng kỹ năng | **Chưa** | Kỹ năng chưa được trích xuất |
+| **RQ4** — thuật toán tự gom nhóm việc làm | **Chưa** | Mới có 45 tin, chúng ta cần tối thiểu 300 tin |
+| **RQ4** — biểu đồ PCA | **Chưa** | Biểu đồ này vẽ kết quả của RQ4, mà RQ4 chưa có kết quả |
 
-## Three reasons
+## Ba nguyên nhân chính
 
-**One real defect.** Job titles are stored incorrectly. This is ours to fix — see section 2. It is one of the two things blocking RQ3.
+**Một lỗi kỹ thuật thực tế:** Chức danh công việc bị lưu trữ sai cách. Lỗi này thuộc trách nhiệm nhóm chúng ta phải sửa — xem mục 2. Đây là một trong hai yếu tố gây nghẽn trực tiếp RQ3.
 
-**Waiting on the extractor.** Skills have not been extracted, so nothing that needs skills can run — RQ2, and **both halves of RQ3**.
+**Đang chờ bộ trích xuất:** Kỹ năng chưa được bóc tách từ văn bản, nên mọi phân tích cần dữ liệu kỹ năng đều không thể chạy — bao gồm RQ2 và **cả hai chiều của RQ3**.
 
-**Waiting on volume.** RQ4 needs roughly 300 postings. We have 45.
+**Đang chờ quy mô dữ liệu:** RQ4 cần tối thiểu khoảng 300 tin tuyển dụng. Hiện tại chúng ta mới có 45 tin.
 
-Only the first one needs action now.
+Hiện tại, chỉ có nguyên nhân thứ nhất là cần hành động khắc phục ngay lập tức.
 
 ---
 ---
 
-# 2. RQ1 — WHAT JOB TITLES EXIST
+# 2. RQ1 — NHỮNG CHỨC DANH CÔNG VIỆC NÀO TỒN TẠI
 
-**Fields needed:** `raw_job_title`, `normalized_job_title`, `location`
+**Các trường cần dùng:** `raw_job_title`, `normalized_job_title`, `raw_location`
 
-## The numbers
+## Các con số thực tế
 
-| | |
+| Tiêu chí | Số lượng |
 |---|---|
-| Postings | 45 |
-| Different job titles | **45** |
-| Still different after basic tidying | 43 |
-| Titles that appear only once | 42 of 43 |
-| Biggest group of identical titles | 3 |
-| Titles with a technology list inside them | **19** |
-| `normalized_job_title` filled in | 0 of 45 |
+| Tổng số tin tuyển dụng | 45 |
+| Số lượng chức danh công việc khác biệt | **45** |
+| Số lượng chức danh sau khi dọn dẹp cơ bản | 43 |
+| Số chức danh chỉ xuất hiện đúng một lần | 42 trên 43 |
+| Nhóm chức danh giống nhau lớn nhất | 3 |
+| Chức danh bị dính danh sách công nghệ bên trong | **19** |
+| `normalized_job_title` đã được điền | 0 trên 45 |
 
-45 postings produced 45 different titles. Nothing repeats.
+45 tin tuyển dụng tạo ra 45 chức danh hoàn toàn khác nhau. Không có chức danh nào lặp lại đáng kể.
 
-## Why: the titles are being read incorrectly
+## Nguyên nhân: chức danh đang bị bóc tách sai
 
-ITviec shows the title like this:
+Trên giao diện ITviec, chức danh hiển thị dạng:
 
-```
+```text
 Data Analyst (Azure, SQL, NoSQL, Power BI)
 ```
 
-The crawler stores it like this:
+Crawler lại lưu vào dữ liệu như sau:
 
-```
+```text
 Data Analyst Azure, SQL, NoSQL, Power BI
 ```
 
-The brackets are dropped, so the list of technologies becomes part of the job name. **19 of 45 titles are affected.**
+Dấu ngoặc đơn bị rớt mất, do đó danh sách các công nghệ bị nối liền vào tên công việc. **19 trên tổng số 45 tin bị ảnh hưởng bởi lỗi này.**
 
-That means `Data Engineer` and `Data Engineer Java, Python, SQL` are counted as two different jobs, when they are the same job advertised with different tools.
+Điều đó có nghĩa là `Data Engineer` và `Data Engineer Java, Python, SQL` bị đếm thành hai công việc hoàn toàn khác nhau, trong khi bản chất chúng là cùng một nghề nghiệp được quảng bá với các công cụ cụ thể.
 
-Three worst cases:
+Ba trường hợp lỗi tiêu biểu nhất:
 
-| Stored title | What went wrong |
+| Chức danh đang lưu | Lỗi phát sinh |
 |---|---|
-| `Data Engineer English required, /` | Broken — the title is cut off and a separator is left behind |
-| `Data Engineer Good English - Up to 75M` | The salary ended up inside the job name |
-| `Senior Data Engineer Databricks, SQL, Python, ETL/ELT` | Four technologies inside the job name |
+| `Data Engineer English required, /` | Bị hỏng — tiêu đề bị cắt cụt và để lại dấu gạch chéo phân cách |
+| `Data Engineer Good English - Up to 75M` | Mức lương bị lọt vào bên trong tên công việc |
+| `Senior Data Engineer Databricks, SQL, Python, ETL/ELT` | Bốn công nghệ bị nối dính vào tên công việc |
 
-**So any number we publish about "how fragmented job naming is" would be too high, and the error comes from our crawler, not from the market.** We should not report it until the titles are fixed.
+**Vì vậy, bất kỳ con số nào chúng ta công bố về "mức độ phân mảnh chức danh" đều sẽ bị thổi phồng quá cao, và sai lệch đó xuất phát từ crawler của chúng ta chứ không phải từ thị trường.** Chúng ta không được phép báo cáo chỉ số này cho đến khi chức danh được sửa lại.
 
-## Location
+## Địa điểm (Location)
 
-| | |
+| Tình trạng địa điểm | Số lượng |
 |---|---|
-| Usable (one clear district) | 21 |
-| `"Not Available"` | 20 |
-| Two values in one field (`"Quận 1, Quận khác"`) | 8 |
+| Sử dụng được (một quận/huyện rõ ràng) | 21 |
+| Giá trị giữ chỗ `"Not Available"` | 20 |
+| Hai giá trị trong cùng một trường (`"Quận 1, Quận khác"`) | 8 |
 
-Also, the values are districts. RQ1 needs provinces, so these still have to be converted. `normalized_location` is empty for all 45.
+Ngoài ra, các giá trị này mới ở cấp quận/huyện. RQ1 cần phân bổ theo cấp Tỉnh/Thành phố, nên vẫn cần bước quy đổi. Hiện tại `normalized_location` đang để trống trên cả 45 tin.
 
 ---
 ---
 
-# 3. RQ2 — WHICH SKILLS ARE IN DEMAND
+# 3. RQ2 — NHỮNG KỸ NĂNG NÀO ĐƯỢC YÊU CẦU NHIỀU NHẤT
 
-**Field needed:** `extracted_skills`
+**Trường cần dùng:** `extracted_skills`
 
-`extracted_skills` and `skill_count` are empty for all 45 postings. The skill extractor has not been built yet, so **nothing in RQ2 can be checked.**
+Cả `extracted_skills` và `skill_count` đều đang trống (`null`) trên toàn bộ 45 tin tuyển dụng. Bộ trích xuất kỹ năng chưa được xây dựng, vì vậy **chưa thể kiểm tra bất kỳ phân tích nào trong RQ2.**
 
-## What is ready
+## Những gì đã sẵn sàng
 
-`job_description` and `job_requirements` are filled in for all 45 postings, and they are kept as two separate fields. That is exactly what the extractor needs to read, and it is in good shape.
+`job_description` và `job_requirements` đã được điền đầy đủ 100% trên cả 45 tin, và được tách thành hai trường riêng biệt. Đây chính xác là những gì bộ trích xuất cần để đọc, và chất lượng văn bản hiện rất tốt.
 
-## Two things we still cannot check
+## Hai điểm chúng ta vẫn chưa thể kiểm tra
 
-Both of these decide whether RQ3 results can be trusted, and both need the extractor first:
+Cả hai yếu tố này quyết định việc kết quả RQ3 có đáng tin cậy hay không, và cả hai đều đòi hỏi phải có bộ trích xuất trước:
 
-- **Coverage** — how many postings end up with no skills at all. Target: under 10%.
-- **Depth** — how many skills a typical posting produces. Target: at least 3.
+- **Độ bao phủ (Coverage)** — có bao nhiêu tin tuyển dụng cuối cùng không trích xuất được kỹ năng nào. Mục tiêu: dưới 10%.
+- **Độ sâu (Depth)** — một tin tuyển dụng thông thường trích xuất được bao nhiêu kỹ năng. Mục tiêu: trung bình ít nhất 3 kỹ năng.
 
-If the extractor only finds 1–2 skills per posting, every posting will look different from every other one, and RQ3 will produce a dramatic result for the wrong reason.
+Nếu bộ trích xuất chỉ tìm được 1–2 kỹ năng trên mỗi tin, mọi tin tuyển dụng sẽ trông hoàn toàn khác nhau, và RQ3 sẽ tạo ra một kết luận giật gân sai lệch vì lỗi kỹ thuật.
 
 ---
 ---
 
-# 4. RQ3 — DO JOB TITLES MATCH THE SKILLS
+# 4. RQ3 — CHỨC DANH CÔNG VIỆC CÓ KHỚP VỚI KỸ NĂNG KHÔNG
 
-**Needs:** groups of at least 5 postings sharing a title, plus extracted skills
+**Yêu cầu:** các nhóm có ít nhất 5 tin tuyển dụng dùng chung chức danh, cộng với dữ liệu kỹ năng đã trích xuất
 
-| | |
+| Tiêu chí | Thực tế hiện tại |
 |---|---|
-| Titles with 5 or more postings | **0** |
-| Biggest group | 3 (`data engineer`) |
-| Skills extracted | none |
+| Số chức danh có từ 5 tin trở lên | **0** |
+| Nhóm lớn nhất | 3 tin (`data engineer`) |
+| Kỹ năng đã trích xuất | Chưa có |
 
-Both halves of RQ3 are stuck. Comparing postings inside one title needs a group of postings — there is none. Comparing one title against another needs two titles to compare — there are none.
+Cả hai nửa phân tích của RQ3 đều đang bị tắc nghẽn. So sánh các tin trong cùng một chức danh đòi hỏi một nhóm tin — hiện tại không có. So sánh chức danh này với chức danh khác đòi hỏi có các nhóm để so sánh — hiện tại cũng không có.
 
-## The market is not this fragmented — our crawler is
+## Thị trường không phân mảnh đến mức này — crawler của chúng ta làm nó phân mảnh
 
-If the brackets had been kept, the same 45 postings would group like this:
+Nếu dấu ngoặc đơn được giữ nguyên, 45 tin tuyển dụng này sẽ tự động gom nhóm lại như sau:
 
-| Job family | Postings |
+| Nhóm nghề nghiệp tự nhiên | Số tin tuyển dụng |
 |---|---|
-| Data Engineer | **19** |
-| Data Analyst | **8** |
-| AI Engineer | **7** |
+| **Data Engineer** | **19** |
+| **Data Analyst** | **8** |
+| **AI Engineer** | **7** |
 | ML Engineer | 2 |
 | AI Expert / Lead | 2 |
 | Data Manager / Leader | 2 |
-| Others (including 5 off-topic postings) | 5 |
+| Các vai trò khác (bao gồm 5 tin ngoài phạm vi) | 5 |
 
-**Three families have more than 5 postings.**
+**Có 3 nhóm nghề nghiệp đạt trên 5 tin tuyển dụng.**
 
-## What follows from this
+## Bài học rút ra
 
-**RQ3 needs two things, and both are missing:** groups of at least 5 postings sharing a title, and extracted skills to compare inside those groups. The grouping above shows the first one is ours and fixable now. The second is waiting on the extractor.
+**RQ3 cần hai điều kiện, và cả hai hiện đều đang thiếu:** các nhóm có tối thiểu 5 tin dùng chung chức danh, và các kỹ năng đã trích xuất để so sánh bên trong các nhóm đó. Việc gom nhóm thủ công ở trên chứng minh rằng điều kiện thứ nhất hoàn toàn có thể khắc phục được ngay lập tức ở phía chúng ta. Điều kiện thứ hai đang chờ bộ trích xuất.
 
-**Fixing the crawler is still worth more right now than collecting another 45 postings.** Crawling again without the fix would just produce 45 more unusable titles.
+**Việc sửa crawler vào lúc này mang lại giá trị cao hơn nhiều so với việc cố thu thập thêm 45 tin nữa.** Cào tiếp mà không sửa lỗi sẽ chỉ tạo thêm 45 chức danh không thể sử dụng.
 
-This grouping was done by hand, to show where the problem is. It is not a proposed rule for normalising titles — that is the cleaning stage's job.
-
----
----
-
-# 5. RQ4 — LET THE ALGORITHM GROUP THE JOBS
-
-**Needs:** extracted skills for at least 300 postings
-
-We have 45 postings and no skills.
-
-With 100–200 possible skills and maybe 5–10 groups, 45 postings is far too few. Any grouping the algorithm found would be chance, and would change every time we re-ran it on a slightly different sample.
-
-The PCA chart is not a separate problem — it draws the result of RQ4, and there is no result to draw.
-
-This stays on hold until the collection reaches the 1,000–2,500 postings the project scope targets.
+Bảng gom nhóm ở trên được thực hiện thủ công để chỉ rõ nguồn gốc lỗi. Đây không phải là quy tắc chuẩn hóa chức danh đề xuất — đó là công việc thuộc giai đoạn làm sạch của Đức.
 
 ---
 ---
 
-# 6. HOW MANY POSTINGS DO WE ACTUALLY HAVE
+# 5. RQ4 — ĐỂ THUẬT TOÁN TỰ GOM NHÓM VIỆC LÀM
 
-Five postings do not belong to the project scope, and `relevance_flag` has not been set on any of them:
+**Yêu cầu:** kỹ năng đã trích xuất cho ít nhất 300 tin tuyển dụng
 
-| job_id | Title | Why it does not belong |
+Hiện tại chúng ta có 45 tin và chưa có kỹ năng nào.
+
+Với khoảng 100–200 kỹ năng tiềm năng và kỳ vọng tìm ra 5–10 cụm, 45 tin là quá ít. Bất kỳ phân cụm nào mà thuật toán tìm ra đều chỉ là do ngẫu nhiên, và sẽ thay đổi mỗi khi chúng ta chạy lại trên một mẫu dữ liệu hơi khác.
+
+Biểu đồ PCA không phải là một vấn đề tách rời — nó trực quan hóa kết quả của RQ4, mà hiện tại chưa có kết quả nào để vẽ.
+
+Phân tích này tạm thời hoãn lại cho đến khi quy mô thu thập đạt mốc 1.000–2.500 tin như mục tiêu của phạm vi dự án.
+
+---
+---
+
+# 6. THỰC TẾ CHÚNG TA ĐANG CÓ BAO NHIÊU TIN HỢP LỆ
+
+Có 5 tin tuyển dụng hoàn toàn nằm ngoài phạm vi đề tài, và `relevance_flag` chưa được gán trên bất kỳ tin nào:
+
+| job_id | Chức danh công việc | Lý do không thuộc phạm vi |
 |---|---|---|
-| `75437956e1aaafed` | Intern Job Future VPBanker Scholarship 2026 | A scholarship programme, not a job |
-| `f2c6a7172480656b` | Advertising Monetization Specialist | Advertising operations |
-| `691b9cac78b7c50d` | Internship - BA | Business analyst internship |
-| `82f0c2527791a6f5` | Senior SAP Speicialist SAP MM, SD, FICO | SAP consultant |
-| `360018923611096a` | AI Automation Engineer Senior/Lead | Uses AI tools; does not build AI |
+| `75437956e1aaafed` | Intern Job Future VPBanker Scholarship 2026 | Chương trình học bổng, không phải việc làm |
+| `f2c6a7172480656b` | Advertising Monetization Specialist | Vận hành quảng cáo (AdOps) |
+| `691b9cac78b7c50d` | Internship - BA | Thực tập sinh Business Analyst phi kỹ thuật |
+| `82f0c2527791a6f5` | Senior SAP Speicialist SAP MM, SD, FICO | Chuyên viên tư vấn ERP SAP |
+| `360018923611096a` | AI Automation Engineer Senior/Lead | Người sử dụng công cụ AI; không phải người xây dựng AI |
 
-**The real number of usable postings is 40, not 45.**
+**Số lượng tin tuyển dụng thực sự có thể sử dụng là 40, không phải 45.**
 
-Every figure in this report is calculated on 45. Once the flag is set, the analysis stage should work on 40.
+Mọi số liệu trong báo cáo này tạm thời tính trên 45. Khi cờ liên quan được gán chính thức, giai đoạn phân tích sẽ chỉ thực thi trên 40 tin.
 
-Three more are genuinely hard to call and need the leader to decide:
+Ngoài ra có 3 tin ở vùng ranh giới nhạy cảm cần Trưởng nhóm (Leader) quyết định:
 
-- `f42ffe22ea73beff` — a QA role that tests AI systems
-- `752e8906a23eb6e9` — one posting advertising two different jobs
-- `1a00e9575f25cfb1` — the posting itself says 70% data work, 30% operations and marketing
-
----
----
-
-# 7. WHAT NEEDS FIXING
-
-## Collection — Đạt
-
-1. **Keep the brackets when reading the job title.** This is the one fix that unblocks an analysis. Storing the bracket content in its own field would be even better.
-2. **Check `Data Engineer English required, /`** — the title came out broken.
-3. **Location is missing on 20 of 45 postings.** Also decide what to do when a posting lists two locations: one record with both, or two records.
-4. **The experience field is reading the wrong part of the page.** All 45 postings have something in it, but none of it is experience — 37 contain the work arrangement (`At office`, `Hybrid`, `Remote`) and 8 contain a street address. No analysis uses experience, so this is not urgent, but it will be invisible once we have 2,000 postings. The real experience is written inside `job_requirements`.
-
-## Cleaning — Đức
-
-5. **Normalising job titles is the critical path.** The rules have to remove both the seniority word and the technology list. 26 of 45 titles contain a seniority word.
-6. **Locations** — convert district to province, and turn `"Not Available"` into `Unknown` rather than leaving it blank.
-7. **Set `relevance_flag` and `exclusion_reason`.** Project scope section 7 says excluded postings must be kept and marked with a reason, not deleted.
-8. **When the extractor finds no skills, write an empty list, not null.** Null means the extractor never ran, and those are different problems.
-9. **Do not match duplicates by title.** The same job appears under different titles on different sites. Compare descriptions instead, or use the employer's own job code — several MB Bank postings start with one, such as `2026TD450985`.
+- `f42ffe22ea73beff` — vai trò QA kiểm thử các hệ thống AI
+- `752e8906a23eb6e9` — một tin tuyển dụng đăng gộp hai công việc khác nhau
+- `1a00e9575f25cfb1` — chính tin tuyển dụng ghi rõ: 70% việc dữ liệu, 30% vận hành và marketing
 
 ---
 ---
 
-# 8. CONCLUSION
+# 7. NHỮNG ĐIỂM CẦN KHẮC PHỤC
 
-**Not ready yet. Two things block RQ3, and only one of them is ours to fix now.**
+## Khâu Thu thập dữ liệu — Đạt
 
-The data structure is sound and every field collection is responsible for is populated. Descriptions and requirements are complete and correctly separated. **The skill extraction step has not been built, so the pipeline has not yet run end to end.**
+1. **Giữ nguyên dấu ngoặc đơn khi bóc tách chức danh công việc.** Đây là điểm sửa duy nhất giúp khai thông ngay một phép phân tích. Nếu lưu phần nội dung trong ngoặc ra một trường riêng biệt thì càng tốt hơn.
+2. **Kiểm tra tin `Data Engineer English required, /`** — tiêu đề bị cắt cụt lỗi.
+3. **Địa điểm bị thiếu ở 20/45 tin.** Cần quy định cách xử lý khi một tin liệt kê 2 địa điểm: lưu một bản ghi chứa cả hai hay tách thành hai bản ghi.
+4. **Trường kinh nghiệm đang trỏ nhầm phần tử trên trang.** Cả 45 tin đều có dữ liệu nhưng không có tin nào chứa số năm kinh nghiệm — 37 tin chứa hình thức làm việc (`At office`, `Hybrid`, `Remote`) và 8 tin chứa địa chỉ đường phố. Phân tích hiện tại chưa dùng đến kinh nghiệm nên không quá khẩn cấp, nhưng lỗi này sẽ trở nên khó kiểm soát khi có 2.000 tin. Kinh nghiệm thực tế nằm trong trường `job_requirements`.
 
-**Blocking, and fixable now:** technology lists ending up inside job titles, 19 of 45. This is why no title reaches 5 postings.
+## Khâu Làm sạch dữ liệu — Đức
 
-**Blocking, and not ours:** `extracted_skills` is null on all 45. RQ2 and both halves of RQ3 need it. RQ4 additionally needs around 300 postings.
+5. **Chuẩn hóa chức danh công việc là đường găng quan trọng nhất (Critical Path).** Các quy tắc cần loại bỏ cả từ chỉ cấp bậc lẫn danh sách công nghệ đi kèm. 26/45 tiêu đề có chứa từ chỉ cấp bậc seniority.
+6. **Địa điểm** — chuyển đổi cấp quận/huyện thành Tỉnh/Thành phố, và chuyển `"Not Available"` thành `Unknown` thay vì để trống.
+7. **Gán cờ `relevance_flag` và `exclusion_reason`.** Phạm vi dự án mục 7 quy định rõ các tin bị loại phải được giữ lại và đánh dấu lý do, không được xóa.
+8. **Khi bộ trích xuất không tìm thấy kỹ năng, hãy ghi một danh sách rỗng `[]`, không để null.** Null mang nghĩa bộ trích xuất chưa từng chạy, đó là hai vấn đề kỹ thuật khác nhau.
+9. **Không khử trùng lặp dựa trên chức danh.** Cùng một công việc có thể xuất hiện dưới các chức danh khác nhau trên các trang khác nhau. Hãy so sánh mô tả công việc, hoặc dùng mã tuyển dụng riêng của doanh nghiệp — ví dụ nhiều tin của MB Bank bắt đầu bằng mã như `2026TD450985`.
 
-Fixing the titles alone does not unblock RQ3 — it removes one of the two blockers.
+---
+---
 
-**Next step:** run this check again after the title fix and after skills have been extracted. RQ1 counts and RQ2 skill frequency become checkable then. RQ3 becomes checkable if the title fix produces groups of 5 — and the grouping in section 4 says it should.
+# 8. KẾT LUẬN
+
+**Chưa sẵn sàng. Có hai yếu tố gây nghẽn RQ3, và chỉ có một yếu tố là thuộc trách nhiệm chúng ta có thể sửa ngay.**
+
+Cấu trúc dữ liệu đã chuẩn hóa tốt và mọi trường thuộc trách nhiệm thu thập đều đã có dữ liệu. Mô tả và yêu cầu công việc đầy đủ và được phân tách chính xác. **Bước trích xuất kỹ năng chưa được xây dựng, do đó pipeline chưa thể chạy từ đầu đến cuối.**
+
+**Điểm nghẽn có thể sửa ngay:** danh sách công nghệ bị nối dính vào chức danh công việc (19/45 tin). Đây là lý do không chức danh nào đạt ngưỡng 5 tin.
+
+**Điểm nghẽn phụ thuộc module khác:** `extracted_skills` đang null trên cả 45 tin. RQ2 và cả hai chiều của RQ3 đều cần trường này. RQ4 cần bổ sung thêm khoảng 300 tin.
+
+Việc sửa tiêu đề chưa khai thông toàn bộ RQ3 ngay lập tức — nó chỉ gỡ bỏ một trong hai chốt chặn.
+
+**Bước tiếp theo:** chạy lại bài kiểm tra này sau khi chức danh đã được sửa và sau khi kỹ năng đã được trích xuất. Khi đó các số liệu đếm của RQ1 và tần suất kỹ năng của RQ2 sẽ sẵn sàng để kiểm tra. RQ3 sẽ kiểm tra được nếu việc sửa tiêu đề tạo ra các nhóm $\ge 5$ tin — và bảng phân nhóm ở mục 4 cho thấy chắc chắn sẽ đạt được.
