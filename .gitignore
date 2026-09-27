@@ -61,5 +61,4 @@ data/interim/*
 
 # Local skill-taxonomy recount artifacts
 /reports/skill_extraction/skills_taxonomy_evidence.csv
-/reports/skill_extraction/skills_taxonomy_v0.1_evidence.csv
 /tests/test_recount_taxonomy.py

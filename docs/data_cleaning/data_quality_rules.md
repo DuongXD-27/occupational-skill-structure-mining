@@ -19,7 +19,7 @@
   - `relevance_flag`, `exclusion_reason` (đánh cờ qua QR-06 và QR-01)
 
 > **Lưu ý về đề xuất trường `quality_flags` [Cần gửi yêu cầu thay đổi Schema]:** Trường `quality_flags` (dự kiến dùng để lưu trữ các cờ lỗi chi tiết nội bộ như `MISSING_*`, `LOCATION_UNRECOGNIZED`...) hiện chưa nằm trong `docs/data_schema.md §4`.
-> - **Đề xuất:** Bổ sung `quality_flags: list[string]` vào schema v1.1.
+> - **Đề xuất:** Bổ sung `quality_flags: list[string]` vào các bản cập nhật schema tiếp theo.
 > - **Chiến lược dự phòng:** Nếu không được phê duyệt, các cờ chất lượng sẽ được ghi vào một file log chuyên dụng (`data/logs/quality_flags.jsonl`) thay vì đưa trực tiếp vào schema chính của dataset.
 
 ---
@@ -181,7 +181,7 @@ Trường `raw_experience` thể hiện nhiều cách diễn đạt:
 
 ### 5.1 Mục tiêu & Ranh giới Phạm vi
 
-Tạo ra `normalized_job_title` như một phiên bản **làm sạch văn bản thuần túy** của `raw_job_title` — loại bỏ các định dạng gây nhiễu — phục vụ cho các mô hình phân tích hạ nguồn. QR-04 **không ánh xạ chức danh sang một taxonomy nghề nghiệp định sẵn**. Việc gom nhóm chức danh thành các cụm nghề nghiệp là mục tiêu nghiên cứu thực nghiệm cốt lõi của RQ1 và RQ4.
+Tạo ra `normalized_job_title` như một bản **làm sạch văn bản thuần túy** của `raw_job_title` — loại bỏ các định dạng gây nhiễu — phục vụ cho các mô hình phân tích hạ nguồn. QR-04 **không ánh xạ chức danh sang một taxonomy nghề nghiệp định sẵn**. Việc gom nhóm chức danh thành các cụm nghề nghiệp là mục tiêu nghiên cứu thực nghiệm cốt lõi của RQ1 và RQ4.
 
 ### 5.2 Các bước làm sạch văn bản cơ bản
 

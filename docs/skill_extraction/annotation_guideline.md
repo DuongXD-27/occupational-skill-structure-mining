@@ -2,7 +2,6 @@
 
 **Dự án:** Vietnam Data & AI Job Skill Landscape 2026  
 **Tên tiếng Việt:** Khám phá cấu trúc nghề nghiệp và nhu cầu kỹ năng Data/AI tại Việt Nam năm 2026 từ dữ liệu tuyển dụng trực tuyến tự thu thập  
-**Phiên bản:** v0.1  
 **Ngày gán nhãn:** 2026-09-15  
 **Trạng thái:** Bản thử nghiệm (Pilot) phục vụ đánh giá chuyên môn  
 
@@ -114,7 +113,7 @@ Nếu một công nghệ vừa xuất hiện trong phần giới thiệu công t
 
 ## 6. Kỹ năng bắt buộc so với Kỹ năng ưu tiên
 
-Trong phiên bản v0.1, **cả kỹ năng bắt buộc và kỹ năng ưu tiên (nice-to-have) đều được tính**, vì mục tiêu hiện tại là **xây dựng từ vựng taxonomy**: khám phá toàn bộ vốn từ vựng kỹ năng mà thị trường đang sử dụng.
+Trong giai đoạn khảo sát ban đầu, **cả kỹ năng bắt buộc và kỹ năng ưu tiên (nice-to-have) đều được tính**, vì mục tiêu hiện tại là **xây dựng từ vựng taxonomy**: khám phá toàn bộ vốn từ vựng kỹ năng mà thị trường đang sử dụng.
 
 Tuy nhiên, đối với phân tích nhu cầu chính thức ở các giai đoạn sau, cần lưu trữ thêm các trường phân cấp:
 
@@ -218,7 +217,7 @@ Lý do: dự án hướng tới đo lường **chính xác những gì nhà tuy�
 
 ## 10. Quy tắc Kỹ năng Ngầm (Implicit Skills)
 
-**Quy tắc mặc định: TUYỆT ĐỐI KHÔNG gán nhãn kỹ năng ngầm trong phiên bản v0.1.**
+**Quy tắc mặc định: TUYỆT ĐỐI KHÔNG gán nhãn kỹ năng ngầm.**
 
 Ví dụ:
 
@@ -379,7 +378,7 @@ Bảng này chỉ đóng vai trò **kiểm tra tính hợp lý cho taxonomy th�
 
 ---
 
-## 17. Các quyết định cần xem xét lại trong phiên bản tiếp theo
+## 17. Các quyết định cần xem xét lại trong các giai đoạn tiếp theo
 
 Sau khi gán nhãn thêm dữ liệu, cần xem xét lại:
 
@@ -406,9 +405,9 @@ LLM không được cộng điểm chỉ vì trả về một khái niệm nằm
 
 ---
 
-## 19. Quản lý phiên bản
+## 19. Quản lý thay đổi taxonomy
 
-- `v0.1`: các số liệu tần suất taxonomy được xác thực trên 45 tin tuyển dụng ITviec duy nhất trong `data/sample/sample_jobs.jsonl`.
+- Các số liệu tần suất taxonomy ban đầu được xác thực trên 45 tin tuyển dụng ITviec duy nhất trong `data/sample/sample_jobs.jsonl`.
 - Khi bổ sung kỹ năng mới, **tuyệt đối không tái sử dụng mã `skill_id` đã có cho một khái niệm khác**.
 - Danh sách alias có thể mở rộng, nhưng tên chuẩn (canonical names) chỉ nên thay đổi khi có lý do rõ ràng kèm lịch sử chuyển đổi (migration log).
-- Trước khi sử dụng taxonomy cho phân tích chính thức, hãy đóng băng phiên bản và duy trì nhật ký thay đổi (changelog).
+- Trước khi sử dụng taxonomy cho phân tích chính thức, hãy đóng băng dữ liệu taxonomy và duy trì nhật ký thay đổi (changelog).

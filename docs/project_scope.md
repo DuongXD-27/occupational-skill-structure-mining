@@ -11,10 +11,6 @@ Mining Self-Collected Online Job Postings to Discover Occupational and Skill Str
 
 Khám phá cấu trúc nghề nghiệp và nhu cầu kỹ năng Data/AI tại Việt Nam năm 2026 từ dữ liệu tuyển dụng trực tuyến tự thu thập.
 
-### Phiên bản
-
-v1.0
-
 ---
 
 ## 2. Bài toán nghiên cứu
