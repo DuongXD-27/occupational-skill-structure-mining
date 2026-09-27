@@ -8,8 +8,6 @@ Tất cả các thành viên trong nhóm phải sử dụng đồng nhất tên 
 
 Các thành viên không được phép đổi tên, xóa hoặc thay đổi ngữ nghĩa của bất kỳ trường nào nếu không có sự phê duyệt rõ ràng từ Trưởng nhóm (Leader).
 
-Phiên bản hiện tại: v1.0
-
 ---
 
 ## 2. Quy ước chung
@@ -290,7 +288,7 @@ Amazon Web Services
 
 nếu cả hai đều đã được định nghĩa là cùng một kỹ năng chuẩn.
 
-Danh sách kỹ năng phải tham chiếu đến phiên bản taxonomy đang hoạt động.
+Danh sách kỹ năng phải tham chiếu đến taxonomy đang hoạt động của dự án.
 
 ---
 
@@ -418,7 +416,7 @@ Mọi quy tắc chuẩn hóa quan trọng đều phải có tài liệu hoặc f
 
 ## 19. Giao thức thay đổi lược đồ (Schema Change Protocol)
 
-Một khi Lược đồ v1 đã được Trưởng nhóm (Leader) khóa:
+Một khi Lược đồ dữ liệu đã được Trưởng nhóm (Leader) khóa:
 
 - Không tự ý thêm trường;
 - Không tự ý xóa trường;
@@ -432,18 +430,14 @@ Nếu việc thay đổi schema là cần thiết, thành viên phải báo cáo
 3. Các module hạ nguồn bị ảnh hưởng;
 4. Chiến lược xử lý đối với dữ liệu cũ (legacy data).
 
-Cần có sự phê duyệt của Leader trước khi ban hành phiên bản schema tiếp theo.
+Cần có sự phê duyệt của Leader trước khi ban hành thay đổi schema tiếp theo.
 
 ---
 
-## 20. Nguyên tắc quản lý phiên bản
+## 20. Nguyên tắc quản lý thay đổi lược đồ
 
-Các bản cập nhật nhỏ tương thích ngược:
+Các bản cập nhật nhỏ cần đảm bảo tính tương thích ngược: giữ nguyên cấu trúc cốt lõi và không làm gián đoạn các module phụ thuộc.
 
-v1.0 → v1.1
+Các thay đổi lớn phá vỡ tính tương thích ảnh hưởng đến cấu trúc schema hoặc các module phụ thuộc cần có kế hoạch di chuyển (migration) dữ liệu rõ ràng.
 
-Các thay đổi lớn phá vỡ tương thích ảnh hưởng đến cấu trúc schema hoặc các module phụ thuộc:
-
-v1.x → v2.0
-
-Tất cả các tập dữ liệu được sử dụng để tạo ra kết quả nghiên cứu chính đều phải ghi lại rõ ràng phiên bản schema của chúng.
+Tất cả các tập dữ liệu được sử dụng để tạo ra kết quả nghiên cứu chính đều phải ghi nhận rõ lược đồ schema được áp dụng.

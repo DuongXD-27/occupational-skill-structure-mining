@@ -1,8 +1,8 @@
 # BÁO CÁO KIỂM TRA DỮ LIỆU MẪU CHO PHÂN TÍCH (SAMPLE ANALYSIS CHECK)
 
-**Người phụ trách:** Hồ Nhật Triều (20236003) · **Phiên bản:** v0.2 · **Ngày thực hiện:** 2026-09-24
+**Người phụ trách:** Hồ Nhật Triều (20236003) · **Ngày thực hiện:** 2026-09-24
 
-**Tập dữ liệu:** `data/sample/sample_jobs.jsonl` — 45 tin tuyển dụng, nguồn ITviec, parser v0.1, thời gian đăng từ 2026-08-13 đến 2026-09-15
+**Tập dữ liệu:** `data/sample/sample_jobs.jsonl` — 45 tin tuyển dụng, nguồn ITviec, parser_version: "v0.1", thời gian đăng từ 2026-08-13 đến 2026-09-15
 
 **Câu hỏi cốt lõi:** chúng ta đã có thể chạy các phân tích trong [docs/analysis/analysis_spec.md](docs/analysis/analysis_spec.md) trên tập dữ liệu này hay chưa?
 

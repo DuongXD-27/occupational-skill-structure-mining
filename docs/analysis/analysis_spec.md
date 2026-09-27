@@ -1,6 +1,6 @@
 # ĐẶC TẢ PHÂN TÍCH (ANALYSIS SPECIFICATION)
 
-**Người phụ trách:** Hồ Nhật Triều (20236003) · **Phiên bản:** v0.1 · **Chỉnh lý:** 2026-09-24 (chỉ điều chỉnh cách diễn đạt — phương pháp giữ nguyên)
+**Người phụ trách:** Hồ Nhật Triều (20236003) · **Chỉnh lý:** 2026-09-24 (chỉ điều chỉnh cách diễn đạt — phương pháp giữ nguyên)
 
 **Mục đích tài liệu:** Kế hoạch chi tiết cho giai đoạn phân tích — chúng ta tính toán những gì, đầu ra gồm những bảng/biểu đồ nào, và khi nào thì một kết quả đủ độ tin cậy an toàn để công bố.
 
@@ -152,7 +152,7 @@ Hai biểu đồ PCA được đặt cạnh nhau. Điểm số đồng thuận t
 | Số kỹ năng trên mỗi tin (đo tương đồng) | $\ge 2$ | 1 kỹ năng thì không có gì để so sánh. Vẫn được tính trong tần suất kỹ năng, chỉ loại khỏi phép đo tương đồng và phân cụm |
 | Số tin tối thiểu để phân cụm | $\ge 300$ | Bất kỳ cụm nào tìm thấy dưới quy mô này đều chỉ là ngẫu nhiên |
 
-Tất cả năm ngưỡng này là đề xuất phương pháp luận và cần được xem xét lại khi quy mô tập dữ liệu thực tế được xác lập. Mọi thay đổi sẽ được đưa vào v0.2 kèm lý do rõ ràng.
+Tất cả năm ngưỡng này là đề xuất phương pháp luận và cần được xem xét lại khi quy mô tập dữ liệu thực tế được xác lập. Mọi thay đổi sau này phải được ghi nhận kèm lý do rõ ràng.
 
 ---
 ---
@@ -181,7 +181,7 @@ Tám kiểm tra chất lượng phải chạy trước bất kỳ phân tích n�
 
 Tầm quan trọng: một bộ trích xuất yếu tạo ra danh sách kỹ năng ngắn → danh sách ngắn làm cho mọi tin trông đều khác biệt → điều đó làm thổi phồng độ phân tán và làm suy yếu mọi mối liên kết. Lỗi kỹ thuật sẽ tạo ra chính xác kết luận mà chúng ta kỳ vọng một cách giả tạo, thay vì kiểm chứng nó một cách khách quan.
 
-Tính tái lập: cố định một giá trị seed ngẫu nhiên, toàn bộ ngưỡng nằm trong một file cấu hình, mọi bảng kết quả đều có tiêu đề ghi rõ quy mô dữ liệu và phiên bản đặc tả — để mỗi con số đều minh bạch về nguồn gốc dữ liệu mà nó đứng trên.
+Tính tái lập: cố định một giá trị seed ngẫu nhiên, toàn bộ ngưỡng nằm trong một file cấu hình, mọi bảng kết quả đều có tiêu đề ghi rõ quy mô dữ liệu và đặc tả được sử dụng — để mỗi con số đều minh bạch về nguồn gốc dữ liệu mà nó đứng trên.
 
 ---
 ---
@@ -189,7 +189,7 @@ Tính tái lập: cố định một giá trị seed ngẫu nhiên, toàn bộ n
 # 10. CÁC CÂU HỎI THẢO LUẬN CHO NHÓM
 
 1. **Trưởng nhóm (Leader):** Câu hỏi quan trọng nhất. Vị trí `Senior Data Analyst` có được tính là `Data Analyst` không? Nếu giữ tách biệt, rất nhiều chức danh sẽ rơi xuống dưới ngưỡng 5 tin và RQ3 sẽ mất phần lớn mẫu nghiên cứu.
-2. **Người phụ trách Taxonomy:** Có bao nhiêu kỹ năng trong taxonomy v0.1? Điều này quyết định ngưỡng lọc kỹ năng và quy mô tối thiểu 300 tin.
+2. **Người phụ trách Taxonomy:** Có bao nhiêu kỹ năng trong taxonomy? Điều này quyết định ngưỡng lọc kỹ năng và quy mô tối thiểu 300 tin.
 3. **Người phụ trách Taxonomy:** Có cột `skill_group` không? Mục 6 chỉ sử dụng cột này để đối chiếu so sánh sau cùng.
 4. **Người phụ trách Thu thập:** Dữ liệu mẫu đã trả lời: `job_description` và `job_requirements` tách biệt và đầy đủ trên cả 45 tin. Câu hỏi còn lại: `relevance_flag` và `exclusion_reason` đang null trên cả 45 tin — khâu thu thập sẽ gán hay khâu làm sạch gán?
 5. **Trưởng nhóm (Leader):** Có nên bổ sung một mô hình dự đoán chức danh như một thước đo phụ cho RQ3 không? Nó sẽ cô đọng RQ3 thành một con số nổi bật duy nhất. Hiện không nằm trong phạm vi bắt buộc của đề tài — đưa ra để xin ý kiến thảo luận, không tự ý mặc định.

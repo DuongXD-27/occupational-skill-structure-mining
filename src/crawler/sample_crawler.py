@@ -235,7 +235,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
     job_description = clean_text(job_description)
     job_requirements = clean_text(job_requirements)
 
-    # Kiểm tra quy tắc bắt buộc của Schema v1:
+    # Kiểm tra quy tắc bắt buộc của Schema:
     # "Phải có raw_job_title và ít nhất một trong hai trường job_description hoặc job_requirements không rỗng."
     if not raw_job_title or (not job_description and not job_requirements):
         log_crawl_result(
