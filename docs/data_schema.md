@@ -1,449 +1,449 @@
-# DATA SCHEMA V1
+# ĐẶC TẢ LƯỢC ĐỒ DỮ LIỆU (DATA SCHEMA)
 
-## 1. Purpose
+## 1. Mục đích
 
-This document defines the unified data structure for the entire project.
+Tài liệu này định nghĩa cấu trúc dữ liệu thống nhất cho toàn bộ dự án.
 
-All team members must use identical field names and definitions.
+Tất cả các thành viên trong nhóm phải sử dụng đồng nhất tên trường và định nghĩa trường.
 
-Members are not permitted to rename, delete, or alter the semantics of any field without the Leader's explicit approval.
+Các thành viên không được phép đổi tên, xóa hoặc thay đổi ngữ nghĩa của bất kỳ trường nào nếu không có sự phê duyệt rõ ràng từ Trưởng nhóm (Leader).
 
-Current version: v1.0
+Phiên bản hiện tại: v1.0
 
 ---
 
-## 2. General Conventions
+## 2. Quy ước chung
 
-### Field Names
+### Tên trường (Field Names)
 
-Use `snake_case`.
+Sử dụng định dạng `snake_case`.
 
-Examples:
+Ví dụ:
 
-`raw_job_title`
-`normalized_job_title`
-`crawl_timestamp`
+`raw_job_title`  
+`normalized_job_title`  
+`crawl_timestamp`  
 
-Do not use:
+Không sử dụng:
 
-`RawJobTitle`
-`raw-job-title`
-`Raw Job Title`
+`RawJobTitle`  
+`raw-job-title`  
+`Raw Job Title`  
 
-### Text
+### Dữ liệu văn bản (Text)
 
-Store in UTF-8 encoding.
+Lưu trữ dưới dạng mã hóa UTF-8.
 
-Do not remove Vietnamese diacritics from raw data.
+Không xóa dấu tiếng Việt khỏi dữ liệu thô.
 
-### Missing Values
+### Giá trị bị thiếu (Missing Values)
 
-Use `null` for missing data.
+Sử dụng `null` cho dữ liệu bị thiếu.
 
-Do not arbitrarily use placeholder values such as:
+Không tự ý sử dụng các giá trị giữ chỗ (placeholders) như:
 
-"N/A"
-"unknown"
-"-"
-"none"
+"N/A"  
+"unknown"  
+"-"  
+"none"  
 
-unless it represents the literal raw text obtained directly from the source and is stored within a raw field.
+trừ khi đó là chuỗi văn bản thô nguyên bản thu được trực tiếp từ trang nguồn và được lưu trữ bên trong một trường thô (raw field).
 
-### Dates
+### Ngày tháng (Dates)
 
-Use the format:
+Sử dụng định dạng:
 
 `YYYY-MM-DD`
 
-### Timestamps
+### Dấu thời gian (Timestamps)
 
-Use ISO 8601 and include time zones whenever available.
+Sử dụng định dạng ISO 8601 và bao gồm múi giờ bất cứ khi nào có sẵn.
 
-### Boolean
+### Giá trị Boolean
 
-Use only:
+Chỉ sử dụng:
 
-`true`
-`false`
+`true`  
+`false`  
 
-### Currency
+### Tiền tệ (Currency)
 
-If currency information is available, use standard ISO currency codes, such as:
+Nếu có thông tin tiền tệ, sử dụng mã tiền tệ chuẩn ISO, ví dụ:
 
-`VND`
-`USD`
+`VND`  
+`USD`  
 
-### Experience
+### Kinh nghiệm (Experience)
 
-Standardized years of experience fields must use the unit:
+Các trường số năm kinh nghiệm đã chuẩn hóa phải sử dụng đơn vị:
 
-years.
+năm (years).
 
-### Raw Data
+### Dữ liệu thô (Raw Data)
 
-Do not overwrite raw fields with normalized or derived data.
-
----
-
-## 3. Data Stages
-
-The project comprises four primary data stages:
-
-### Stage A — Raw data
-
-Data directly extracted from sources by the parsers.
-
-### Stage B — Clean data
-
-Data that has been cleaned, normalized, and annotated with relevance and duplicate flags.
-
-### Stage C — Skill features
-
-Data with extracted skills.
-
-### Stage D — Analysis outputs
-
-Derived tables supporting similarity measurement, clustering, and visualization.
+Không được ghi đè các trường thô bằng dữ liệu đã chuẩn hóa hoặc dữ liệu phái sinh.
 
 ---
 
-## 4. Main Vacancy Schema
+## 3. Các giai đoạn dữ liệu (Data Stages)
 
-| Field | Description | Type | Required | Source/Derived | Normalized? |
+Dự án bao gồm bốn giai đoạn dữ liệu chính:
+
+### Giai đoạn A — Dữ liệu thô (Stage A — Raw data)
+
+Dữ liệu được trích xuất trực tiếp từ các nguồn tuyển dụng bởi các bộ bóc tách (parsers).
+
+### Giai đoạn B — Dữ liệu sạch (Stage B — Clean data)
+
+Dữ liệu đã được làm sạch, chuẩn hóa và gắn chú thích các cờ mức độ liên quan (relevance) và cờ trùng lặp (duplicate).
+
+### Giai đoạn C — Đặc trưng kỹ năng (Stage C — Skill features)
+
+Dữ liệu đã được trích xuất các kỹ năng chuẩn hóa.
+
+### Giai đoạn D — Đầu ra phân tích (Stage D — Analysis outputs)
+
+Các bảng dữ liệu phái sinh phục vụ đo lường độ tương đồng, phân cụm và trực quan hóa.
+
+---
+
+## 4. Lược đồ tin tuyển dụng chính (Main Vacancy Schema)
+
+| Tên trường (Field) | Mô tả | Kiểu dữ liệu (Type) | Bắt buộc? | Nguồn gốc | Được chuẩn hóa? |
 |---|---|---|---|---|---|
-| job_id | Unique internal ID | string | Yes | Derived | No |
-| source | Recruitment platform / source | string | Yes | Raw | No |
-| source_job_id | Posting ID from website if available | string/null | No | Raw | No |
-| source_url | Detail page URL | string | Yes | Raw | No |
-| crawl_timestamp | Collection timestamp | datetime | Yes | Raw | No |
-| parser_version | Parser version | string | Yes | Raw | No |
-| raw_job_title | Original job title | string | Yes | Raw | No |
-| normalized_job_title | Surface-normalized job title | string/null | Post-cleaning | Derived | Yes |
-| company | Company name | string/null | No | Raw | Limited |
-| raw_location | Original location string | string/null | No | Raw | No |
-| normalized_location | Normalized location | string/null | No | Derived | Yes |
-| posted_date | Posting date if available | date/null | No | Raw/Parsed | Format normalized only |
-| raw_experience | Original experience requirement string | string/null | No | Raw | No |
-| experience_min_years | Minimum years of experience | number/null | No | Derived | Yes |
-| experience_max_years | Maximum years of experience | number/null | No | Derived | Yes |
-| education | Education requirement | string/null | No | Raw/Parsed | Limited |
-| job_description | Job description text | string/null | Conditional | Raw | No |
-| job_requirements | Candidate requirements text | string/null | Conditional | Raw | No |
-| job_text | Concatenated text for skill extraction | string/null | Post-preprocessing | Derived | Yes |
-| salary_raw | Original salary information string | string/null | No | Raw | No |
-| salary_min | Minimum salary if parsable | number/null | No | Derived | Yes |
-| salary_max | Maximum salary if parsable | number/null | No | Derived | Yes |
-| salary_currency | Currency code | string/null | No | Derived | Yes |
-| relevance_flag | Whether posting is within research scope | boolean | Post-cleaning | Derived | No |
-| exclusion_reason | Reason for exclusion | string/null | When relevance=false | Derived | No |
-| duplicate_flag | Whether record is a duplicate | boolean | Post-cleaning | Derived | No |
-| duplicate_group_id | Group ID identifying duplicate vacancies | string/null | No | Derived | No |
-| extracted_skills | List of canonical skills | list[string]/null | Post-extraction | Derived | Yes |
-| skill_count | Number of extracted skills | integer/null | Post-extraction | Derived | No |
+| `job_id` | Khóa định danh nội bộ duy nhất | string | Có | Phái sinh (Derived) | Không |
+| `source` | Nền tảng / nguồn tuyển dụng | string | Có | Thô (Raw) | Không |
+| `source_job_id` | ID tin tuyển dụng từ website nguồn nếu có | string/null | Không | Thô (Raw) | Không |
+| `source_url` | URL trang chi tiết tin tuyển dụng | string | Có | Thô (Raw) | Không |
+| `crawl_timestamp` | Dấu thời gian thu thập dữ liệu | datetime | Có | Thô (Raw) | Không |
+| `parser_version` | Phiên bản parser thu thập | string | Có | Thô (Raw) | Không |
+| `raw_job_title` | Chức danh công việc nguyên bản | string | Có | Thô (Raw) | Không |
+| `normalized_job_title` | Chức danh đã chuẩn hóa bề mặt | string/null | Sau làm sạch | Phái sinh (Derived) | Có |
+| `company` | Tên công ty tuyển dụng | string/null | Không | Thô (Raw) | Hạn chế |
+| `raw_location` | Chuỗi địa điểm nguyên bản | string/null | Không | Thô (Raw) | Không |
+| `normalized_location` | Địa điểm đã chuẩn hóa | string/null | Không | Phái sinh (Derived) | Có |
+| `posted_date` | Ngày đăng tuyển nếu có | date/null | Không | Thô/Parse | Chỉ chuẩn hóa định dạng |
+| `raw_experience` | Chuỗi yêu cầu kinh nghiệm nguyên bản | string/null | Không | Thô (Raw) | Không |
+| `experience_min_years` | Số năm kinh nghiệm tối thiểu | number/null | Không | Phái sinh (Derived) | Có |
+| `experience_max_years` | Số năm kinh nghiệm tối đa | number/null | Không | Phái sinh (Derived) | Có |
+| `education` | Yêu cầu học vấn | string/null | Không | Thô/Parse | Hạn chế |
+| `job_description` | Văn bản mô tả công việc | string/null | Có điều kiện | Thô (Raw) | Không |
+| `job_requirements` | Văn bản yêu cầu ứng viên | string/null | Có điều kiện | Thô (Raw) | Không |
+| `job_text` | Văn bản nối phục vụ trích xuất kỹ năng | string/null | Sau tiền xử lý | Phái sinh (Derived) | Có |
+| `salary_raw` | Chuỗi thông tin lương nguyên bản | string/null | Không | Thô (Raw) | Không |
+| `salary_min` | Mức lương tối thiểu nếu parse được | number/null | Không | Phái sinh (Derived) | Có |
+| `salary_max` | Mức lương tối đa nếu parse được | number/null | Không | Phái sinh (Derived) | Có |
+| `salary_currency` | Mã đơn vị tiền tệ | string/null | Không | Phái sinh (Derived) | Có |
+| `relevance_flag` | Đánh dấu tin có thuộc phạm vi nghiên cứu | boolean | Sau làm sạch | Phái sinh (Derived) | Không |
+| `exclusion_reason` | Lý do loại trừ nếu tin không liên quan | string/null | Khi relevance=false | Phái sinh (Derived) | Không |
+| `duplicate_flag` | Đánh dấu bản ghi có bị trùng lặp không | boolean | Sau làm sạch | Phái sinh (Derived) | Không |
+| `duplicate_group_id` | ID nhóm nhận diện các tin trùng lặp | string/null | Không | Phái sinh (Derived) | Không |
+| `extracted_skills` | Danh sách các kỹ năng chuẩn hóa trích xuất | list[string]/null | Sau trích xuất | Phái sinh (Derived) | Có |
+| `skill_count` | Số lượng kỹ năng trích xuất được | integer/null | Sau trích xuất | Phái sinh (Derived) | Không |
 
 ---
 
-## 5. Mandatory Text Requirements
+## 5. Yêu cầu văn bản bắt buộc
 
-A valid vacancy posting must contain:
+Một tin tuyển dụng hợp lệ bắt buộc phải chứa:
 
 `raw_job_title`
 
-and at least one of the two text fields:
+và ít nhất một trong hai trường văn bản:
 
-`job_description`
-`job_requirements`
+`job_description`  
+`job_requirements`  
 
-If both text fields are empty, the record lacks sufficient data for skill extraction and must be considered for exclusion.
-
----
-
-## 6. Rules for job_id
-
-`job_id` serves as the internal primary key for the project.
-
-`job_id` must be:
-
-- unique;
-- stable across pipeline executions;
-- independent of row index / line numbers;
-- immutable after cleaning.
-
-If the source website provides a `source_job_id`, maintain it separately in `source_job_id`.
-
-Do not use a specific website's `source_job_id` as the global primary key for the entire project.
+Nếu cả hai trường văn bản đều trống, bản ghi thiếu dữ liệu tối thiểu cho việc trích xuất kỹ năng và phải được xem xét loại trừ.
 
 ---
 
-## 7. Rules for Job Titles
+## 6. Quy tắc cho trường job_id
+
+`job_id` đóng vai trò là khóa chính nội bộ (internal primary key) của dự án.
+
+`job_id` phải:
+
+- là duy nhất;
+- ổn định qua các lần thực thi pipeline;
+- độc lập với chỉ số dòng (row index / line numbers);
+- không thể thay đổi (immutable) sau khi làm sạch.
+
+Nếu website nguồn cung cấp mã tin tuyển dụng, hãy lưu riêng vào trường `source_job_id`.
+
+Không sử dụng `source_job_id` của một website cụ thể làm khóa chính toàn cục cho toàn bộ dự án.
+
+---
+
+## 7. Quy tắc cho Chức danh công việc
 
 ### raw_job_title
 
-Must preserve the exact raw content retrieved from the source.
+Phải giữ nguyên nội dung thô chính xác thu được từ nguồn.
 
-Do not correct spelling or merge occupations within this field.
+Không sửa lỗi chính tả hoặc gộp nghề nghiệp bên trong trường này.
 
 ### normalized_job_title
 
-Used solely to eliminate superficial and formatting discrepancies.
+Chỉ được dùng để loại bỏ các điểm sai lệch về bề mặt và định dạng.
 
-The normalization step must NOT automatically group:
+Bước chuẩn hóa TUYỆT ĐỐI KHÔNG tự động gộp các vị trí:
 
-AI Engineer
-Machine Learning Engineer
-Data Scientist
+AI Engineer  
+Machine Learning Engineer  
+Data Scientist  
 
-into a single broad job family.
+thành một nhóm nghề nghiệp chung.
 
-Semantic grouping does not belong to the cleaning phase.
+Việc gom nhóm ngữ nghĩa không thuộc về giai đoạn làm sạch dữ liệu.
 
 ---
 
-## 8. Rules for Location
+## 8. Quy tắc cho Địa điểm
 
-Must retain:
+Phải lưu giữ:
 
 `raw_location`
 
-and, if normalizable, append:
+và nếu có thể chuẩn hóa được, bổ sung thêm:
 
 `normalized_location`.
 
-Do not overwrite `raw_location`.
+Không được ghi đè lên `raw_location`.
 
-All location mapping rules must be documented in a dedicated mapping file.
-
----
-
-## 9. Rules for Experience
-
-`raw_experience` retains the original website text.
-
-`experience_min_years` and `experience_max_years` are derived numeric fields.
-
-If the number of years cannot be reliably determined, set to `null`.
-
-Do not make arbitrary assumptions or estimates.
+Mọi quy tắc ánh xạ địa điểm phải được tài liệu hóa trong một file ánh xạ chuyên dụng ([docs/data_cleaning/location_mapping.csv](docs/data_cleaning/location_mapping.csv)).
 
 ---
 
-## 10. Rules for Salary
+## 9. Quy tắc cho Kinh nghiệm
 
-`salary_raw` is always preserved as-is if provided by the website.
+`raw_experience` lưu giữ nguyên văn văn bản từ website.
 
-`salary_min` and `salary_max` are only assigned values when they can be unambiguously parsed into numbers.
+`experience_min_years` và `experience_max_years` là các trường số phái sinh.
 
-If the website states:
+Nếu số năm không thể xác định một cách tin cậy, hãy đặt thành `null`.
 
-Negotiable
-Thỏa thuận
-Competitive
-
-then `salary_min` and `salary_max` must be set to `null`.
-
-Do not attempt to impute or guess salary amounts.
+Không đưa ra các giả định hoặc ước tính tùy tiện.
 
 ---
 
-## 11. Rules for Relevance
+## 10. Quy tắc cho Lương
+
+`salary_raw` luôn được bảo toàn nguyên bản nếu website cung cấp.
+
+`salary_min` và `salary_max` chỉ được gán giá trị khi chúng có thể được bóc tách rõ ràng thành các con số.
+
+Nếu website ghi:
+
+Negotiable  
+Thỏa thuận  
+Competitive  
+
+thì `salary_min` và `salary_max` phải được đặt thành `null`.
+
+Không cố gắng điền khuyết (impute) hoặc đoán mức lương.
+
+---
+
+## 11. Quy tắc cho Mức độ liên quan (Relevance)
 
 `relevance_flag = true`:
 
-The posting is retained in the research corpus.
+Tin tuyển dụng được giữ lại trong tập dữ liệu nghiên cứu.
 
 `relevance_flag = false`:
 
-The posting is excluded from primary analyses.
+Tin tuyển dụng bị loại khỏi các phân tích chính.
 
-When `relevance_flag = false`:
+Khi `relevance_flag = false`:
 
-`exclusion_reason` is mandatory.
+`exclusion_reason` là bắt buộc phải có.
 
-Exclusion reasons must draw from a standardized, predefined label set rather than arbitrary free-text comments.
+Lý do loại trừ phải lấy từ một tập nhãn chuẩn hóa, định sẵn thay vì các đoạn bình luận tự do tùy tiện.
 
 ---
 
-## 12. Rules for Duplicates
+## 12. Quy tắc cho Trùng lặp (Duplicates)
 
-Do not delete duplicate records from the raw dataset.
+Không xóa các bản ghi trùng lặp khỏi tập dữ liệu thô.
 
-Flag duplicates using:
+Đánh dấu các bản ghi trùng lặp bằng:
 
 `duplicate_flag`
 
-and, where applicable:
+và khi áp dụng được:
 
 `duplicate_group_id`.
 
-The final research corpus will retain only one representative record per unique vacancy after deduplication is finalized.
+Tập dữ liệu nghiên cứu cuối cùng sẽ chỉ giữ lại một bản ghi đại diện cho mỗi vị trí tuyển dụng duy nhất sau khi quá trình khử trùng lặp hoàn tất.
 
 ---
 
-## 13. Rules for extracted_skills
+## 13. Quy tắc cho extracted_skills
 
-`extracted_skills` contains only canonical skill names defined in the project taxonomy.
+`extracted_skills` chỉ chứa các tên kỹ năng chuẩn hóa (canonical names) được định nghĩa trong taxonomy của dự án.
 
-Do not allow mixed representations such as:
+Không cho phép biểu diễn lẫn lộn, ví dụ:
 
-AWS
-Amazon Web Services
+AWS  
+Amazon Web Services  
 
-if both have been defined as the same canonical skill.
+nếu cả hai đều đã được định nghĩa là cùng một kỹ năng chuẩn.
 
-The skill list must reference the active taxonomy version.
-
----
-
-## 14. Skill Matrix
-
-The skill matrix is stored separately from the primary vacancy table.
-
-Each row corresponds to one `job_id`.
-
-Basic schema:
-
-`job_id`
-`skill_001`
-`skill_002`
-...
-`skill_n`
-
-Cell values:
-
-1 = skill present
-0 = skill not detected by the extractor
-
-Skill names or identifiers must reference the taxonomy.
+Danh sách kỹ năng phải tham chiếu đến phiên bản taxonomy đang hoạt động.
 
 ---
 
-## 15. Crawl Log Schema
+## 14. Ma trận kỹ năng (Skill Matrix)
 
-The crawl log file must contain at least the following fields:
+Ma trận kỹ năng được lưu trữ tách biệt với bảng tin tuyển dụng chính.
 
-| Field | Description | Type | Required |
+Mỗi dòng tương ứng với một `job_id`.
+
+Lược đồ cơ bản:
+
+`job_id`  
+`skill_001`  
+`skill_002`  
+...  
+`skill_n`  
+
+Giá trị ô:
+
+1 = kỹ năng xuất hiện  
+0 = bộ trích xuất không phát hiện kỹ năng  
+
+Tên hoặc mã định danh kỹ năng phải tham chiếu chuẩn xác đến taxonomy.
+
+---
+
+## 15. Lược đồ Nhật ký thu thập (Crawl Log Schema)
+
+File nhật ký thu thập (crawl log) phải chứa tối thiểu các trường sau:
+
+| Trường (Field) | Mô tả | Kiểu dữ liệu | Bắt buộc? |
 |---|---|---|---|
-| source | Source platform | string | Yes |
-| source_url | Accessed URL | string | Yes |
-| crawl_timestamp | Access timestamp | datetime | Yes |
-| status | Success / failure status | string | Yes |
-| http_status | HTTP status code if available | integer/null | No |
-| error_type | Error category | string/null | No |
-| error_message | Short description | string/null | No |
-| parser_version | Parser version | string | Yes |
+| `source` | Nền tảng nguồn tuyển dụng | string | Có |
+| `source_url` | URL đã truy cập | string | Có |
+| `crawl_timestamp` | Dấu thời gian truy cập | datetime | Có |
+| `status` | Trạng thái thành công / thất bại | string | Có |
+| `http_status` | Mã trạng thái HTTP nếu có | integer/null | Không |
+| `error_type` | Loại phân loại lỗi | string/null | Không |
+| `error_message` | Mô tả lỗi ngắn gọn | string/null | Không |
+| `parser_version` | Phiên bản của parser | string | Có |
 
 ---
 
-## 16. Standard Data Files Between Modules
+## 16. Các file dữ liệu tiêu chuẩn giữa các module
 
-### Raw data
+### Dữ liệu thô (Raw data)
 
 `data/raw/jobs_raw.jsonl`
 
-Producer: Data Collection.
+Bên sản xuất: Module Thu thập dữ liệu (Data Collection).
 
-Must not be edited directly after writing.
+Tuyệt đối không được chỉnh sửa trực tiếp sau khi ghi.
 
-### Clean data
+### Dữ liệu sạch (Clean data)
 
 `data/processed/jobs_clean.parquet`
 
-Producer: Data Cleaning.
+Bên sản xuất: Module Làm sạch dữ liệu (Data Cleaning).
 
-This is the primary dataset used by all downstream modules.
+Đây là tập dữ liệu chính được sử dụng bởi tất cả các module hạ nguồn.
 
-### Taxonomy
+### Taxonomy kỹ năng
 
 `taxonomy/skills_taxonomy.csv`
 
-Producer: Skill Extraction.
+Bên sản xuất: Module Trích xuất kỹ năng (Skill Extraction).
 
-### Job skill data
+### Dữ liệu kỹ năng việc làm (Job skill data)
 
 `data/features/job_skills.parquet`
 
-Mandatory fields:
+Các trường bắt buộc:
 
-`job_id`
-`extracted_skills`
-`skill_count`
+`job_id`  
+`extracted_skills`  
+`skill_count`  
 
-### Job skill matrix
+### Ma trận kỹ năng việc làm (Job skill matrix)
 
 `data/features/job_skill_matrix.parquet`
 
-Mandatory fields:
+Các trường bắt buộc:
 
-`job_id`
-skill columns
-
----
-
-## 17. Fields That Must Remain Untouched
-
-The following fields must never be overwritten:
-
-`source`
-`source_job_id`
-`source_url`
-`crawl_timestamp`
-`raw_job_title`
-`raw_location`
-`raw_experience`
-`job_description`
-`job_requirements`
-`salary_raw`
-
-If transformations are required, create new derived fields.
+`job_id`  
+các cột kỹ năng  
 
 ---
 
-## 18. Fields Allowed for Normalization
+## 17. Các trường bắt buộc giữ nguyên bản (Untouched Fields)
 
-Derived fields that may be normalized:
+Các trường sau đây không bao giờ được phép ghi đè:
 
-`normalized_job_title`
-`normalized_location`
-`experience_min_years`
-`experience_max_years`
-`salary_min`
-`salary_max`
-`salary_currency`
-`job_text`
-`extracted_skills`
+`source`  
+`source_job_id`  
+`source_url`  
+`crawl_timestamp`  
+`raw_job_title`  
+`raw_location`  
+`raw_experience`  
+`job_description`  
+`job_requirements`  
+`salary_raw`  
 
-All significant normalization rules must have corresponding documentation or mapping files.
-
----
-
-## 19. Schema Change Protocol
-
-Once Schema v1 is locked by the Leader:
-
-- Do not add fields arbitrarily;
-- Do not delete fields arbitrarily;
-- Do not rename fields arbitrarily;
-- Do not alter data types arbitrarily.
-
-If a schema change is necessary, the member must report:
-
-1. The target field(s);
-2. Justification / rationale;
-3. Impacted downstream modules;
-4. Strategy for handling legacy data.
-
-Leader approval is required before issuing the next schema version.
+Nếu cần biến đổi dữ liệu, hãy tạo các trường phái sinh mới.
 
 ---
 
-## 20. Versioning Principles
+## 18. Các trường được phép chuẩn hóa
 
-Minor backward-compatible updates:
+Các trường phái sinh được phép chuẩn hóa:
+
+`normalized_job_title`  
+`normalized_location`  
+`experience_min_years`  
+`experience_max_years`  
+`salary_min`  
+`salary_max`  
+`salary_currency`  
+`job_text`  
+`extracted_skills`  
+
+Mọi quy tắc chuẩn hóa quan trọng đều phải có tài liệu hoặc file ánh xạ tương ứng.
+
+---
+
+## 19. Giao thức thay đổi lược đồ (Schema Change Protocol)
+
+Một khi Lược đồ v1 đã được Trưởng nhóm (Leader) khóa:
+
+- Không tự ý thêm trường;
+- Không tự ý xóa trường;
+- Không tự ý đổi tên trường;
+- Không tự ý thay đổi kiểu dữ liệu.
+
+Nếu việc thay đổi schema là cần thiết, thành viên phải báo cáo:
+
+1. Trường dữ liệu mục tiêu;
+2. Cơ sở / lý do đề xuất;
+3. Các module hạ nguồn bị ảnh hưởng;
+4. Chiến lược xử lý đối với dữ liệu cũ (legacy data).
+
+Cần có sự phê duyệt của Leader trước khi ban hành phiên bản schema tiếp theo.
+
+---
+
+## 20. Nguyên tắc quản lý phiên bản
+
+Các bản cập nhật nhỏ tương thích ngược:
 
 v1.0 → v1.1
 
-Breaking changes affecting schema structure or dependent modules:
+Các thay đổi lớn phá vỡ tương thích ảnh hưởng đến cấu trúc schema hoặc các module phụ thuộc:
 
 v1.x → v2.0
 
-All datasets used to produce primary research results must explicitly record their schema version.
+Tất cả các tập dữ liệu được sử dụng để tạo ra kết quả nghiên cứu chính đều phải ghi lại rõ ràng phiên bản schema của chúng.
