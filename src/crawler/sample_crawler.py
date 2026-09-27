@@ -4,11 +4,17 @@ import json
 import time
 import random
 import hashlib
+import sys
 from datetime import datetime, timezone
 import requests
 from bs4 import BeautifulSoup
 
-# Headers with realistic User-Agent
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
+# Header HTTP giả lập User-Agent của trình duyệt thực tế
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -40,11 +46,11 @@ def init_files():
     os.makedirs("data/sample", exist_ok=True)
     os.makedirs("src/scraper", exist_ok=True)
     
-    # Reset/initialize JSONL file
+    # Khởi tạo/làm rỗng file JSONL
     with open(OUTPUT_JSONL, "w", encoding="utf-8") as f:
         pass
         
-    # Reset/initialize CSV log file with required header (Schema v1 - Section 15)
+    # Khởi tạo file log CSV với header chuẩn theo Schema §15
     with open(OUTPUT_LOG_CSV, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -76,22 +82,22 @@ def log_crawl_result(source_url: str, status: str, http_status: int or None = No
 
 
 def collect_job_links():
-    job_targets = []  # list of tuples: (url, source_job_id)
+    job_targets = []  # Danh sách tuple: (url, source_job_id)
     seen_urls = set()
     
-    print("Collecting seed URLs...")
+    print("Thu thập danh sách URL từ các trang seed...")
     for seed_url in SEED_URLS:
-        print(f"Fetching listing page: {seed_url}")
+        print(f"Đang tải trang danh sách: {seed_url}")
         try:
             res = requests.get(seed_url, headers=HEADERS, timeout=15)
             time.sleep(random.uniform(1.5, 2.5))
             if res.status_code != 200:
-                print(f"Failed to fetch seed {seed_url}, status: {res.status_code}")
+                print(f"Tải seed {seed_url} thất bại, mã trạng thái: {res.status_code}")
                 continue
                 
             soup = BeautifulSoup(res.text, "html.parser")
             cards = soup.select(".job-card")
-            print(f"Found {len(cards)} job cards on {seed_url}")
+            print(f"Tìm thấy {len(cards)} thẻ việc làm trên {seed_url}")
             
             for card in cards:
                 slug = card.get("data-search--job-selection-job-slug-value")
@@ -102,9 +108,9 @@ def collect_job_links():
                         seen_urls.add(detail_url)
                         job_targets.append((detail_url, job_key))
         except Exception as e:
-            print(f"Error fetching seed {seed_url}: {e}")
+            print(f"Lỗi khi tải seed {seed_url}: {e}")
             
-    print(f"Total unique detail URLs collected: {len(job_targets)}")
+    print(f"Tổng số URL chi tiết duy nhất thu thập được: {len(job_targets)}")
     return job_targets
 
 
@@ -124,7 +130,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         
     soup = BeautifulSoup(res.text, "html.parser")
     
-    # 1. Parse JSON-LD if available
+    # 1. Trích xuất khối JSON-LD nếu có
     json_ld_data = {}
     json_ld_elem = soup.find("script", type="application/ld+json")
     if json_ld_elem and json_ld_elem.string:
@@ -133,21 +139,21 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         except Exception:
             pass
 
-    # 2. Extract job_id (deterministic hash)
+    # 2. Trích xuất job_id (mã băm xác định)
     job_id = hashlib.sha256(url.encode()).hexdigest()[:16]
     
-    # 3. Extract source_job_id
+    # 3. Trích xuất source_job_id
     if not source_job_id and isinstance(json_ld_data.get("identifier"), dict):
         source_job_id = str(json_ld_data.get("identifier", {}).get("value"))
         
-    # 4. Extract raw_job_title
+    # 4. Trích xuất raw_job_title
     raw_job_title = json_ld_data.get("title")
     if not raw_job_title:
         h1 = soup.select_one("h1")
         raw_job_title = h1.get_text(strip=True) if h1 else None
     raw_job_title = clean_text(raw_job_title)
     
-    # 5. Extract company
+    # 5. Trích xuất company
     company = None
     if isinstance(json_ld_data.get("hiringOrganization"), dict):
         company = json_ld_data.get("hiringOrganization", {}).get("name")
@@ -156,7 +162,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         company = comp_elem.get_text(strip=True) if comp_elem else None
     company = clean_text(company)
     
-    # 6. Extract raw_location
+    # 6. Trích xuất raw_location
     raw_location = None
     job_loc = json_ld_data.get("jobLocation")
     loc_list = []
@@ -178,14 +184,14 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
             raw_location = loc_elem.get_text(strip=True)
     raw_location = clean_text(raw_location)
     
-    # 7. Extract posted_date (YYYY-MM-DD)
+    # 7. Trích xuất posted_date (YYYY-MM-DD)
     posted_date = json_ld_data.get("datePosted")
     if posted_date and len(posted_date) >= 10:
         posted_date = posted_date[:10]
     else:
         posted_date = None
         
-    # 8. Extract raw_experience
+    # 8. Trích xuất raw_experience
     raw_experience = None
     exp_badge = soup.select_one(".preview-header-item")
     if exp_badge:
@@ -193,7 +199,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         if exp_text:
             raw_experience = clean_text(exp_text)
 
-    # 9. Extract salary_raw
+    # 9. Trích xuất salary_raw
     salary_raw = None
     sal_elem = soup.select_one(".salary")
     if sal_elem:
@@ -202,7 +208,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
             salary_raw = sal_text
     salary_raw = clean_text(salary_raw)
 
-    # 10. Extract job_description & job_requirements
+    # 10. Trích xuất job_description & job_requirements
     job_description = None
     job_requirements = None
     
@@ -221,7 +227,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
                 lines = [l for l in text_content.split("\n") if l.lower() not in ["your skills and experience", "yêu cầu", "skills and experience"]]
                 job_requirements = "\n".join(lines)
 
-    # Fallback to JSON-LD description if job_description is missing
+    # Dự phòng sang description của JSON-LD nếu job_description bị thiếu
     if not job_description and json_ld_data.get("description"):
         desc_soup = BeautifulSoup(json_ld_data.get("description"), "html.parser")
         job_description = desc_soup.get_text(separator="\n", strip=True)
@@ -229,8 +235,8 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
     job_description = clean_text(job_description)
     job_requirements = clean_text(job_requirements)
 
-    # Validate mandatory schema v1 rule:
-    # "Ensure every row has raw_job_title and at least one of job_description or job_requirements is non-empty."
+    # Kiểm tra quy tắc bắt buộc của Schema:
+    # "Phải có raw_job_title và ít nhất một trong hai trường job_description hoặc job_requirements không rỗng."
     if not raw_job_title or (not job_description and not job_requirements):
         log_crawl_result(
             source_url=url,
@@ -241,7 +247,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         )
         return None
 
-    # Construct complete DATA SCHEMA V1 record
+    # Khởi tạo bản ghi hoàn chỉnh theo DATA SCHEMA
     record = {
         "job_id": job_id,
         "source": "ITviec",
@@ -289,27 +295,27 @@ def main():
     job_targets = collect_job_links()
     
     valid_records = []
-    print(f"\nStarting crawler. Target: {TARGET_MIN_RECORDS} to {TARGET_MAX_RECORDS} jobs...")
+    print(f"\nBắt đầu thu thập. Mục tiêu: từ {TARGET_MIN_RECORDS} đến {TARGET_MAX_RECORDS} tin...")
     
     for idx, (url, source_job_id) in enumerate(job_targets, 1):
         if len(valid_records) >= TARGET_MAX_RECORDS:
-            print(f"Reached upper target limit of {TARGET_MAX_RECORDS} jobs. Stopping.")
+            print(f"Đã đạt giới hạn mục tiêu {TARGET_MAX_RECORDS} tin. Dừng thu thập.")
             break
             
-        print(f"[{idx}/{len(job_targets)}] Crawling detail page: {url}")
+        print(f"[{idx}/{len(job_targets)}] Đang thu thập trang chi tiết: {url}")
         
         try:
             record = parse_job_detail(url, source_job_id)
             if record:
                 valid_records.append(record)
-                # Append to JSONL file
+                # Ghi nối vào file JSONL
                 with open(OUTPUT_JSONL, "a", encoding="utf-8") as f:
                     f.write(json.dumps(record, ensure_ascii=False) + "\n")
-                print(f"  -> Successfully saved record #{len(valid_records)} ({record['raw_job_title']})")
+                print(f"  -> Lưu thành công bản ghi #{len(valid_records)} ({record['raw_job_title']})")
             else:
-                print("  -> Skipped/Failed record.")
+                print("  -> Bản ghi bị bỏ qua hoặc thất bại.")
         except Exception as e:
-            print(f"  -> Exception while parsing {url}: {e}")
+            print(f"  -> Lỗi ngoại lệ khi bóc tách {url}: {e}")
             log_crawl_result(
                 source_url=url,
                 status="FAILURE",
@@ -318,15 +324,15 @@ def main():
                 error_message=str(e)
             )
             
-        # Random delay between requests (1.5s - 2.5s) as required
+        # Thời gian chờ ngẫu nhiên giữa các request (1.5s - 2.5s) theo yêu cầu
         time.sleep(random.uniform(1.5, 2.5))
         
-    print("\nCrawling complete!")
-    print(f"Total valid jobs saved to {OUTPUT_JSONL}: {len(valid_records)}")
-    print(f"Crawl log written to {OUTPUT_LOG_CSV}")
+    print("\nThu thập hoàn tất!")
+    print(f"Tổng số tin hợp lệ đã lưu vào {OUTPUT_JSONL}: {len(valid_records)}")
+    print(f"Nhật ký crawl đã ghi vào {OUTPUT_LOG_CSV}")
     
     if len(valid_records) < TARGET_MIN_RECORDS:
-        print(f"WARNING: Total valid jobs ({len(valid_records)}) is below target minimum ({TARGET_MIN_RECORDS}).")
+        print(f"CẢNH BÁO: Số tin hợp lệ ({len(valid_records)}) thấp hơn mục tiêu tối thiểu ({TARGET_MIN_RECORDS}).")
 
 
 if __name__ == "__main__":

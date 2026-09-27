@@ -1,4 +1,4 @@
-"""Recompute taxonomy document frequencies from the official sample corpus."""
+"""Tính toán lại tần suất xuất hiện tài liệu (document frequency) của taxonomy từ tập mẫu dữ liệu chính thức."""
 
 from __future__ import annotations
 
@@ -10,6 +10,11 @@ import re
 import sys
 import unicodedata
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 
 FIELDNAMES = [
@@ -53,7 +58,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--taxonomy",
         type=Path,
-        default=repo_root / "taxonomy" / "skills_taxonomy_v0.1.csv",
+        default=repo_root / "taxonomy" / "skills_taxonomy.csv",
     )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--evidence-output", type=Path)
@@ -62,7 +67,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--expected-source", default="ITviec")
     args = parser.parse_args()
     if args.check and args.output:
-        parser.error("--check and --output cannot be used together")
+        parser.error("--check và --output không thể sử dụng đồng thời")
     return args
 
 
@@ -321,7 +326,7 @@ def main() -> int:
         current = args.taxonomy.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
         if current != rendered:
             print(
-                "error: taxonomy observed_count values are stale; run "
+                "Lỗi: các giá trị observed_count trong taxonomy đã cũ; hãy chạy: "
                 "python scripts/recount_taxonomy.py",
                 file=sys.stderr,
             )
@@ -335,13 +340,13 @@ def main() -> int:
                 current_evidence = ""
             if current_evidence != render_evidence_csv(evidence_rows):
                 print(
-                    "error: taxonomy evidence is stale; run python "
+                    "Lỗi: file bằng chứng taxonomy đã cũ; hãy chạy: python "
                     "scripts/recount_taxonomy.py --evidence-output "
-                    "reports/skill_extraction/skills_taxonomy_v0.1_evidence.csv",
+                    "reports/skill_extraction/skills_taxonomy_evidence.csv",
                     file=sys.stderr,
                 )
                 return 1
-        print(f"Taxonomy is current for {len(jobs)} {args.expected_source} jobs.")
+        print(f"Taxonomy đã được cập nhật chuẩn xác cho {len(jobs)} tin tuyển dụng {args.expected_source}.")
         return 0
 
     output_path = args.output or args.taxonomy
@@ -353,8 +358,8 @@ def main() -> int:
             render_evidence_csv(evidence_rows), encoding="utf-8", newline=""
         )
     print(
-        f"Wrote {len(recounted_rows)} observed skills counted across "
-        f"{len(jobs)} jobs to {output_path}"
+        f"Đã ghi nhận {len(recounted_rows)} kỹ năng quan sát được trên tổng số "
+        f"{len(jobs)} tin vào {output_path}"
     )
     return 0
 
