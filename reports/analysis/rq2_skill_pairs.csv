@@ -1,0 +1,195 @@
+﻿skill_a,skill_b,joint,lift,npmi,jaccard
+Airflow,Spark,79,3.858,0.832,0.775
+Airflow,Kafka,71,3.944,0.794,0.717
+AWS,Airflow,71,3.757,0.766,0.689
+Power BI,Tableau,64,4.058,0.764,0.674
+Statistics,Tableau,65,3.916,0.751,0.663
+Kafka,Spark,68,3.736,0.744,0.66
+LangChain,Vector Database,66,3.81,0.742,0.653
+Power BI,Statistics,61,4.013,0.739,0.642
+AWS,Spark,69,3.611,0.731,0.651
+AWS,Kafka,64,3.81,0.73,0.64
+LLM,LangChain,59,3.88,0.708,0.608
+RAG,Vector Database,64,3.647,0.706,0.615
+OpenCV,PyTorch,61,3.767,0.705,0.61
+LLM,RAG,59,3.83,0.702,0.602
+LangChain,RAG,58,3.863,0.7,0.598
+LLM,Vector Database,64,3.601,0.699,0.61
+Excel,Tableau,62,3.644,0.694,0.602
+OpenCV,YOLO,59,3.734,0.688,0.59
+PyTorch,YOLO,60,3.659,0.684,0.588
+Computer Vision,PyTorch,59,3.51,0.656,0.562
+Excel,Statistics,58,3.537,0.654,0.558
+Excel,Power BI,56,3.594,0.651,0.549
+Computer Vision,YOLO,57,3.476,0.639,0.543
+Computer Vision,OpenCV,56,3.458,0.631,0.533
+Airflow,SQL,70,2.033,0.407,0.405
+SQL,Spark,69,1.982,0.389,0.394
+Excel,SQL,63,2.009,0.377,0.366
+SQL,Tableau,62,1.953,0.359,0.356
+Kafka,SQL,59,1.928,0.343,0.339
+SQL,Statistics,59,1.928,0.343,0.339
+AWS,SQL,60,1.867,0.329,0.339
+Power BI,SQL,54,1.858,0.309,0.309
+Python,Vector Database,79,1.416,0.214,0.305
+LLM,Python,70,1.429,0.205,0.272
+LangChain,Python,68,1.424,0.2,0.265
+Python,RAG,68,1.406,0.192,0.264
+Airflow,Python,76,1.362,0.186,0.29
+English,LLM,22,1.614,0.165,0.175
+AWS,Python,69,1.325,0.16,0.262
+Python,Spark,73,1.294,0.151,0.274
+Kafka,Python,64,1.29,0.139,0.242
+English,Vector Database,23,1.481,0.138,0.169
+Agile,Statistics,25,1.42,0.127,0.175
+Computer Vision,Python,64,1.259,0.126,0.241
+PyTorch,Python,64,1.259,0.126,0.241
+Communication,Power BI,22,1.429,0.123,0.163
+English,LangChain,19,1.43,0.117,0.15
+OpenCV,Python,61,1.245,0.117,0.229
+Python,YOLO,61,1.23,0.11,0.228
+Git,LangChain,24,1.341,0.104,0.164
+Computer Vision,Linux,21,1.33,0.097,0.152
+Git,LLM,24,1.307,0.095,0.162
+Airflow,Git,27,1.29,0.095,0.173
+English,RAG,18,1.338,0.094,0.14
+Git,Python,68,1.179,0.093,0.249
+English,Tableau,19,1.327,0.093,0.143
+Docker,PyTorch,22,1.293,0.089,0.154
+Linux,YOLO,20,1.299,0.087,0.146
+Agile,SQL,41,1.218,0.087,0.205
+Agile,Excel,23,1.275,0.085,0.156
+Agile,Kafka,22,1.25,0.077,0.151
+Communication,Tableau,21,1.249,0.076,0.147
+AWS,Git,24,1.229,0.073,0.157
+Computer Vision,Docker,21,1.234,0.071,0.146
+Communication,Vector Database,22,1.207,0.065,0.148
+Git,OpenCV,22,1.198,0.062,0.147
+Docker,Statistics,20,1.205,0.062,0.14
+Git,Spark,25,1.182,0.06,0.157
+Agile,Power BI,20,1.196,0.06,0.139
+English,Excel,17,1.202,0.058,0.127
+Linux,OpenCV,18,1.184,0.054,0.13
+Linux,Python,53,1.11,0.052,0.195
+Communication,Statistics,19,1.173,0.052,0.134
+Agile,Computer Vision,21,1.164,0.052,0.141
+Computer Vision,Git,22,1.154,0.049,0.144
+AWS,Docker,20,1.147,0.046,0.136
+Docker,YOLO,19,1.145,0.044,0.132
+Communication,RAG,18,1.14,0.042,0.128
+Linux,PyTorch,18,1.14,0.042,0.128
+Git,Kafka,21,1.129,0.041,0.138
+Docker,SQL,35,1.102,0.04,0.174
+Communication,LLM,18,1.125,0.038,0.127
+Docker,Excel,19,1.117,0.036,0.13
+Jira,Spark,23,1.099,0.033,0.144
+Agile,Spark,22,1.099,0.033,0.14
+Jira,OpenCV,20,1.101,0.032,0.132
+Agile,Tableau,20,1.095,0.03,0.132
+Jira,YOLO,20,1.087,0.028,0.132
+Jira,Statistics,20,1.087,0.028,0.132
+Docker,Kafka,18,1.084,0.026,0.124
+AWS,Agile,20,1.082,0.026,0.132
+Agile,Airflow,21,1.061,0.02,0.134
+Docker,Spark,20,1.059,0.019,0.13
+Git,Vector Database,22,1.051,0.017,0.137
+Agile,PyTorch,19,1.053,0.017,0.126
+Jira,Tableau,20,1.048,0.016,0.129
+AWS,Jira,20,1.035,0.012,0.128
+Airflow,Linux,18,1.039,0.012,0.121
+Docker,OpenCV,17,1.037,0.012,0.117
+Jira,Power BI,18,1.03,0.009,0.12
+English,SQL,27,1.023,0.008,0.138
+Linux,SQL,30,1.019,0.007,0.15
+Communication,Python,51,1.016,0.007,0.183
+Communication,Excel,17,1.024,0.007,0.116
+Jira,LangChain,18,1.016,0.005,0.119
+Airflow,Jira,21,1.014,0.005,0.13
+Agile,Python,55,1.008,0.004,0.196
+Jira,PyTorch,19,1.007,0.002,0.123
+Git,PyTorch,19,0.997,-0.001,0.122
+Git,RAG,18,0.993,-0.002,0.118
+English,Power BI,13,0.992,-0.002,0.098
+AWS,Linux,16,0.989,-0.003,0.11
+Communication,YOLO,16,0.988,-0.004,0.11
+Docker,Tableau,17,0.987,-0.004,0.114
+Agile,OpenCV,17,0.978,-0.007,0.113
+Kafka,Linux,15,0.974,-0.008,0.106
+English,Python,42,0.982,-0.008,0.153
+Communication,PyTorch,16,0.964,-0.012,0.109
+Airflow,Docker,18,0.964,-0.012,0.116
+Communication,SQL,30,0.968,-0.012,0.147
+English,Spark,15,0.956,-0.014,0.103
+Excel,Jira,18,0.954,-0.015,0.115
+Excel,Linux,15,0.95,-0.016,0.104
+Communication,OpenCV,15,0.938,-0.02,0.103
+Docker,Python,49,0.952,-0.023,0.174
+Communication,Kafka,15,0.926,-0.023,0.103
+Jira,SQL,33,0.938,-0.026,0.156
+Git,YOLO,17,0.914,-0.028,0.109
+Linux,Spark,16,0.913,-0.028,0.105
+Jira,Vector Database,19,0.918,-0.028,0.117
+Agile,YOLO,16,0.909,-0.03,0.105
+Airflow,English,14,0.902,-0.031,0.097
+Linux,Power BI,13,0.889,-0.034,0.093
+Agile,LangChain,15,0.885,-0.037,0.1
+Airflow,Communication,16,0.878,-0.04,0.103
+Agile,RAG,15,0.874,-0.041,0.099
+Docker,RAG,14,0.865,-0.043,0.095
+Jira,Kafka,16,0.87,-0.043,0.103
+Communication,Spark,16,0.868,-0.044,0.103
+Communication,LangChain,13,0.834,-0.053,0.09
+Git,SQL,31,0.871,-0.054,0.144
+Jira,RAG,15,0.836,-0.055,0.097
+Docker,Power BI,13,0.824,-0.056,0.089
+AWS,Communication,14,0.823,-0.058,0.093
+Jira,LLM,15,0.826,-0.058,0.096
+LangChain,Linux,12,0.81,-0.06,0.085
+Linux,Tableau,13,0.814,-0.06,0.088
+English,Statistics,11,0.797,-0.063,0.08
+Linux,RAG,12,0.799,-0.064,0.084
+Agile,Vector Database,16,0.808,-0.066,0.099
+Docker,Vector Database,15,0.803,-0.067,0.095
+Computer Vision,Jira,15,0.795,-0.07,0.094
+Communication,Computer Vision,13,0.783,-0.071,0.087
+Agile,Communication,14,0.786,-0.072,0.09
+Excel,Git,15,0.787,-0.073,0.094
+AWS,English,11,0.759,-0.077,0.077
+Jira,Python,48,0.842,-0.081,0.164
+English,Kafka,10,0.725,-0.087,0.072
+Docker,LLM,12,0.732,-0.089,0.08
+Linux,Statistics,11,0.714,-0.094,0.075
+Computer Vision,English,10,0.707,-0.094,0.071
+Docker,Git,14,0.725,-0.096,0.086
+English,Jira,11,0.693,-0.102,0.073
+Linux,Vector Database,12,0.693,-0.105,0.077
+Agile,LLM,12,0.69,-0.106,0.077
+English,YOLO,9,0.652,-0.113,0.064
+LLM,Linux,10,0.658,-0.114,0.068
+Git,Tableau,13,0.674,-0.115,0.08
+English,PyTorch,9,0.636,-0.119,0.063
+Docker,LangChain,10,0.626,-0.127,0.067
+English,Linux,8,0.602,-0.13,0.058
+Git,Power BI,11,0.623,-0.132,0.07
+English,OpenCV,8,0.587,-0.136,0.057
+Agile,Linux,10,0.59,-0.143,0.065
+Git,Jira,13,0.608,-0.145,0.076
+Communication,Docker,9,0.535,-0.165,0.058
+Git,Statistics,10,0.538,-0.168,0.061
+Communication,Jira,10,0.537,-0.169,0.061
+Communication,English,7,0.501,-0.171,0.049
+Docker,English,7,0.489,-0.177,0.048
+Git,Linux,9,0.503,-0.181,0.056
+Communication,Linux,7,0.449,-0.198,0.046
+Jira,Linux,8,0.452,-0.203,0.05
+English,Git,7,0.436,-0.205,0.045
+Agile,Docker,8,0.438,-0.211,0.049
+Python,SQL,64,0.675,-0.215,0.19
+Agile,Git,9,0.44,-0.216,0.052
+Agile,English,6,0.395,-0.221,0.04
+Agile,Jira,8,0.395,-0.237,0.047
+Communication,Git,7,0.372,-0.245,0.042
+Docker,Jira,7,0.367,-0.248,0.042
+Computer Vision,Excel,5,0.297,-0.277,0.031
+Spark,Vector Database,5,0.244,-0.322,0.028
+Computer Vision,SQL,5,0.159,-0.419,0.022
