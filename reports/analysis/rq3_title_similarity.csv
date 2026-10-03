@@ -1,0 +1,29 @@
+﻿title_a,title_b,cosine
+Business Intelligence Analyst,Data Analyst,0.9921
+Data Engineer,Senior Data Engineer,0.9903
+AI Engineer,ML Engineer,0.9525
+AI Engineer,GenAI Engineer,0.8793
+Computer Vision Engineer,ML Engineer,0.8579
+GenAI Engineer,ML Engineer,0.7377
+AI Engineer,Computer Vision Engineer,0.704
+AI Engineer,Senior Data Engineer,0.3491
+AI Engineer,Data Engineer,0.3468
+Computer Vision Engineer,GenAI Engineer,0.3102
+ML Engineer,Senior Data Engineer,0.3067
+Data Engineer,ML Engineer,0.3063
+GenAI Engineer,Senior Data Engineer,0.2888
+Data Engineer,GenAI Engineer,0.2805
+Computer Vision Engineer,Senior Data Engineer,0.2613
+Data Analyst,Senior Data Engineer,0.2568
+Computer Vision Engineer,Data Engineer,0.2564
+Business Intelligence Analyst,Senior Data Engineer,0.2455
+Data Analyst,Data Engineer,0.243
+Business Intelligence Analyst,Data Engineer,0.2315
+AI Engineer,Business Intelligence Analyst,0.1398
+AI Engineer,Data Analyst,0.1312
+Business Intelligence Analyst,ML Engineer,0.1218
+Data Analyst,ML Engineer,0.1213
+Computer Vision Engineer,Data Analyst,0.1101
+Business Intelligence Analyst,Computer Vision Engineer,0.1069
+Business Intelligence Analyst,GenAI Engineer,0.0934
+Data Analyst,GenAI Engineer,0.0888
