@@ -1,0 +1,9 @@
+﻿title,n_postings,dispersion,baseline_mean,baseline_p5,informative
+ML Engineer,64,0.7244,0.826,0.8113,True
+AI Engineer,67,0.7185,0.8263,0.8133,True
+Business Intelligence Analyst,53,0.5589,0.8266,0.8105,True
+Data Analyst,47,0.5575,0.8266,0.8082,True
+GenAI Engineer,35,0.5327,0.8252,0.8016,True
+Computer Vision Engineer,34,0.5237,0.8264,0.8025,True
+Senior Data Engineer,61,0.4991,0.8259,0.8092,True
+Data Engineer,39,0.4656,0.8262,0.8045,True
