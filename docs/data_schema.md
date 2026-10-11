@@ -4,106 +4,35 @@
 
 Tài liệu này định nghĩa cấu trúc dữ liệu thống nhất cho toàn bộ dự án.
 
-Tất cả các thành viên trong nhóm phải sử dụng đồng nhất tên trường và định nghĩa trường.
-
-Các thành viên không được phép đổi tên, xóa hoặc thay đổi ngữ nghĩa của bất kỳ trường nào nếu không có sự phê duyệt rõ ràng từ Trưởng nhóm (Leader).
-
----
-
 ## 2. Quy ước chung
 
-### Tên trường (Field Names)
+Tên trường (Field Names): Sử dụng định dạng `snake_case`.
 
-Sử dụng định dạng `snake_case`.
+Dữ liệu văn bản (Text): Lưu trữ dưới dạng mã hóa UTF-8, không xóa dấu tiếng Việt khỏi dữ liệu thô.
 
-Ví dụ:
+Giá trị bị thiếu (Missing Values): Sử dụng `null` cho dữ liệu bị thiếu, không tự ý sử dụng các giá trị giữ chỗ (placeholders) như: "N/A", "unknown", "-", "none", trừ khi đó là chuỗi văn bản thô nguyên bản thu được trực tiếp từ trang nguồn và được lưu trữ bên trong một trường thô (raw field).
 
-`raw_job_title`  
-`normalized_job_title`  
-`crawl_timestamp`  
+Ngày tháng (Dates): Sử dụng định dạng `YYYY-MM-DD`
 
-Không sử dụng:
+Dấu thời gian (Timestamps): Sử dụng định dạng ISO 8601 và bao gồm múi giờ bất cứ khi nào có sẵn.
 
-`RawJobTitle`  
-`raw-job-title`  
-`Raw Job Title`  
+Giá trị Boolean: Chỉ sử dụng: `true`/`false`
 
-### Dữ liệu văn bản (Text)
+Kinh nghiệm (Experience): Chỉ lưu `raw_experience: string/null`, giữ nguyên văn bản nguồn nếu có; nếu thiếu thì dùng `null`.
 
-Lưu trữ dưới dạng mã hóa UTF-8.
-
-Không xóa dấu tiếng Việt khỏi dữ liệu thô.
-
-### Giá trị bị thiếu (Missing Values)
-
-Sử dụng `null` cho dữ liệu bị thiếu.
-
-Không tự ý sử dụng các giá trị giữ chỗ (placeholders) như:
-
-"N/A"  
-"unknown"  
-"-"  
-"none"  
-
-trừ khi đó là chuỗi văn bản thô nguyên bản thu được trực tiếp từ trang nguồn và được lưu trữ bên trong một trường thô (raw field).
-
-### Ngày tháng (Dates)
-
-Sử dụng định dạng:
-
-`YYYY-MM-DD`
-
-### Dấu thời gian (Timestamps)
-
-Sử dụng định dạng ISO 8601 và bao gồm múi giờ bất cứ khi nào có sẵn.
-
-### Giá trị Boolean
-
-Chỉ sử dụng:
-
-`true`  
-`false`  
-
-### Tiền tệ (Currency)
-
-Nếu có thông tin tiền tệ, sử dụng mã tiền tệ chuẩn ISO, ví dụ:
-
-`VND`  
-`USD`  
-
-### Kinh nghiệm (Experience)
-
-Các trường số năm kinh nghiệm đã chuẩn hóa phải sử dụng đơn vị:
-
-năm (years).
-
-### Dữ liệu thô (Raw Data)
-
-Không được ghi đè các trường thô bằng dữ liệu đã chuẩn hóa hoặc dữ liệu phái sinh.
-
----
+Dữ liệu thô (Raw Data): Không được ghi đè các trường thô bằng dữ liệu đã chuẩn hóa hoặc dữ liệu phái sinh.
 
 ## 3. Các giai đoạn dữ liệu (Data Stages)
 
 Dự án bao gồm bốn giai đoạn dữ liệu chính:
 
-### Giai đoạn A — Dữ liệu thô (Stage A — Raw data)
+**Giai đoạn A — Dữ liệu thô (Stage A — Raw data)**: Dữ liệu được trích xuất trực tiếp từ các nguồn tuyển dụng bởi các bộ bóc tách (parsers).
 
-Dữ liệu được trích xuất trực tiếp từ các nguồn tuyển dụng bởi các bộ bóc tách (parsers).
+**Giai đoạn B — Dữ liệu sạch (Stage B — Clean data)**: Dữ liệu đã được làm sạch, chuẩn hóa và gắn chú thích các cờ mức độ liên quan (relevance) và cờ trùng lặp (duplicate).
 
-### Giai đoạn B — Dữ liệu sạch (Stage B — Clean data)
+**Giai đoạn C — Đặc trưng kỹ năng (Stage C — Skill features)**: Dữ liệu đã được trích xuất các kỹ năng chuẩn hóa.
 
-Dữ liệu đã được làm sạch, chuẩn hóa và gắn chú thích các cờ mức độ liên quan (relevance) và cờ trùng lặp (duplicate).
-
-### Giai đoạn C — Đặc trưng kỹ năng (Stage C — Skill features)
-
-Dữ liệu đã được trích xuất các kỹ năng chuẩn hóa.
-
-### Giai đoạn D — Đầu ra phân tích (Stage D — Analysis outputs)
-
-Các bảng dữ liệu phái sinh phục vụ đo lường độ tương đồng, phân cụm và trực quan hóa.
-
----
+**Giai đoạn D — Đầu ra phân tích (Stage D — Analysis outputs)**: Các bảng dữ liệu phái sinh phục vụ đo lường độ tương đồng, phân cụm và trực quan hóa.
 
 ## 4. Lược đồ tin tuyển dụng chính (Main Vacancy Schema)
 
@@ -122,16 +51,9 @@ Các bảng dữ liệu phái sinh phục vụ đo lường độ tương đồn
 | `normalized_location` | Địa điểm đã chuẩn hóa | string/null | Không | Phái sinh (Derived) | Có |
 | `posted_date` | Ngày đăng tuyển nếu có | date/null | Không | Thô/Parse | Chỉ chuẩn hóa định dạng |
 | `raw_experience` | Chuỗi yêu cầu kinh nghiệm nguyên bản | string/null | Không | Thô (Raw) | Không |
-| `experience_min_years` | Số năm kinh nghiệm tối thiểu | number/null | Không | Phái sinh (Derived) | Có |
-| `experience_max_years` | Số năm kinh nghiệm tối đa | number/null | Không | Phái sinh (Derived) | Có |
-| `education` | Yêu cầu học vấn | string/null | Không | Thô/Parse | Hạn chế |
 | `job_description` | Văn bản mô tả công việc | string/null | Có điều kiện | Thô (Raw) | Không |
 | `job_requirements` | Văn bản yêu cầu ứng viên | string/null | Có điều kiện | Thô (Raw) | Không |
 | `job_text` | Văn bản nối phục vụ trích xuất kỹ năng | string/null | Sau tiền xử lý | Phái sinh (Derived) | Có |
-| `salary_raw` | Chuỗi thông tin lương nguyên bản | string/null | Không | Thô (Raw) | Không |
-| `salary_min` | Mức lương tối thiểu nếu parse được | number/null | Không | Phái sinh (Derived) | Có |
-| `salary_max` | Mức lương tối đa nếu parse được | number/null | Không | Phái sinh (Derived) | Có |
-| `salary_currency` | Mã đơn vị tiền tệ | string/null | Không | Phái sinh (Derived) | Có |
 | `relevance_flag` | Đánh dấu tin có thuộc phạm vi nghiên cứu | boolean | Sau làm sạch | Phái sinh (Derived) | Không |
 | `exclusion_reason` | Lý do loại trừ nếu tin không liên quan | string/null | Khi relevance=false | Phái sinh (Derived) | Không |
 | `duplicate_flag` | Đánh dấu bản ghi có bị trùng lặp không | boolean | Sau làm sạch | Phái sinh (Derived) | Không |
@@ -139,107 +61,46 @@ Các bảng dữ liệu phái sinh phục vụ đo lường độ tương đồn
 | `extracted_skills` | Danh sách các kỹ năng chuẩn hóa trích xuất | list[string]/null | Sau trích xuất | Phái sinh (Derived) | Có |
 | `skill_count` | Số lượng kỹ năng trích xuất được | integer/null | Sau trích xuất | Phái sinh (Derived) | Không |
 
----
+**Quy tắc đối với tin tuyển dụng hợp lệ:** Một tin tuyển dụng hợp lệ bắt buộc phải chứa `raw_job_title` và ít nhất một trong hai trường văn bản: `job_description` hoặc `job_requirements`. Nếu cả hai trường văn bản đều trống, bản ghi thiếu dữ liệu tối thiểu cho việc trích xuất kỹ năng và phải được xem xét loại trừ.
 
-## 5. Yêu cầu văn bản bắt buộc
-
-Một tin tuyển dụng hợp lệ bắt buộc phải chứa:
-
-`raw_job_title`
-
-và ít nhất một trong hai trường văn bản:
-
-`job_description`  
-`job_requirements`  
-
-Nếu cả hai trường văn bản đều trống, bản ghi thiếu dữ liệu tối thiểu cho việc trích xuất kỹ năng và phải được xem xét loại trừ.
-
----
-
-## 6. Quy tắc cho trường job_id
-
-`job_id` đóng vai trò là khóa chính nội bộ (internal primary key) của dự án.
-
-`job_id` phải:
+**Quy tắc đối với job_id:** `job_id` đóng vai trò là khóa chính nội bộ (internal primary key) của dự án. Nó phải:
 
 - là duy nhất;
 - ổn định qua các lần thực thi pipeline;
 - độc lập với chỉ số dòng (row index / line numbers);
 - không thể thay đổi (immutable) sau khi làm sạch.
 
-Nếu website nguồn cung cấp mã tin tuyển dụng, hãy lưu riêng vào trường `source_job_id`.
+Nếu website nguồn cung cấp mã tin tuyển dụng, hãy lưu riêng vào trường `source_job_id`. Không sử dụng `source_job_id` của một website cụ thể làm khóa chính toàn cục cho toàn bộ dự án.
 
-Không sử dụng `source_job_id` của một website cụ thể làm khóa chính toàn cục cho toàn bộ dự án.
+**Quy tắc cho Chức danh công việc:** `raw_job_title` phải giữ nguyên nội dung thô chính xác thu được từ nguồn. Không sửa lỗi chính tả hoặc gộp nghề nghiệp bên trong trường này. Không ghép skill tags hoặc metadata từ vùng khác vào chức danh. Nếu phần công nghệ đã nằm trong chức danh nguồn, phải bảo toàn phần đó trong `raw_job_title`.
 
----
+**Quy tắc chuẩn hóa (normalized_job_title):** Chỉ được dùng để loại bỏ các điểm sai lệch về bề mặt và định dạng, tuyệt đối không tự động gộp các vị trí:
 
-## 7. Quy tắc cho Chức danh công việc
+- AI Engineer
+- Machine Learning Engineer
+- Data Scientist
 
-### raw_job_title
+thành một nhóm nghề nghiệp chung. Việc gom nhóm ngữ nghĩa không thuộc về giai đoạn làm sạch dữ liệu.
 
-Phải giữ nguyên nội dung thô chính xác thu được từ nguồn.
+**Quy tắc cho Địa điểm:**
 
-Không sửa lỗi chính tả hoặc gộp nghề nghiệp bên trong trường này.
+Phải lưu giữ `raw_location` và nếu có thể chuẩn hóa được, bổ sung thêm `normalized_location`. Không được ghi đè lên `raw_location`.
 
-### normalized_job_title
+**Quy tắc cho Kinh nghiệm:** Chỉ giữ `raw_experience: string/null`. Có thông tin
+nguồn thì lưu nguyên văn, ví dụ `2–4 years of experience`, `3+ years` hoặc
+`Fresh graduates are welcome`; không có thì dùng `null`. Không bóc tách số năm
+tối thiểu/tối đa hoặc quy đổi cấp bậc thành số năm. RQ1–RQ4 không dùng số năm
+kinh nghiệm; chỉ bổ sung trường phái sinh khi phạm vi nghiên cứu cần đến chúng.
 
-Chỉ được dùng để loại bỏ các điểm sai lệch về bề mặt và định dạng.
 
-Bước chuẩn hóa TUYỆT ĐỐI KHÔNG tự động gộp các vị trí:
+## 10. Phạm vi lương và học vấn
 
-AI Engineer  
-Machine Learning Engineer  
-Data Scientist  
+Schema hiện tại gồm 22 trường, không có trường lương hoặc học vấn vì không phục vụ
+RQ1–RQ4. Crawler không trích xuất riêng các thông tin này; cleaner không tạo hoặc
+xuất cột tương ứng. Không yêu cầu truy cập thông tin lương cần đăng nhập.
 
-thành một nhóm nghề nghiệp chung.
-
-Việc gom nhóm ngữ nghĩa không thuộc về giai đoạn làm sạch dữ liệu.
-
----
-
-## 8. Quy tắc cho Địa điểm
-
-Phải lưu giữ:
-
-`raw_location`
-
-và nếu có thể chuẩn hóa được, bổ sung thêm:
-
-`normalized_location`.
-
-Không được ghi đè lên `raw_location`.
-
-Mọi quy tắc ánh xạ địa điểm phải được tài liệu hóa trong một file ánh xạ chuyên dụng ([docs/data_cleaning/location_mapping.csv](docs/data_cleaning/location_mapping.csv)).
-
----
-
-## 9. Quy tắc cho Kinh nghiệm
-
-`raw_experience` lưu giữ nguyên văn văn bản từ website.
-
-`experience_min_years` và `experience_max_years` là các trường số phái sinh.
-
-Nếu số năm không thể xác định một cách tin cậy, hãy đặt thành `null`.
-
-Không đưa ra các giả định hoặc ước tính tùy tiện.
-
----
-
-## 10. Quy tắc cho Lương
-
-`salary_raw` luôn được bảo toàn nguyên bản nếu website cung cấp.
-
-`salary_min` và `salary_max` chỉ được gán giá trị khi chúng có thể được bóc tách rõ ràng thành các con số.
-
-Nếu website ghi:
-
-Negotiable  
-Thỏa thuận  
-Competitive  
-
-thì `salary_min` và `salary_max` phải được đặt thành `null`.
-
-Không cố gắng điền khuyết (impute) hoặc đoán mức lương.
+Văn bản mô tả và yêu cầu từ nguồn vẫn được bảo toàn, kể cả khi chứa thông tin lương
+hoặc học vấn. Chỉ xem xét thêm trường riêng khi phạm vi nghiên cứu thay đổi.
 
 ---
 
@@ -312,6 +173,10 @@ Giá trị ô:
 0 = bộ trích xuất không phát hiện kỹ năng  
 
 Tên hoặc mã định danh kỹ năng phải tham chiếu chuẩn xác đến taxonomy.
+
+Hợp đồng tích hợp hiện tại dùng `skill_id` làm tên cột ma trận và
+`canonical_name` trong `extracted_skills`; hai dạng được đối chiếu qua cùng file
+taxonomy. Danh sách không có kỹ năng là `[]` với `skill_count=0`, không phải `null`.
 
 ---
 
@@ -390,7 +255,6 @@ Các trường sau đây không bao giờ được phép ghi đè:
 `raw_experience`  
 `job_description`  
 `job_requirements`  
-`salary_raw`  
 
 Nếu cần biến đổi dữ liệu, hãy tạo các trường phái sinh mới.
 
@@ -402,11 +266,6 @@ Các trường phái sinh được phép chuẩn hóa:
 
 `normalized_job_title`  
 `normalized_location`  
-`experience_min_years`  
-`experience_max_years`  
-`salary_min`  
-`salary_max`  
-`salary_currency`  
 `job_text`  
 `extracted_skills`  
 

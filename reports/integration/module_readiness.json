@@ -1,0 +1,58 @@
+{
+  "started_at": "2026-10-04T10:16:40.656331+00:00",
+  "config": "<repo>\\config\\pipeline.json",
+  "stage": "all",
+  "run_kind": "integration",
+  "config_sha256": "9a0adc7838d4a8f23a99910e41374c39e60dd7805dac7e14fa63e6c165ca7b73",
+  "status": "failed",
+  "counts": {
+    "raw_records": 45
+  },
+  "stages": {
+    "clean": {
+      "status": "failed",
+      "started_at": "2026-10-04T10:16:40.657333+00:00",
+      "module": "src.pipeline.adapters:cleaner",
+      "inputs": {
+        "raw": {
+          "path": "<repo>\\data\\sample\\sample_jobs.jsonl",
+          "sha256": "579018e535ac9d516467a6d2bb2d7450ce0a70070370c2887b5382fc0029d7f5"
+        }
+      },
+      "error": "Module clean thất bại (src.pipeline.adapters:cleaner): Chưa bàn giao cleaner vào nhánh hiện tại: thiếu src.cleaner.pipeline.",
+      "finished_at": "2026-10-04T10:16:40.664388+00:00"
+    },
+    "rq1": {
+      "status": "not_run"
+    },
+    "extract": {
+      "status": "not_run"
+    },
+    "analysis": {
+      "status": "not_run"
+    }
+  },
+  "rq": {
+    "RQ1": {
+      "status": "not_run",
+      "owner": "Đức"
+    },
+    "RQ2": {
+      "status": "not_run",
+      "owner": "Triều"
+    },
+    "RQ3": {
+      "status": "not_run",
+      "owner": "Triều"
+    },
+    "RQ4": {
+      "status": "not_run",
+      "owner": "Triều"
+    }
+  },
+  "error": "Module clean thất bại (src.pipeline.adapters:cleaner): Chưa bàn giao cleaner vào nhánh hiện tại: thiếu src.cleaner.pipeline.",
+  "finished_at": "2026-10-04T10:16:40.664388+00:00",
+  "research_acceptance": false,
+  "evidence_source": "python -m src.pipeline --config config/pipeline.json --stage all",
+  "path_note": "Đường dẫn tuyệt đối được thay bằng nhãn để lưu bằng chứng trong repo."
+}

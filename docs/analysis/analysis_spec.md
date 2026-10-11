@@ -2,6 +2,9 @@
 
 **Người phụ trách:** Hồ Nhật Triều (20236003) · **Chỉnh lý:** 2026-09-24 (chỉ điều chỉnh cách diễn đạt — phương pháp giữ nguyên)
 
+**Phân công chốt 2026-10-03:** Đức phụ trách RQ1; Triều phụ trách RQ2–RQ4.
+Chỉ số và ngưỡng bên dưới giữ nguyên. Xem [quyết định chung](../decisions/integration_decisions.md).
+
 **Mục đích tài liệu:** Kế hoạch chi tiết cho giai đoạn phân tích — chúng ta tính toán những gì, đầu ra gồm những bảng/biểu đồ nào, và khi nào thì một kết quả đủ độ tin cậy an toàn để công bố.
 
 Tài liệu được soạn thảo trước khi có dữ liệu đầy đủ một cách có chủ đích, nhằm đảm bảo các ngưỡng định lượng được thiết lập dựa trên lập luận khoa học chứ không phải chọn lựa sau đó để làm đẹp số liệu.
@@ -27,7 +30,9 @@ RQ4 là câu hỏi trọng tâm nhất. RQ1–RQ3 đóng vai trò xây dựng n�
 
 Tên các trường dữ liệu tuân thủ nghiêm ngặt [docs/data_schema.md](docs/data_schema.md) các mục 5, 8 và 13. Bản đặc tả này sử dụng chính xác các tên trường đó — không sử dụng tên alias.
 
-Danh sách trường: `job_id` · `raw_job_title` · `normalized_job_title` · `company` · `raw_location` · `normalized_location` · `job_description` · `job_requirements` · `extracted_skills` · `skill_count` · `relevance_flag` · `source` · `source_url` · `crawl_timestamp`
+Danh sách trường: `job_id` · `raw_job_title` · `normalized_job_title` · `company` · `raw_location` · `normalized_location` · `job_description` · `job_requirements` · `extracted_skills` · `skill_count` · `relevance_flag` · `duplicate_flag` · `source` · `source_url` · `crawl_timestamp`
+
+Mọi RQ chỉ dùng các tin `relevance_flag=true AND duplicate_flag=false`.
 
 Không phải câu hỏi nào cũng dùng tất cả các trường — ví dụ RQ2 chỉ cần `job_id` và `extracted_skills`.
 
@@ -36,7 +41,7 @@ Không phải câu hỏi nào cũng dùng tất cả các trường — ví dụ
 | Quy tắc | Lý do |
 |---|---|
 | `extracted_skills` phải là một danh sách (list), không phải một chuỗi đơn | Chuỗi đơn sẽ phải tách sau này, và tên kỹ năng chứa dấu phẩy sẽ làm hỏng thao tác split |
-| Trường này chứa mã taxonomy, không chứa từ ngữ thô | `sklearn` và `scikit-learn` nếu đến riêng lẻ sẽ bị chia thành 2 kỹ năng và làm ẩn đi nhu cầu thực tế |
+| Danh sách chứa `canonical_name` của taxonomy, ma trận dùng `skill_id` | `sklearn` và `scikit-learn` nếu đến riêng lẻ sẽ bị chia thành 2 kỹ năng và làm ẩn đi nhu cầu thực tế; đối chiếu tên/mã qua cùng taxonomy |
 | Không tìm thấy kỹ năng → danh sách rỗng `[]`, tuyệt đối không để `null` | Danh sách rỗng = tin tuyển dụng viết kém. Null = bộ trích xuất chưa từng chạy. Hai lỗi khác nhau cần cách xử lý khác nhau |
 | `raw_job_title` không bao giờ bị ghi đè | RQ1 đếm số chức danh thô khác biệt; ghi đè sẽ phá hủy phép đo này (cũng theo Scope §10) |
 
@@ -188,8 +193,8 @@ Tính tái lập: cố định một giá trị seed ngẫu nhiên, toàn bộ n
 
 # 10. CÁC CÂU HỎI THẢO LUẬN CHO NHÓM
 
-1. **Trưởng nhóm (Leader):** Câu hỏi quan trọng nhất. Vị trí `Senior Data Analyst` có được tính là `Data Analyst` không? Nếu giữ tách biệt, rất nhiều chức danh sẽ rơi xuống dưới ngưỡng 5 tin và RQ3 sẽ mất phần lớn mẫu nghiên cứu.
+1. **Đã chốt:** `Senior Data Analyst` chuẩn hóa thành `Data Analyst`; Đức tạo trường này và phụ trách RQ1 theo quyết định chung ngày 2026-10-03.
 2. **Người phụ trách Taxonomy:** Có bao nhiêu kỹ năng trong taxonomy? Điều này quyết định ngưỡng lọc kỹ năng và quy mô tối thiểu 300 tin.
 3. **Người phụ trách Taxonomy:** Có cột `skill_group` không? Mục 6 chỉ sử dụng cột này để đối chiếu so sánh sau cùng.
-4. **Người phụ trách Thu thập:** Dữ liệu mẫu đã trả lời: `job_description` và `job_requirements` tách biệt và đầy đủ trên cả 45 tin. Câu hỏi còn lại: `relevance_flag` và `exclusion_reason` đang null trên cả 45 tin — khâu thu thập sẽ gán hay khâu làm sạch gán?
+4. **Đã chốt theo schema:** Cleaner gán `relevance_flag`, `exclusion_reason`, `duplicate_flag`; crawler bảo toàn trường thô, để trường phái sinh chưa xử lý là `null`.
 5. **Trưởng nhóm (Leader):** Có nên bổ sung một mô hình dự đoán chức danh như một thước đo phụ cho RQ3 không? Nó sẽ cô đọng RQ3 thành một con số nổi bật duy nhất. Hiện không nằm trong phạm vi bắt buộc của đề tài — đưa ra để xin ý kiến thảo luận, không tự ý mặc định.
