@@ -12,7 +12,7 @@
     * `https://itviec.com/it-jobs/business-analyst`
     * URL phân khúc chuyên môn: `https://itviec.com/segments/viec-lam-ai-data`
   * Mẫu URL trang chi tiết: `https://itviec.com/it-jobs/<job-slug>`
-* **Đánh giá tính khả thi**: **KHẢ THI CAO (ĐÃ PHÊ DUYỆT)**
+* **Đánh giá tính khả thi ở đợt khảo sát mẫu**: **KHẢ THI CAO**. ITviec được chọn làm nguồn chính theo phạm vi; trước crawl quy mô lớn vẫn phải kiểm tra điều khoản và điều kiện truy cập hiện tại.
 
 ### Các lý do chính chứng minh tính khả thi
 1. **HTML kết xuất phía máy chủ (Server-Side Rendered - SSR)**: ITviec kết xuất phản hồi trang ban đầu từ phía máy chủ (Ruby on Rails), cho phép các yêu cầu HTTP GET truyền thống lấy được toàn bộ nội dung HTML chi tiết của việc làm mà không đòi hỏi thực thi JavaScript nặng để bóc tách văn bản thô.
@@ -79,7 +79,6 @@ flowchart TD
 | **`raw_experience`** | **Bán cấu trúc** | Huy hiệu cấp bậc HTML / Thẻ metadata | Chuỗi văn bản thô bảo toàn (ví dụ: "3+ years", "Senior"). |
 | **`job_description`**| **Có thể bóc tách hoàn toàn** | `JSON-LD.description` / Phần "Job Description" HTML | Chi tiết trách nhiệm, nhiệm vụ và bối cảnh dự án. |
 | **`job_requirements`**| **Có thể bóc tách hoàn toàn**| Phần "Your Skills and Experience" HTML | Phần văn bản mục tiêu chính để trích xuất kỹ năng. |
-| **`salary_raw`**     | **Bị khóa một phần** | Thẻ chứa `.salary` HTML / Đoạn văn tự do | Thường bị che dạng `"Sign in to view salary"`. Ghi nhận nguyên bản. |
 
 ---
 
@@ -90,7 +89,7 @@ flowchart TD
 * **Giải pháp giảm thiểu**:
   * Thiết lập header yêu cầu trình duyệt thực tế (`User-Agent`, `Accept-Language`, `Referer`, `sec-ch-ua`).
   * Sử dụng cơ chế điều tiết phiên (session throttling) và khoảng thời gian chờ hợp lý (delay từ 1.5 đến 3.0 giây giữa các yêu cầu tải trang chi tiết).
-  * Dự phòng sử dụng các công cụ tự động hóa trình duyệt (như Playwright / Selenium kèm plugin stealth) hoặc thư viện xử lý Cloudflare nếu client HTTP cơ bản gặp thử thách HTTP 403/503.
+  * Nếu gặp HTTP 403/503 hoặc CAPTCHA/xác thực, dừng thu thập tự động, ghi log và đánh giá lại tính khả thi; chỉ chuyển sang TopCV theo quy trình nguồn dự phòng. Không dùng stealth hoặc công cụ vượt biện pháp phòng vệ, theo phạm vi dự án §14.
 
 ### 4.2 Kết xuất giao diện động (Hotwire / Turbo Rails)
 * **Quan sát**: Trang danh sách sử dụng Turbo JS để hoán đổi động phần xem trước chi tiết công việc trên chế độ chia đôi màn hình máy tính.
@@ -104,7 +103,7 @@ flowchart TD
 
 ### 4.4 Thông tin mức lương bị ẩn
 * **Quan sát**: Số liệu mức lương chính xác bị ẩn sau màn hình xác thực tài khoản đối với phần lớn các tin đăng tuyển.
-* **Giải pháp giảm thiểu**: Xử lý trường `salary` cho phép giá trị null trong giai đoạn thu thập thô. Sử dụng bộ trích xuất regex trên đoạn văn `description` để bắt các khoảng lương được công bố công khai khi có sẵn.
+* **Quyết định phạm vi hiện tại**: Không thu thập riêng lương hoặc học vấn vì không phục vụ RQ1–RQ4. Không xây regex bóc tách lương từ mô tả hoặc truy cập phần lương cần đăng nhập; giữ nguyên nội dung mô tả/yêu cầu đã thu thập.
 
 ---
 
