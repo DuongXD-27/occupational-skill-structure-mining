@@ -81,3 +81,19 @@ python scripts/recount_taxonomy.py --check
 python src/crawler/sample_crawler.py
 ```
 Dữ liệu thu thập sẽ được ghi vào `data/sample/sample_jobs.jsonl` và nhật ký sẽ ghi vào `data/sample/crawl_log_sample.csv`.
+
+### Trích xuất kỹ năng và đánh giá
+
+```powershell
+python -m pip install -r requirements-parser.txt
+python -m pytest tests/parser -q
+python -m src.parser preview --input data/sample/sample_jobs.jsonl --output-dir data/features/development
+python -m src.parser evaluate --gold data/evaluation/gold_jobs.draft.jsonl --output-dir reports/skill_extraction/draft_gold
+```
+
+Recount và pipeline dùng chung matcher trong `src/parser/`. Có
+[gold dự thảo 50 tin độc lập](data/evaluation/README.md),
+[báo cáo TP/FP/FN và Precision/Recall/F1](reports/skill_extraction/evaluation.md)
+và [hướng dẫn API, xuất artifact từ dữ liệu sạch](docs/skill_extraction/parser.md).
+Nhãn dự thảo do trợ lý gán, chờ người rà soát. Hai bảng trong `development` là
+kết quả thử raw; artifact chính thức cho RQ2–RQ4 chờ dữ liệu sạch được bàn giao.

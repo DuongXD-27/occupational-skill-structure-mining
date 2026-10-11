@@ -62,3 +62,8 @@ data/interim/*
 # Local skill-taxonomy recount artifacts
 /reports/skill_extraction/skills_taxonomy_evidence.csv
 /tests/test_recount_taxonomy.py
+
+# Kết quả kiểm thử và lần chạy cục bộ
+.tmp/
+.pytest_cache/
+/reports/integration/latest_run.json

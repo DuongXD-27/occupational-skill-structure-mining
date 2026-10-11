@@ -6,9 +6,7 @@ import argparse
 import csv
 import io
 import json
-import re
 import sys
-import unicodedata
 from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -17,14 +15,14 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
 
-FIELDNAMES = [
-    "skill_id",
-    "canonical_name",
-    "abbreviation",
-    "aliases",
-    "skill_group",
-    "observed_count",
-]
+# Hỗ trợ cả python scripts/recount_taxonomy.py và import từ repository.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.parser.skill_extractor import (
+    FIELDNAMES, TEXT_FIELDS, load_taxonomy, normalize_text, contains_term,
+    term_matches, split_terms, abbreviation_is_supported,
+    skill_match_candidates, extract_document_skills, document_text,
+)
+
 EVIDENCE_FIELDNAMES = [
     "skill_id",
     "canonical_name",
@@ -32,20 +30,6 @@ EVIDENCE_FIELDNAMES = [
     "match_type",
     "matched_term",
 ]
-TEXT_FIELDS = ("raw_job_title", "job_description", "job_requirements")
-AMBIGUOUS_ABBREVIATION_CONTEXT = {
-    "CV": (
-        "computer vision",
-        "opencv",
-        "image processing",
-        "image recognition",
-        "object detection",
-        "video processing",
-        "vision model",
-        "visual recognition",
-    )
-}
-
 
 def parse_args() -> argparse.Namespace:
     repo_root = Path(__file__).resolve().parents[1]
@@ -104,167 +88,13 @@ def load_jobs(path: Path, expected_count: int, expected_source: str) -> list[dic
     return jobs
 
 
-def load_taxonomy(path: Path) -> list[dict[str, str]]:
-    with path.open(encoding="utf-8-sig", newline="") as csv_file:
-        reader = csv.DictReader(csv_file)
-        if reader.fieldnames != FIELDNAMES:
-            raise ValueError(
-                f"Taxonomy schema must be {FIELDNAMES!r}; found {reader.fieldnames!r}"
-            )
-        return list(reader)
-
-
-def normalize_text(value: str) -> str:
-    return unicodedata.normalize("NFKC", value)
-
-
-def contains_term(text: str, term: str, *, case_sensitive: bool = False) -> bool:
-    normalized_term = normalize_text(term.strip())
-    if not normalized_term:
-        return False
-    pattern = re.escape(normalized_term).replace(r"\ ", r"\s+")
-    flags = 0 if case_sensitive else re.IGNORECASE
-    return re.search(rf"(?<!\w){pattern}(?!\w)", text, flags) is not None
-
-
-def term_matches(
-    text: str,
-    term: str,
-    *,
-    case_sensitive: bool = False,
-    protect_short_language: bool = False,
-) -> list[tuple[int, int]]:
-    normalized_term = normalize_text(term.strip())
-    if not normalized_term:
-        return []
-    pattern = re.escape(normalized_term).replace(r"\ ", r"\s+")
-    suffix = r"(?!\w)"
-    if protect_short_language and normalized_term == "C":
-        suffix = r"(?![\w#+])"
-    elif protect_short_language and normalized_term == "R":
-        suffix = r"(?![\w&])"
-    flags = 0 if case_sensitive else re.IGNORECASE
-    return [
-        (match.start(), match.end())
-        for match in re.finditer(rf"(?<!\w){pattern}{suffix}", text, flags)
-    ]
-
-
-def split_terms(value: str) -> list[str]:
-    return [term.strip() for term in value.split(";") if term.strip()]
-
-
-def abbreviation_is_supported(text: str, abbreviation: str) -> bool:
-    contexts = AMBIGUOUS_ABBREVIATION_CONTEXT.get(abbreviation.upper())
-    if contexts is None:
-        return True
-    return any(contains_term(text, context) for context in contexts)
-
-
-def skill_match_candidates(
-    row: dict[str, str], text: str
-) -> list[dict[str, str | int]]:
-    candidates = []
-    canonical = row["canonical_name"]
-    canonical_case_sensitive = canonical in {"C", "R", "Go"}
-    for start, end in term_matches(
-        text,
-        canonical,
-        case_sensitive=canonical_case_sensitive,
-        protect_short_language=canonical in {"C", "R"},
-    ):
-        candidates.append(
-            {
-                "skill_id": row["skill_id"],
-                "canonical_name": canonical,
-                "match_type": "canonical_name",
-                "matched_term": canonical,
-                "start": start,
-                "end": end,
-            }
-        )
-
-    for alias in split_terms(row["aliases"]):
-        for start, end in term_matches(text, alias):
-            candidates.append(
-                {
-                    "skill_id": row["skill_id"],
-                    "canonical_name": canonical,
-                    "match_type": "alias",
-                    "matched_term": alias,
-                    "start": start,
-                    "end": end,
-                }
-            )
-
-    for abbreviation in split_terms(row["abbreviation"]):
-        if not abbreviation_is_supported(text, abbreviation):
-            continue
-        for start, end in term_matches(text, abbreviation, case_sensitive=True):
-            candidates.append(
-                {
-                    "skill_id": row["skill_id"],
-                    "canonical_name": canonical,
-                    "match_type": "abbreviation",
-                    "matched_term": abbreviation,
-                    "start": start,
-                    "end": end,
-                }
-            )
-    return candidates
-
-
-def extract_document_skills(
-    rows: list[dict[str, str]], text: str
-) -> list[dict[str, str | int]]:
-    candidates = [
-        candidate
-        for row in rows
-        for candidate in skill_match_candidates(row, text)
-    ]
-    match_type_priority = {"canonical_name": 0, "alias": 1, "abbreviation": 2}
-    candidates.sort(
-        key=lambda candidate: (
-            -(int(candidate["end"]) - int(candidate["start"])),
-            match_type_priority[str(candidate["match_type"])],
-            int(candidate["start"]),
-            str(candidate["skill_id"]),
-        )
-    )
-
-    accepted = []
-    matched_skill_ids = set()
-    for candidate in candidates:
-        skill_id = str(candidate["skill_id"])
-        if skill_id in matched_skill_ids:
-            continue
-        start = int(candidate["start"])
-        end = int(candidate["end"])
-        overlaps_longer_skill = any(
-            skill_id != str(existing["skill_id"])
-            and start < int(existing["end"])
-            and int(existing["start"]) < end
-            for existing in accepted
-        )
-        if overlaps_longer_skill:
-            continue
-        accepted.append(candidate)
-        matched_skill_ids.add(skill_id)
-    return accepted
-
 
 def recount(
     rows: list[dict[str, str]], jobs: list[dict]
 ) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     documents = []
     for job in jobs:
-        text = normalize_text(
-            "\n".join(
-                str(job.get(field) or "")
-                for field in TEXT_FIELDS
-                if job.get(field)
-            )
-        )
+        text = document_text(job)
         documents.append((job["job_id"], text))
 
     counts = {row["skill_id"]: 0 for row in rows}

@@ -1,0 +1,43 @@
+{"job_id": "6d8a728e0459f4b4", "false_positives": ["DevOps"], "false_negatives": ["Databases", "Kubernetes"]}
+{"job_id": "1dd2051880dfb113", "false_positives": [], "false_negatives": ["Model Deployment", "Model Evaluation"]}
+{"job_id": "7faba17f489ab000", "false_positives": [], "false_negatives": ["Dashboarding", "Data Analysis", "Data Modeling"]}
+{"job_id": "61f8d549b3cc6002", "false_positives": ["System Architecture"], "false_negatives": ["Distributed Systems"]}
+{"job_id": "78acf4ef6575fd77", "false_positives": [], "false_negatives": ["BigQuery", "Databases", "Oracle Database"]}
+{"job_id": "7e75db1e6be40354", "false_positives": [], "false_negatives": ["Data Pipelines", "Stream Processing"]}
+{"job_id": "032a17db8155c044", "false_positives": [], "false_negatives": ["Debugging", "Oracle Database"]}
+{"job_id": "3f378eb8b4967fd3", "false_positives": [], "false_negatives": ["Data Pipelines", "Data Quality", "Databases"]}
+{"job_id": "62d426ca2fb898a6", "false_positives": [], "false_negatives": ["Automation Engineering"]}
+{"job_id": "34c208a0796abe29", "false_positives": [], "false_negatives": ["Data Validation", "Databases"]}
+{"job_id": "692e80013b1693e3", "false_positives": ["C"], "false_negatives": ["Fraud Detection"]}
+{"job_id": "7dcb1cbbd869bfaf", "false_positives": ["Fine-Tuning", "Optimization"], "false_negatives": ["Data Security", "Databases", "Query Optimization"]}
+{"job_id": "6ce5b573ec474ac8", "false_positives": ["ReAct"], "false_negatives": ["Linux/Unix Shell", "Vector Database"]}
+{"job_id": "c46592f2dd01e203", "false_positives": ["Optimization"], "false_negatives": ["Automation Engineering"]}
+{"job_id": "9ed290d237fb4015", "false_positives": [], "false_negatives": ["AI Agents", "System Architecture"]}
+{"job_id": "95f2b91d4a8da423", "false_positives": [], "false_negatives": ["Linux/Unix Shell", "Microsoft SQL Server", "Oracle Database"]}
+{"job_id": "445de392e42f35bf", "false_positives": ["Statistics"], "false_negatives": ["Data Validation"]}
+{"job_id": "01d7a5e0eef13063", "false_positives": [], "false_negatives": ["AI Agents", "Automation Engineering"]}
+{"job_id": "725751e20e05f952", "false_positives": [], "false_negatives": ["Data Analysis"]}
+{"job_id": "c22258de8eeae159", "false_positives": [], "false_negatives": ["Asynchronous Programming", "Data Pipelines", "Databases"]}
+{"job_id": "9af31f46c459ae43", "false_positives": ["Clustering"], "false_negatives": ["Data Security", "Databases", "Monitoring", "Oracle Database", "Query Optimization"]}
+{"job_id": "64a6ef8c17d8b382", "false_positives": [], "false_negatives": ["Vector Database"]}
+{"job_id": "c9d04b5245da809a", "false_positives": [], "false_negatives": ["Data Validation"]}
+{"job_id": "1984cf81f948a723", "false_positives": [], "false_negatives": ["Databases", "Model Deployment"]}
+{"job_id": "87c4020ee3ccd595", "false_positives": ["CRM"], "false_negatives": ["A/B Testing", "Cohort Analysis", "Funnel Analysis"]}
+{"job_id": "d43d1ecb22e88b90", "false_positives": ["ReAct"], "false_negatives": []}
+{"job_id": "65db33c124025240", "false_positives": ["Optimization"], "false_negatives": []}
+{"job_id": "b6ca25f9074fba4b", "false_positives": ["Cloud Computing"], "false_negatives": ["Data Security"]}
+{"job_id": "cdfcb6aab046beb9", "false_positives": [], "false_negatives": ["System Architecture"]}
+{"job_id": "ff6a415fdeadc7ed", "false_positives": [], "false_negatives": ["Model Deployment", "Model Evaluation"]}
+{"job_id": "bec90b607986b604", "false_positives": [], "false_negatives": ["Data Quality", "Data Security", "Databases", "Oracle Database"]}
+{"job_id": "d9a13c0443c2101b", "false_positives": [], "false_negatives": ["Automation Engineering", "Developer Tooling"]}
+{"job_id": "857ea3e3dfd4cf53", "false_positives": ["ReAct"], "false_negatives": ["Automation Engineering", "Databases", "Debugging"]}
+{"job_id": "baab3fd5baf257b9", "false_positives": ["Cloud Computing", "Llama"], "false_negatives": ["AI Agents", "Computer Vision", "Prompt Engineering", "Red Teaming", "Tool Calling"]}
+{"job_id": "79dcad6b02902e17", "false_positives": ["CI/CD", "Cloud Computing"], "false_negatives": ["Model Deployment", "Supervised Learning"]}
+{"job_id": "1b3e221e00e87258", "false_positives": ["Reporting"], "false_negatives": ["Data Catalog"]}
+{"job_id": "10911bae157e538f", "false_positives": [], "false_negatives": ["Databases", "Embeddings"]}
+{"job_id": "c7a50a91c490c519", "false_positives": [], "false_negatives": ["Data Modeling", "Data Security"]}
+{"job_id": "ea6186a289c2bf1b", "false_positives": [], "false_negatives": ["Vector Database"]}
+{"job_id": "ad743ae699103d9b", "false_positives": ["Optimization"], "false_negatives": ["A/B Testing", "Data Modeling", "Data Visualization", "Statistical Analysis"]}
+{"job_id": "d17dc4bd6eba3779", "false_positives": ["Optimization"], "false_negatives": ["Data Security", "Oracle Database"]}
+{"job_id": "dee32c5ca8844d69", "false_positives": [], "false_negatives": ["Big Data", "Data Mining", "Feature Store", "Machine Learning", "Oracle Database", "Predictive Modeling", "Statistics"]}
+{"job_id": "5da5a30910b64f2d", "false_positives": [], "false_negatives": ["Data Governance", "Model Serving"]}
