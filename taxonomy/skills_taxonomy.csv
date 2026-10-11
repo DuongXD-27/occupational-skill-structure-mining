@@ -32,7 +32,7 @@ SK0037,Azure Data Lake Storage,ADLS,Azure Data Lake,Cloud Platforms & Services,1
 SK0038,Azure SQL,,,Cloud Platforms & Services,2
 SK0040,BI Publisher,,,Data Analysis & BI,1
 SK0043,Big Data,,,"Distributed, Streaming & Big Data",7
-SK0044,BigQuery,,,"Databases, Storage & Data Formats",7
+SK0044,BigQuery,,,"Databases, Storage & Data Formats",6
 SK0045,BigQuery ML,BQML,,Cloud Platforms & Services,2
 SK0046,Business Intelligence,BI,,Data Analysis & BI,15
 SK0047,C,,,Programming & Query Languages,1
@@ -41,10 +41,10 @@ SK0049,C++,,,Programming & Query Languages,3
 SK0050,CI/CD,,CI CD; Continuous Integration/Continuous Delivery; Continuous Integration and Continuous Delivery,"DevOps, MLOps & Infrastructure",16
 SK0051,CRM,,,Applied Analytics & Business Platforms,4
 SK0052,CSV,,,"Databases, Storage & Data Formats",3
-SK0053,Caching,,,Software Engineering & APIs,2
+SK0053,Caching,,,Software Engineering & APIs,1
 SK0055,Celery,,,Software Engineering & APIs,1
 SK0056,ChatGPT,,,Generative AI & Agentic Systems,2
-SK0059,Claude,,,Generative AI & Agentic Systems,5
+SK0059,Claude,,,Generative AI & Agentic Systems,4
 SK0060,Claude Code,,,Generative AI & Agentic Systems,3
 SK0061,ClickHouse,,,"Databases, Storage & Data Formats",5
 SK0062,Cloud Computing,,cloud,Cloud Platforms & Services,21

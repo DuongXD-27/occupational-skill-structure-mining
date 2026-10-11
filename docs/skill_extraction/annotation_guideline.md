@@ -28,7 +28,7 @@ Tập mẫu chuẩn làm căn cứ là `data/sample/sample_jobs.jsonl`, bao gồ
 
 Các bản ghi CareerViet không thuộc tập mẫu này. Phạm vi nguồn được phê duyệt chỉ định ITviec làm nguồn chính và TopCV là nguồn dự phòng.
 
-Taxonomy bao gồm **246 kỹ năng chuẩn hóa (canonical skills)**, và mọi kỹ năng được giữ lại đều xuất hiện trong ít nhất một tin tuyển dụng thuộc tập 45 tin chính thức. Trong đó, **102 kỹ năng xuất hiện đúng 1 lần**, và **150 kỹ năng xuất hiện tối đa 2 lần**. Các kỹ năng có `observed_count` bằng 0 đều bị loại bỏ vì không có bằng chứng từ tập dữ liệu mẫu chính thức.
+Taxonomy bao gồm **246 kỹ năng chuẩn hóa (canonical skills)**, và mọi kỹ năng được giữ lại đều xuất hiện trong ít nhất một tin tuyển dụng thuộc tập 45 tin chính thức. Trong đó, **103 kỹ năng xuất hiện đúng 1 lần**, và **150 kỹ năng xuất hiện tối đa 2 lần**. Các kỹ năng có `observed_count` bằng 0 đều bị loại bỏ vì không có bằng chứng từ tập dữ liệu mẫu chính thức.
 
 ### Diễn giải về chỉ số `observed_count`
 
@@ -299,6 +299,13 @@ Các thực hành kỹ năng mềm/quản lý như quản lý bên liên quan, c
 Tần suất được tính toán từ các trường `raw_job_title`, `job_description`, và `job_requirements` trong tập mẫu chính thức. Khi một thuật ngữ ngắn bị bao hàm trong một thuật ngữ taxonomy dài hơn, thuật ngữ dài hơn sẽ được ưu tiên; ví dụ: `BI` bên trong `Power BI` sẽ không được tính độc lập cho `Business Intelligence`. Các từ viết tắt nhạy cảm với ngữ cảnh và các tên ngôn ngữ ngắn được xử lý thận trọng để tránh khớp sai như `CV` (hồ sơ), `R` (trong R&D), hoặc `Go` (trong văn bản tiếng Anh thông thường).
 
 Chạy lệnh `python scripts/recount_taxonomy.py` từ thư mục gốc của repository để tái lập các số liệu tần suất taxonomy và loại bỏ các kỹ năng không quan sát được trong tập mẫu chính thức.
+
+Logic trích xuất được đóng gói tại `src/parser/skill_extractor.py`; recount dùng
+chung module này. Đợt tích hợp parser ngày 2026-10-11 sửa overlap của các lần đề
+cập lặp, cập nhật ba document counts và số singleton lên 103. Chi tiết bằng chứng
+ở [báo cáo đánh giá parser](../../reports/skill_extraction/evaluation.md).
+Gold dự thảo 50 tin pilot độc lập nằm tại `data/evaluation/`; nhãn do trợ lý gán,
+chưa phải gold do người rà soát độc lập nghiệm thu.
 
 Ví dụ: nếu một JD nhắc đến `Python` 8 lần:
 
