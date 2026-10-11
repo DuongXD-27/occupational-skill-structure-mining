@@ -1,0 +1,153 @@
+canonical_name,tp,fp,fn,precision,recall,f1
+A/B Testing,0,0,2,0.0,0.0,0.0
+AI Agents,12,0,3,1.0,0.8,0.8888888888888888
+API Design,1,0,0,1.0,1.0,1.0
+AWS Lambda,1,0,0,1.0,1.0,1.0
+Agentic AI,3,0,0,1.0,1.0,1.0
+Amazon Bedrock,2,0,0,1.0,1.0,1.0
+Amazon Redshift,1,0,0,1.0,1.0,1.0
+Amazon S3,2,0,0,1.0,1.0,1.0
+Amazon Web Services,16,0,0,1.0,1.0,1.0
+Anomaly Detection,1,0,0,1.0,1.0,1.0
+Anthropic API,3,0,0,1.0,1.0,1.0
+Apache Airflow,2,0,0,1.0,1.0,1.0
+Apache Flink,1,0,0,1.0,1.0,1.0
+Apache Hadoop,3,0,0,1.0,1.0,1.0
+Apache Kafka,5,0,0,1.0,1.0,1.0
+Apache Spark,3,0,0,1.0,1.0,1.0
+Asynchronous Programming,0,0,1,0.0,0.0,0.0
+Automation Engineering,0,0,5,0.0,0.0,0.0
+Azure AI Services,1,0,0,1.0,1.0,1.0
+Big Data,2,0,1,1.0,0.6666666666666666,0.8
+BigQuery,1,0,1,1.0,0.5,0.6666666666666666
+Business Intelligence,3,0,0,1.0,1.0,1.0
+C,0,1,0,0.0,0.0,0.0
+C#,5,0,0,1.0,1.0,1.0
+C++,2,0,0,1.0,1.0,1.0
+CI/CD,7,1,0,0.875,1.0,0.9333333333333333
+CRM,3,1,0,0.75,1.0,0.8571428571428571
+ChatGPT,2,0,0,1.0,1.0,1.0
+Claude,5,0,0,1.0,1.0,1.0
+Claude Code,2,0,0,1.0,1.0,1.0
+Cloud Computing,18,3,0,0.8571428571428571,1.0,0.9230769230769231
+Clustering,2,1,0,0.6666666666666666,1.0,0.8
+Codex,1,0,0,1.0,1.0,1.0
+Cohort Analysis,0,0,1,0.0,0.0,0.0
+Computer Vision,2,0,1,1.0,0.6666666666666666,0.8
+Confluence,2,0,0,1.0,1.0,1.0
+Credit Scoring,2,0,0,1.0,1.0,1.0
+CrewAI,1,0,0,1.0,1.0,1.0
+Dashboarding,5,0,1,1.0,0.8333333333333334,0.9090909090909091
+Data Analysis,3,0,2,1.0,0.6,0.75
+Data Architecture,2,0,0,1.0,1.0,1.0
+Data Catalog,0,0,1,0.0,0.0,0.0
+Data Governance,5,0,1,1.0,0.8333333333333334,0.9090909090909091
+Data Lake,3,0,0,1.0,1.0,1.0
+Data Lakehouse,1,0,0,1.0,1.0,1.0
+Data Management,4,0,0,1.0,1.0,1.0
+Data Mining,0,0,1,0.0,0.0,0.0
+Data Modeling,2,0,3,1.0,0.4,0.5714285714285714
+Data Pipelines,4,0,3,1.0,0.5714285714285714,0.7272727272727273
+Data Quality,6,0,2,1.0,0.75,0.8571428571428571
+Data Security,2,0,6,1.0,0.25,0.4
+Data Validation,0,0,3,0.0,0.0,0.0
+Data Visualization,1,0,1,1.0,0.5,0.6666666666666666
+Data Warehouse,5,0,0,1.0,1.0,1.0
+Databases,8,0,11,1.0,0.42105263157894735,0.5925925925925926
+Databricks,1,0,0,1.0,1.0,1.0
+Debugging,3,0,2,1.0,0.6,0.75
+Deep Learning,3,0,0,1.0,1.0,1.0
+DeepSeek,1,0,0,1.0,1.0,1.0
+DevOps,3,1,0,0.75,1.0,0.8571428571428571
+Developer Tooling,0,0,1,0.0,0.0,0.0
+Distributed Systems,1,0,1,1.0,0.5,0.6666666666666666
+Django,2,0,0,1.0,1.0,1.0
+Docker,9,0,0,1.0,1.0,1.0
+ELT,4,0,0,1.0,1.0,1.0
+ETL,7,0,0,1.0,1.0,1.0
+Embeddings,2,0,1,1.0,0.6666666666666666,0.8
+FastAPI,6,0,0,1.0,1.0,1.0
+Feature Engineering,1,0,0,1.0,1.0,1.0
+Feature Store,1,0,1,1.0,0.5,0.6666666666666666
+Fine-Tuning,1,1,0,0.5,1.0,0.6666666666666666
+Flask,3,0,0,1.0,1.0,1.0
+Forecasting,1,0,0,1.0,1.0,1.0
+Fraud Detection,2,0,1,1.0,0.6666666666666666,0.8
+Funnel Analysis,1,0,1,1.0,0.5,0.6666666666666666
+Gemini,3,0,0,1.0,1.0,1.0
+Generative AI,11,0,0,1.0,1.0,1.0
+Git,7,0,0,1.0,1.0,1.0
+Go,2,0,0,1.0,1.0,1.0
+Google Cloud Platform,10,0,0,1.0,1.0,1.0
+Grafana,3,0,0,1.0,1.0,1.0
+Infrastructure as Code,2,0,0,1.0,1.0,1.0
+JSON,2,0,0,1.0,1.0,1.0
+Java,10,0,0,1.0,1.0,1.0
+Jira,1,0,0,1.0,1.0,1.0
+Kubernetes,4,0,1,1.0,0.8,0.8888888888888888
+LangChain,8,0,0,1.0,1.0,1.0
+LangGraph,3,0,0,1.0,1.0,1.0
+Large Language Models,17,0,0,1.0,1.0,1.0
+Linux/Unix Shell,1,0,2,1.0,0.3333333333333333,0.5
+Llama,1,1,0,0.5,1.0,0.6666666666666666
+Logging,3,0,0,1.0,1.0,1.0
+MLOps,2,0,0,1.0,1.0,1.0
+MLflow,1,0,0,1.0,1.0,1.0
+Machine Learning,12,0,1,1.0,0.9230769230769231,0.96
+Microservices,5,0,0,1.0,1.0,1.0
+Microsoft Azure,12,0,0,1.0,1.0,1.0
+Microsoft Excel,2,0,0,1.0,1.0,1.0
+Microsoft SQL Server,3,0,1,1.0,0.75,0.8571428571428571
+Model Context Protocol,2,0,0,1.0,1.0,1.0
+Model Deployment,0,0,4,0.0,0.0,0.0
+Model Evaluation,1,0,2,1.0,0.3333333333333333,0.5
+Model Serving,1,0,1,1.0,0.5,0.6666666666666666
+MongoDB,7,0,0,1.0,1.0,1.0
+Monitoring,7,0,1,1.0,0.875,0.9333333333333333
+MySQL,7,0,0,1.0,1.0,1.0
+Natural Language Processing,5,0,0,1.0,1.0,1.0
+NumPy,3,0,0,1.0,1.0,1.0
+Object-Oriented Programming,2,0,0,1.0,1.0,1.0
+Observability,2,0,0,1.0,1.0,1.0
+OpenAI API,9,0,0,1.0,1.0,1.0
+OpenSearch,1,0,0,1.0,1.0,1.0
+Optical Character Recognition,2,0,0,1.0,1.0,1.0
+Optimization,0,5,0,0.0,0.0,0.0
+Oracle Database,1,0,7,1.0,0.125,0.2222222222222222
+Pandas,6,0,0,1.0,1.0,1.0
+PostgreSQL,9,0,0,1.0,1.0,1.0
+Power BI,3,0,0,1.0,1.0,1.0
+Predictive Modeling,0,0,1,0.0,0.0,0.0
+Prometheus,3,0,0,1.0,1.0,1.0
+Prompt Engineering,4,0,1,1.0,0.8,0.8888888888888888
+PyTorch,6,0,0,1.0,1.0,1.0
+Python,27,0,0,1.0,1.0,1.0
+Query Optimization,3,0,2,1.0,0.6,0.75
+R,3,0,0,1.0,1.0,1.0
+ReAct,0,3,0,0.0,0.0,0.0
+Real-Time Processing,1,0,0,1.0,1.0,1.0
+Recommendation Systems,1,0,0,1.0,1.0,1.0
+Red Teaming,0,0,1,0.0,0.0,0.0
+Redis,3,0,0,1.0,1.0,1.0
+Regression,1,0,0,1.0,1.0,1.0
+Relational Databases,2,0,0,1.0,1.0,1.0
+Reporting,2,1,0,0.6666666666666666,1.0,0.8
+Retrieval-Augmented Generation,14,0,0,1.0,1.0,1.0
+SIEM,1,0,0,1.0,1.0,1.0
+SQL,27,0,0,1.0,1.0,1.0
+Scala,3,0,0,1.0,1.0,1.0
+Segmentation,1,0,0,1.0,1.0,1.0
+Statistical Analysis,0,0,1,0.0,0.0,0.0
+Statistics,1,1,1,0.5,0.5,0.5
+Stream Processing,0,0,1,0.0,0.0,0.0
+Supervised Learning,0,0,1,0.0,0.0,0.0
+System Architecture,1,1,2,0.5,0.3333333333333333,0.4
+Tableau,1,0,0,1.0,1.0,1.0
+TensorFlow,6,0,0,1.0,1.0,1.0
+Terraform,2,0,0,1.0,1.0,1.0
+Tool Calling,1,0,1,1.0,0.5,0.6666666666666666
+TypeScript,3,0,0,1.0,1.0,1.0
+Vector Database,4,0,3,1.0,0.5714285714285714,0.7272727272727273
+Vector Search,2,0,0,1.0,1.0,1.0
+Vertex AI,1,0,0,1.0,1.0,1.0
+scikit-learn,4,0,0,1.0,1.0,1.0

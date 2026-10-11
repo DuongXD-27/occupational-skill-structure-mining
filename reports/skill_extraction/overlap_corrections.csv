@@ -1,0 +1,4 @@
+skill_id,canonical_name,old_count,new_count,affected_job_id,previous_matched_term
+SK0044,BigQuery,7,6,f6a9af1d3efa9fc4,BigQuery
+SK0053,Caching,2,1,bb74056fe54b3ef0,Caching
+SK0059,Claude,5,4,40c3b90038db57a9,Claude

@@ -1,0 +1,635 @@
+job_id,canonical_name,skill_id,evidence,start,end,human_reviewed,review_notes
+6d8a728e0459f4b4,Kubernetes,SK0175,K8S,690,693,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+6d8a728e0459f4b4,Databases,SK0107,Database,714,722,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+6d8a728e0459f4b4,SQL,SK0278,SQL,755,758,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+6d8a728e0459f4b4,Redis,SK0268,Redis,782,787,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+6d8a728e0459f4b4,Apache Kafka,SK0027,Kafka,789,794,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+6d8a728e0459f4b4,Logging,SK0185,logging,815,822,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+6d8a728e0459f4b4,C#,SK0048,C#,954,956,False,SQL nằm trong tên bị gõ sai Protgress SQL; cần người rà soát xác nhận.
+1dd2051880dfb113,Generative AI,SK0146,GenAI,83,88,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,AI Agents,SK0003,AI Agent,102,110,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Retrieval-Augmented Generation,SK0273,RAG,112,115,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Natural Language Processing,SK0220,xử lý ngôn ngữ tự nhiên,126,149,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Vector Database,SK0317,vector database,262,277,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Java,SK0168,Java,1003,1007,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Python,SK0256,Python,1009,1015,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Model Evaluation,SK0208,đánh giá và cải thiện chất lượng mô hình,311,351,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1dd2051880dfb113,Model Deployment,SK0206,triển khai mô hình,219,237,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Generative AI,SK0146,Generative AI,11,24,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Amazon Web Services,SK0018,AWS,26,29,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Microsoft Azure,SK0201,Azure,31,36,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Model Context Protocol,SK0205,MCP,95,98,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Machine Learning,SK0195,ML,653,655,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Credit Scoring,SK0069,credit scoring,760,774,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Fraud Detection,SK0143,fraud detection,776,791,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Google Cloud Platform,SK0154,GCP,962,965,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,TensorFlow,SK0305,TensorFlow,994,1004,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Deep Learning,SK0113,Deep Learning,1035,1048,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Large Language Models,SK0179,LLM,1095,1098,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,OpenAI API,SK0231,OpenAI,1108,1114,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,Anthropic API,SK0021,Anthropic,1116,1125,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a0fa953d4fc98687,LangChain,SK0177,LangChain,1127,1136,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Power BI,SK0244,Power BI,0,8,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Business Intelligence,SK0046,Business Intelligence,10,31,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,SQL,SK0278,SQL,33,36,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Python,SK0256,Python,38,44,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Dashboarding,SK0076,Dashboard,284,293,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Data Modeling,SK0091,Data Model,347,357,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Microsoft Excel,SK0202,Excel,453,458,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,ETL,SK0128,ETL,475,478,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,ELT,SK0127,ELT,479,482,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Data Governance,SK0082,data governance,546,561,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7faba17f489ab000,Data Analysis,SK0078,Phân tích dữ liệu,717,734,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b20a656cbcedd94,SQL,SK0278,SQL,1247,1250,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Generative AI,SK0146,GenAI,10,15,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Retrieval-Augmented Generation,SK0273,RAG,17,20,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,AI Agents,SK0003,AI Agents,22,31,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Distributed Systems,SK0123,distributed system,801,819,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Cloud Computing,SK0062,Cloud Platforms,844,859,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Java,SK0168,Java,916,920,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Python,SK0256,Python,922,928,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,C#,SK0048,C#,930,932,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Large Language Models,SK0179,LLMs,1192,1196,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Microsoft Azure,SK0201,Azure,1239,1244,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Amazon Web Services,SK0018,AWS,1246,1249,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+61f8d549b3cc6002,Google Cloud Platform,SK0154,GCP,1254,1257,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Databases,SK0107,database systems,58,74,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Amazon Web Services,SK0018,AWS,223,226,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Microsoft Azure,SK0201,Azure,228,233,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Google Cloud Platform,SK0154,GCP,235,238,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Cloud Computing,SK0062,cloud environments,203,221,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Oracle Database,SK0236,Oracle,703,709,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Microsoft SQL Server,SK0203,MSSQL,711,716,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,MySQL,SK0218,MySQL,722,727,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,PostgreSQL,SK0243,PostgreSQL,809,819,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,MongoDB,SK0215,MongoDB,821,828,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Amazon Redshift,SK0015,Redshift,1153,1161,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,BigQuery,SK0044,Big Query,1163,1172,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,SQL,SK0278,SQL,713,716,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Linux/Unix Shell,SK0183,Shell Scripting,1285,1300,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,Python,SK0256,Python,1310,1316,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+78acf4ef6575fd77,ETL,SK0128,ETL,1322,1325,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Architecture,SK0079,Data architecture,816,833,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Lake,SK0084,Data Lake,80,89,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Lakehouse,SK0085,Lakehouse,92,101,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Warehouse,SK0102,DWH,104,107,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Pipelines,SK0093,pipelines,130,139,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Big Data,SK0043,Big data,360,368,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Real-Time Processing,SK0264,Real-time processing,383,403,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,SQL,SK0278,SQL,662,665,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Python,SK0256,Python,683,689,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Scala,SK0280,Scala,692,697,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Java,SK0168,Java,700,704,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Apache Hadoop,SK0024,Hadoop,705,711,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Apache Spark,SK0028,Spark,713,718,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Apache Flink,SK0023,Flink,721,726,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Apache Kafka,SK0027,Kafka,729,734,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Distributed Systems,SK0123,Distributed systems,735,754,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Modeling,SK0091,Data modeling,765,778,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Data Governance,SK0082,Data Governance,857,872,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Machine Learning,SK0195,ML,957,959,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Monitoring,SK0216,Monitoring,1028,1038,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Cloud Computing,SK0062,Cloud,288,293,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Amazon Web Services,SK0018,AWS,1109,1112,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Microsoft Azure,SK0201,Azure,1113,1118,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7e75db1e6be40354,Stream Processing,SK0297,streaming,943,952,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Databases,SK0107,database,65,73,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Query Optimization,SK0257,query tuning,218,230,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,SQL,SK0278,SQL,20,23,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Data Security,SK0097,data security,598,611,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Microsoft SQL Server,SK0203,SQL Server,922,932,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Oracle Database,SK0236,Oracle,25,31,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,MySQL,SK0218,MySQL,942,947,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,PostgreSQL,SK0243,PostgreSQL,949,959,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Git,SK0149,Git,1179,1182,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+032a17db8155c044,Debugging,SK0110,Fix bugs,485,493,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Data Pipelines,SK0093,"luồng thu thập, xử lý và tích hợp dữ liệu",231,272,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,ETL,SK0128,ETL,304,307,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,ELT,SK0127,ELT,308,311,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Databases,SK0107,cơ sở dữ liệu,391,404,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Data Warehouse,SK0102,Data Warehouse,1197,1211,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Data Lake,SK0084,Data Lake,1213,1222,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Data Quality,SK0094,chất lượng dữ liệu,462,480,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,SQL,SK0278,SQL,1092,1095,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Python,SK0256,Python,1129,1135,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Java,SK0168,Java,1137,1141,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Scala,SK0280,Scala,1147,1152,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Apache Spark,SK0028,Spark,1303,1308,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Apache Kafka,SK0027,Kafka,1310,1315,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Apache Airflow,SK0022,Airflow,1317,1324,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Apache Hadoop,SK0024,Hadoop,1326,1332,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+3f378eb8b4967fd3,Cloud Computing,SK0062,Cloud,1334,1339,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+62d426ca2fb898a6,AI Agents,SK0003,AI agents,924,933,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+62d426ca2fb898a6,Large Language Models,SK0179,Large Language Models,938,959,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+62d426ca2fb898a6,Data Analysis,SK0078,data analysis,1006,1019,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+62d426ca2fb898a6,Automation Engineering,SK0032,automation workflows,797,817,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+34c208a0796abe29,SQL,SK0278,SQL,34,37,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+34c208a0796abe29,Python,SK0256,Python,39,45,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+34c208a0796abe29,Databases,SK0107,database,1348,1356,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+34c208a0796abe29,Data Management,SK0087,Data Management,1228,1243,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+34c208a0796abe29,Data Quality,SK0094,data quality,768,780,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+34c208a0796abe29,Data Validation,SK0099,validate,376,384,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Python,SK0256,Python,16,22,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,SQL,SK0278,SQL,24,27,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Machine Learning,SK0195,Machine Learning,29,45,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Fraud Detection,SK0143,gian lận,103,111,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Credit Scoring,SK0069,credit scoring,1341,1355,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Feature Engineering,SK0137,Feature engineering,989,1008,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Model Evaluation,SK0208,Model evaluation,1010,1026,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Pandas,SK0238,Pandas,904,910,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,NumPy,SK0226,NumPy,912,917,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Regression,SK0269,regression,961,971,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+692e80013b1693e3,Clustering,SK0063,clustering,973,983,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Databases,SK0107,database,344,352,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Oracle Database,SK0236,Oracle Database,1123,1138,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,MongoDB,SK0215,MongoDB,25,32,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,SQL,SK0278,SQL,34,37,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Query Optimization,SK0257,SQL performance optimization,785,813,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,MySQL,SK0218,MySQL,963,968,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,PostgreSQL,SK0243,Postgres,970,978,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Cloud Computing,SK0062,Cloud,281,286,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Amazon Web Services,SK0018,AWS,272,275,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,ETL,SK0128,ETL,1070,1073,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Data Warehouse,SK0102,Data Warehousing,1075,1091,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Infrastructure as Code,SK0165,IaC,1553,1556,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Terraform,SK0307,Terraform,1559,1568,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Monitoring,SK0216,monitoring,500,510,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+7dcb1cbbd869bfaf,Data Security,SK0097,database security,826,843,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Machine Learning,SK0195,ML,134,136,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Monitoring,SK0216,monitoring,373,383,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Databases,SK0107,databases,453,462,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Python,SK0256,Python,513,519,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Dashboarding,SK0076,dashboards,536,546,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Forecasting,SK0142,forecasting,732,743,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Anomaly Detection,SK0020,anomaly detection,748,765,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Large Language Models,SK0179,LLM,783,786,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,AI Agents,SK0003,AI agent,787,795,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Linux/Unix Shell,SK0183,Linux command line,856,874,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Docker,SK0125,Docker,930,936,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,SQL,SK0278,SQL,1011,1014,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,PyTorch,SK0254,PyTorch,1315,1322,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Grafana,SK0159,Grafana,1536,1543,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Prometheus,SK0248,Prometheus,1544,1554,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Retrieval-Augmented Generation,SK0273,RAG,1600,1603,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,Vector Database,SK0317,vector databases,1604,1620,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,LangChain,SK0177,LangChain,1622,1631,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+6ce5b573ec474ac8,LangGraph,SK0178,LangGraph,1632,1641,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Java,SK0168,Java,7,11,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Microservices,SK0200,microservices,768,781,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Cloud Computing,SK0062,Cloud,39,44,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Amazon Web Services,SK0018,AWS,1176,1179,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Microsoft Azure,SK0201,Azure,1181,1186,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Google Cloud Platform,SK0154,GCP,1188,1191,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Relational Databases,SK0271,Relational Databases,1335,1355,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,SQL,SK0278,SQL,1357,1360,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5313aba234be5803,Object-Oriented Programming,SK0229,OOP,1394,1397,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,Automation Engineering,SK0032,automated workflows,451,470,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,CRM,SK0051,CRM,693,696,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,Dashboarding,SK0076,dashboards,756,766,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,Monitoring,SK0216,monitoring tools,945,961,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,Microsoft Excel,SK0202,Excel,1365,1370,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,SQL,SK0278,SQL,1372,1375,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c46592f2dd01e203,Business Intelligence,SK0046,BI,380,382,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+9ed290d237fb4015,AI Agents,SK0003,AI coding agents,808,824,False,System Architecture ánh xạ từ tác vụ xây kiến trúc; cần rà soát mức độ cụ thể.
+9ed290d237fb4015,Java,SK0168,Java,40,44,False,System Architecture ánh xạ từ tác vụ xây kiến trúc; cần rà soát mức độ cụ thể.
+9ed290d237fb4015,SQL,SK0278,SQL,1519,1522,False,System Architecture ánh xạ từ tác vụ xây kiến trúc; cần rà soát mức độ cụ thể.
+9ed290d237fb4015,C#,SK0048,C#,1569,1571,False,System Architecture ánh xạ từ tác vụ xây kiến trúc; cần rà soát mức độ cụ thể.
+9ed290d237fb4015,System Architecture,SK0303,Building architecture for our platform,253,291,False,System Architecture ánh xạ từ tác vụ xây kiến trúc; cần rà soát mức độ cụ thể.
+95f2b91d4a8da423,Databases,SK0107,databases,197,206,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+95f2b91d4a8da423,Oracle Database,SK0236,Oracle DB,1111,1120,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+95f2b91d4a8da423,Microsoft SQL Server,SK0203,MS SQL,34,40,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+95f2b91d4a8da423,PostgreSQL,SK0243,PostgreSQL,42,52,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+95f2b91d4a8da423,SQL,SK0278,SQL,37,40,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+95f2b91d4a8da423,Linux/Unix Shell,SK0183,Shell,1188,1193,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+445de392e42f35bf,Data Governance,SK0082,data governance,42,57,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+445de392e42f35bf,Data Quality,SK0094,data quality,718,730,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+445de392e42f35bf,Data Management,SK0087,data management,1306,1321,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+445de392e42f35bf,Databricks,SK0108,Databricks,1001,1011,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+445de392e42f35bf,Cloud Computing,SK0062,cloud systems,1644,1657,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+445de392e42f35bf,Data Validation,SK0099,data checks,821,832,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Generative AI,SK0146,GenAI,89,94,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Agentic AI,SK0010,Agentic AI,226,236,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Large Language Models,SK0179,LLM,1546,1549,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Retrieval-Augmented Generation,SK0273,RAG,1551,1554,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,AI Agents,SK0003,Agent,226,231,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,LangChain,SK0177,LangChain,1768,1777,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Power BI,SK0244,Power BI,1805,1813,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Business Intelligence,SK0046,BI,1801,1803,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+01d7a5e0eef13063,Automation Engineering,SK0032,tự động hoá quy trình,1556,1577,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Python,SK0256,Python,519,525,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,FastAPI,SK0136,FastAPI,530,537,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Machine Learning,SK0195,machine learning,644,660,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Large Language Models,SK0179,large language model,670,690,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Databases,SK0107,databases,721,730,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,SQL,SK0278,SQL,781,784,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,MongoDB,SK0215,MongoDB,789,796,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Natural Language Processing,SK0220,Natural Language Processing,1315,1342,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Computer Vision,SK0066,Computer Vision,1348,1363,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Data Management,SK0087,data management,1559,1574,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+725751e20e05f952,Data Analysis,SK0078,analysis,567,575,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Python,SK0256,Python,12,18,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Machine Learning,SK0195,ML,191,193,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,OpenAI API,SK0231,OpenAI API,221,231,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,LangChain,SK0177,LangChain,247,256,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Microservices,SK0200,microservices,307,320,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Data Pipelines,SK0093,pipelines,400,409,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,ETL,SK0128,ETL,411,414,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,ELT,SK0127,ELT,415,418,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Prompt Engineering,SK0250,prompt engineering,656,674,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Object-Oriented Programming,SK0229,OOP,1088,1091,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Asynchronous Programming,SK0029,async,1108,1113,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Natural Language Processing,SK0220,NLP,1220,1223,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,NumPy,SK0226,NumPy,1251,1256,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Pandas,SK0238,Pandas,1258,1264,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,scikit-learn,SK0327,Scikit-learn,1266,1278,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,PyTorch,SK0254,PyTorch,1280,1287,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,TensorFlow,SK0305,TensorFlow,1289,1299,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Large Language Models,SK0179,LLM,1304,1307,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,FastAPI,SK0136,FastAPI,1395,1402,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Flask,SK0141,Flask,1406,1411,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Git,SK0149,Git,1431,1434,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Apache Kafka,SK0027,Apache Kafka,1659,1671,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Docker,SK0125,Docker,1722,1728,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Kubernetes,SK0175,Kubernetes,1730,1740,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Databases,SK0107,multi-database,1755,1769,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Cloud Computing,SK0062,cloud platforms,1801,1816,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Amazon Web Services,SK0018,AWS,1818,1821,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Google Cloud Platform,SK0154,GCP,1823,1826,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,Microsoft Azure,SK0201,Azure,1831,1836,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c22258de8eeae159,CI/CD,SK0050,CI/CD,1842,1847,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+9af31f46c459ae43,Databases,SK0107,cơ sở dữ liệu,98,111,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,Monitoring,SK0216,Giám sát hiệu năng,195,213,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,Query Optimization,SK0257,tối ưu hóa truy vấn,277,296,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,Data Security,SK0097,bảo mật cơ sở dữ liệu,569,590,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,Cloud Computing,SK0062,đám mây,1206,1213,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,DevOps,SK0118,DevOps,1652,1658,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,Microsoft SQL Server,SK0203,SQL Server,1890,1900,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,Oracle Database,SK0236,Oracle,1902,1908,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+9af31f46c459ae43,PostgreSQL,SK0243,PostgreSQL,1910,1920,False,Clustering trong HA database không được coi là kỹ thuật clustering của ML.
+64a6ef8c17d8b382,Machine Learning,SK0195,ML,1095,1097,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Python,SK0256,Python,1146,1152,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Generative AI,SK0146,Generative AI,1196,1209,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Large Language Models,SK0179,LLMs,1241,1245,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,OpenAI API,SK0231,OpenAI,1266,1272,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Claude,SK0059,Claude,1274,1280,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Gemini,SK0145,Gemini,1282,1288,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Retrieval-Augmented Generation,SK0273,RAG,1350,1353,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Embeddings,SK0130,embeddings,1355,1365,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Vector Database,SK0317,vector databases,1367,1383,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Prompt Engineering,SK0250,prompt engineering,1388,1406,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Git,SK0149,Git,1486,1489,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Databases,SK0107,databases,1374,1383,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,AI Agents,SK0003,AI agent,1748,1756,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Cloud Computing,SK0062,cloud platforms,1802,1817,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Amazon Web Services,SK0018,AWS,1826,1829,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Google Cloud Platform,SK0154,GCP,1831,1834,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,Microsoft Azure,SK0201,Azure,1839,1844,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+64a6ef8c17d8b382,LangChain,SK0177,LangChain,1862,1871,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+29ab50006770f2f6,AI Agents,SK0003,AI agents,279,288,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+29ab50006770f2f6,Claude Code,SK0060,Claude Code,575,586,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+29ab50006770f2f6,Agentic AI,SK0010,Agentic AI,1206,1216,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+29ab50006770f2f6,Python,SK0256,Python,1666,1672,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+29ab50006770f2f6,TypeScript,SK0314,TypeScript,1684,1694,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c9d04b5245da809a,SQL,SK0278,SQL,1984,1987,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c9d04b5245da809a,Data Analysis,SK0078,data analysis,1996,2009,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c9d04b5245da809a,Data Validation,SK0099,validation,2014,2024,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c9d04b5245da809a,Reporting,SK0272,reporting,2029,2038,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Data Pipelines,SK0093,Data Pipelines,590,604,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Big Data,SK0043,big data,852,860,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Recommendation Systems,SK0265,Recommendation Systems,958,980,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Natural Language Processing,SK0220,Natural Language Processing,990,1017,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,MLOps,SK0193,ML Ops,1198,1204,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Machine Learning,SK0195,machine learning,1248,1264,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Model Deployment,SK0206,deploying machine learning models,1748,1781,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Python,SK0256,Python,1479,1485,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Pandas,SK0238,Pandas,1509,1515,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,scikit-learn,SK0327,Scikit-learn,1517,1529,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,PyTorch,SK0254,PyTorch,1540,1547,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,TensorFlow,SK0305,TensorFlow,1548,1558,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,ETL,SK0128,ETL,1577,1580,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Databases,SK0107,database systems,1639,1655,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,SQL,SK0278,SQL,1659,1662,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,PostgreSQL,SK0243,PostgreSQL,1672,1682,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,MongoDB,SK0215,MongoDB,1684,1691,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,BigQuery,SK0044,BigQuery,1702,1710,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Cloud Computing,SK0062,Cloud,1789,1794,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Google Cloud Platform,SK0154,GCP,1796,1799,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1984cf81f948a723,Amazon Web Services,SK0018,AWS,1800,1803,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+87c4020ee3ccd595,SQL,SK0278,SQL,448,451,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,Dashboarding,SK0076,dashboards,649,659,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,Data Quality,SK0094,data quality,680,692,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,A/B Testing,SK0001,A/B,834,837,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,Cohort Analysis,SK0065,cohorts,462,469,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,Funnel Analysis,SK0144,funnels,453,460,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,Confluence,SK0067,Confluence,1148,1158,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+87c4020ee3ccd595,JSON,SK0167,JSON,1744,1748,False,CRM chỉ giới thiệu sản phẩm công ty; đã loại khỏi gold.
+d43d1ecb22e88b90,Cloud Computing,SK0062,Cloud,3,8,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Java,SK0168,Java,30,34,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Amazon Web Services,SK0018,AWS,42,45,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Claude,SK0059,Claude,510,516,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,ChatGPT,SK0056,ChatGPT,518,525,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Debugging,SK0110,debugging,583,592,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Large Language Models,SK0179,LLM,685,688,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Generative AI,SK0146,Generative AI,689,702,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,OpenAI API,SK0231,OpenAI,713,719,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Microsoft Azure,SK0201,Azure,721,726,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Amazon Bedrock,SK0014,Amazon Bedrock,735,749,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Anthropic API,SK0021,Anthropic,751,760,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,AWS Lambda,SK0007,Lambda,913,919,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Amazon S3,SK0016,S3,921,923,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Microservices,SK0200,microservices,1132,1145,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,CI/CD,SK0050,CI/CD,1226,1231,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Git,SK0149,Git,486,489,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Infrastructure as Code,SK0165,IaC,1335,1338,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Jira,SK0169,JIRA,1458,1462,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Confluence,SK0067,Confluence,1596,1606,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Docker,SK0125,Docker,1865,1871,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Kubernetes,SK0175,Kubernetes,1876,1886,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Prompt Engineering,SK0250,prompt engineering,2004,2022,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,Retrieval-Augmented Generation,SK0273,RAG,2024,2027,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d43d1ecb22e88b90,AI Agents,SK0003,AI agents,2062,2071,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Python,SK0256,Python,25,31,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,SQL,SK0278,SQL,33,36,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Data Warehouse,SK0102,Data Warehouse,38,52,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Data Lake,SK0084,Data Lake,1854,1863,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Data Pipelines,SK0093,data pipelines,897,911,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Machine Learning,SK0195,ML,1180,1182,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Generative AI,SK0146,Generative AI,1188,1201,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Embeddings,SK0130,embeddings,1311,1321,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Retrieval-Augmented Generation,SK0273,RAG,1327,1330,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Data Quality,SK0094,data quality,1349,1361,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,ETL,SK0128,ETL,1869,1872,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,ELT,SK0127,ELT,1873,1876,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Data Modeling,SK0091,data modeling,1945,1958,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Vector Search,SK0318,vector search,2101,2114,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Amazon Web Services,SK0018,AWS,2194,2197,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Google Cloud Platform,SK0154,GCP,2198,2201,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Microsoft Azure,SK0201,Azure,2202,2207,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,AI Agents,SK0003,AI Agents,2226,2235,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+65db33c124025240,Large Language Models,SK0179,LLM,2238,2241,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+b6ca25f9074fba4b,Data Quality,SK0094,Data Quality,0,12,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+b6ca25f9074fba4b,Data Security,SK0097,bảo mật dữ liệu,198,213,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+b6ca25f9074fba4b,SIEM,SK0277,SIEM,1418,1422,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,System Architecture,SK0303,thiết kế kiến trúc hệ thống,362,389,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Generative AI,SK0146,Generative AI,502,515,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Large Language Models,SK0179,LLM,517,520,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,AI Agents,SK0003,AI Agent,522,530,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Cloud Computing,SK0062,Cloud,1006,1011,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,OpenAI API,SK0231,OpenAI API,1424,1434,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Microsoft Azure,SK0201,Azure,1436,1441,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Vertex AI,SK0319,Google Vertex AI,1450,1466,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Amazon Bedrock,SK0014,Amazon Bedrock,1468,1482,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Retrieval-Augmented Generation,SK0273,RAG,1917,1920,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Amazon Web Services,SK0018,AWS,2031,2034,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Google Cloud Platform,SK0154,GCP,2036,2039,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,C++,SK0049,C++,2115,2118,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,C#,SK0048,C#,2120,2122,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Java,SK0168,Java,2130,2134,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Scala,SK0280,Scala,2136,2141,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Python,SK0256,Python,2143,2149,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,TypeScript,SK0314,TypeScript,2156,2166,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+cdfcb6aab046beb9,Go,SK0151,Go,1450,1452,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Machine Learning,SK0195,machine learning,840,856,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Optical Character Recognition,SK0234,OCR,23,26,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Computer Vision,SK0066,computer vision,861,876,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Python,SK0256,Python,1280,1286,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Pandas,SK0238,Pandas,1417,1423,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,TensorFlow,SK0305,TensorFlow,1521,1531,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,PyTorch,SK0254,PyTorch,1983,1990,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Model Evaluation,SK0208,evaluate,1470,1478,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Model Deployment,SK0206,deploy machine learning models,1484,1514,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ff6a415fdeadc7ed,Cloud Computing,SK0062,cloud-based deployments,2167,2190,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,Data Governance,SK0082,Data Governance,23,38,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,SQL,SK0278,SQL,40,43,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,R,SK0258,R,45,46,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,Python,SK0256,Python,1542,1548,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,Data Quality,SK0094,chất lượng dữ liệu,393,411,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,Data Security,SK0097,an toàn dữ liệu,423,438,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,Databases,SK0107,cơ sở dữ liệu,1666,1679,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,Oracle Database,SK0236,Oracle,1680,1686,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,MySQL,SK0218,MySQL,1687,1692,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+bec90b607986b604,PostgreSQL,SK0243,PostgreSQL,1693,1703,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d9a13c0443c2101b,Git,SK0149,Git,721,724,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d9a13c0443c2101b,CI/CD,SK0050,CI/CD,745,750,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d9a13c0443c2101b,DevOps,SK0118,DevOps,1451,1457,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d9a13c0443c2101b,Cloud Computing,SK0062,cloud technologies,1837,1855,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d9a13c0443c2101b,Developer Tooling,SK0119,developer productivity tooling,1005,1035,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d9a13c0443c2101b,Automation Engineering,SK0032,automation solutions,1906,1926,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,AI Agents,SK0003,AI Agent,676,684,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Claude Code,SK0060,Claude Code,159,170,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Codex,SK0064,Codex,172,177,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Debugging,SK0110,debug,358,363,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Large Language Models,SK0179,LLM,666,669,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Retrieval-Augmented Generation,SK0273,RAG,671,674,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Python,SK0256,Python,1023,1029,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,TypeScript,SK0314,TypeScript,1044,1054,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,FastAPI,SK0136,FastAPI,1077,1084,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Databases,SK0107,Database,1111,1119,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Git,SK0149,Git,187,190,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Docker,SK0125,Docker,1126,1132,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,LangChain,SK0177,LangChain,1758,1767,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,LangGraph,SK0178,LangGraph,1768,1777,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Vector Database,SK0317,Vector Database,1779,1794,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,CRM,SK0051,CRM,1867,1870,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+857ea3e3dfd4cf53,Automation Engineering,SK0032,workflow automation,1872,1891,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+baab3fd5baf257b9,Machine Learning,SK0195,ML,64,66,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Deep Learning,SK0113,DL,67,69,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Retrieval-Augmented Generation,SK0273,RAG,165,168,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Large Language Models,SK0179,LLM,178,181,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Optical Character Recognition,SK0234,OCR,190,193,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Fraud Detection,SK0143,fraud detection,203,218,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Python,SK0256,Python,388,394,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,TensorFlow,SK0305,Tensorflow,564,574,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,PyTorch,SK0254,Pytorch,576,583,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,scikit-learn,SK0327,scikit-learn,585,597,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Pandas,SK0238,Pandas,599,605,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,LangChain,SK0177,Langchain,607,616,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,OpenAI API,SK0231,OpenAI,671,677,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Claude,SK0059,Claude,679,685,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Gemini,SK0145,Gemini,687,693,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Model Context Protocol,SK0205,MCP,775,778,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Tool Calling,SK0311,Tool call,780,789,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Amazon Web Services,SK0018,AWS,978,981,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Git,SK0149,Git,1100,1103,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Docker,SK0125,Docker,1105,1111,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Flask,SK0141,Flask,1673,1678,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Django,SK0124,Django,1680,1686,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,FastAPI,SK0136,FastAPI,1688,1695,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,SQL,SK0278,SQL,1713,1716,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,MySQL,SK0218,MySQL,1740,1745,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,MongoDB,SK0215,MongoDB,1764,1771,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Vector Database,SK0317,Vector database,1774,1789,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,OpenSearch,SK0233,OpenSearch,1807,1817,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,MLOps,SK0193,MLOps,1927,1932,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,MLflow,SK0194,MLflow,1941,1947,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Feature Store,SK0139,Feature Store,1954,1967,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Apache Airflow,SK0022,Airflow,1969,1976,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,CI/CD,SK0050,CI/CD,1978,1983,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Generative AI,SK0146,Generative AI,2001,2014,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Prompt Engineering,SK0250,Prompt/Context Engineer,2038,2061,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Red Teaming,SK0267,red-teaming,2179,2190,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Logging,SK0185,logging,2219,2226,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,API Design,SK0004,API design,2263,2273,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,AI Agents,SK0003,LLM/agentic systems,1303,1322,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+baab3fd5baf257b9,Computer Vision,SK0066,facial recognition,228,246,False,"Computer Vision ánh xạ từ facial recognition, Prompt Engineering từ Prompt/Context Engineer; cần hội ý ranh giới cha-con và tên kỹ năng."
+79dcad6b02902e17,Machine Learning,SK0195,machine learning,993,1009,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Data Pipelines,SK0093,data pipelines,1140,1154,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Model Deployment,SK0206,deploy machine learning models,1241,1271,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Microservices,SK0200,microservices,1311,1324,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Python,SK0256,Python,1754,1760,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Java,SK0168,Java,1810,1814,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,C++,SK0049,C++,1818,1821,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Deep Learning,SK0113,deep learning,1877,1890,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Supervised Learning,SK0301,supervised,1911,1921,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,TensorFlow,SK0305,TensorFlow,2018,2028,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,PyTorch,SK0254,PyTorch,2030,2037,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,scikit-learn,SK0327,Scikit-learn,2042,2054,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,SQL,SK0278,SQL,2069,2072,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,Pandas,SK0238,Pandas,2126,2132,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+79dcad6b02902e17,NumPy,SK0226,NumPy,2137,2142,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b3e221e00e87258,Data Governance,SK0082,Data Governance,0,15,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b3e221e00e87258,Data Quality,SK0094,data quality,298,310,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b3e221e00e87258,Data Management,SK0087,data management,343,358,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b3e221e00e87258,Data Security,SK0097,data security,852,865,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b3e221e00e87258,Data Architecture,SK0079,data architecture,2235,2252,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+1b3e221e00e87258,Data Catalog,SK0080,data catalogues,1366,1381,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Python,SK0256,Python,29,35,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Monitoring,SK0216,monitoring,848,858,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,FastAPI,SK0136,FastAPI,1233,1240,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Flask,SK0141,Flask,1242,1247,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Generative AI,SK0146,Generative AI,1388,1401,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Large Language Models,SK0179,LLM,1403,1406,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,OpenAI API,SK0231,OpenAI,1626,1632,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Llama,SK0184,Llama,1640,1645,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,DeepSeek,SK0114,DeepSeek,1647,1655,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,AI Agents,SK0003,AI Agent,1746,1754,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,LangGraph,SK0178,LangGraph,1778,1787,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,LangChain,SK0177,LangChain,1789,1798,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,CrewAI,SK0070,CrewAI,1812,1818,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Observability,SK0230,Observability,1880,1893,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Prometheus,SK0248,Prometheus,1899,1909,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Grafana,SK0159,Grafana,1911,1918,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Retrieval-Augmented Generation,SK0273,RAG,1993,1996,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Embeddings,SK0130,Embedding,1998,2007,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Vector Database,SK0317,Vector Database,2009,2024,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Tool Calling,SK0311,Tool Calling,2026,2038,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Prompt Engineering,SK0250,Prompt Engineering,2044,2062,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Model Serving,SK0212,model serving,2260,2273,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Docker,SK0125,Docker,2306,2312,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,CI/CD,SK0050,CI/CD,2314,2319,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Cloud Computing,SK0062,cloud platforms,2332,2347,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Databases,SK0107,database,2368,2376,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,PostgreSQL,SK0243,PostgreSQL,2381,2391,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,MySQL,SK0218,MySQL,2393,2398,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,MongoDB,SK0215,MongoDB,2400,2407,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+10911bae157e538f,Redis,SK0268,Redis,2413,2418,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Databases,SK0107,cơ sở dữ liệu,86,99,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,MySQL,SK0218,MySQL,100,105,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,MongoDB,SK0215,MongoDB,109,116,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Data Modeling,SK0091,data model,230,240,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Query Optimization,SK0257,query optimization,559,577,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Logging,SK0185,logging,932,939,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Data Security,SK0097,database security,2194,2211,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Grafana,SK0159,Grafana,1175,1182,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Dashboarding,SK0076,dashboards,1191,1201,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Terraform,SK0307,Terraform,2347,2356,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Python,SK0256,Python,2375,2381,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Docker,SK0125,Docker,2424,2430,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+c7a50a91c490c519,Kubernetes,SK0175,Kubernetes,2432,2442,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Python,SK0256,Python,0,6,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Large Language Models,SK0179,LLM,533,536,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Retrieval-Augmented Generation,SK0273,RAG,550,553,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,OpenAI API,SK0231,OpenAI,596,602,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Claude,SK0059,Claude,604,610,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Gemini,SK0145,Gemini,612,618,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,CI/CD,SK0050,CI/CD,970,975,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Monitoring,SK0216,monitoring,984,994,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Generative AI,SK0146,GenAI,1636,1641,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,System Architecture,SK0303,system architecture,1820,1839,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,DevOps,SK0118,DevOps,1934,1940,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Docker,SK0125,Docker,1957,1963,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,FastAPI,SK0136,FastAPI,2429,2436,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Django,SK0124,Django,2437,2443,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Cloud Computing,SK0062,Cloud,2457,2462,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Amazon Web Services,SK0018,AWS,2479,2482,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Google Cloud Platform,SK0154,GCP,2484,2487,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a7e937cf056d04b1,Azure AI Services,SK0034,Azure AI,2489,2497,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Go,SK0151,Go,7,9,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,JSON,SK0167,JSON,29,33,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,SQL,SK0278,SQL,35,38,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,AI Agents,SK0003,AI Agent,220,228,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Databases,SK0107,databases,413,422,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Microservices,SK0200,microservices,628,641,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Large Language Models,SK0179,LLM,710,713,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Retrieval-Augmented Generation,SK0273,RAG,718,721,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Docker,SK0125,Docker,1034,1040,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Relational Databases,SK0271,relational databases,1628,1648,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Debugging,SK0110,debugging,1704,1713,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,C#,SK0048,C#,2182,2184,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Agentic AI,SK0010,Agentic AI,2237,2247,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,OpenAI API,SK0231,OpenAI,2299,2305,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Microsoft Azure,SK0201,Azure,2307,2312,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Anthropic API,SK0021,Anthropic,2321,2330,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Vector Database,SK0317,vector databases,2360,2376,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Vector Search,SK0318,vector search,2380,2393,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Kubernetes,SK0175,Kubernetes,2411,2421,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Redis,SK0268,Redis,2423,2428,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Apache Kafka,SK0027,Kafka,2430,2435,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Observability,SK0230,observability,2466,2479,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ea6186a289c2bf1b,Prometheus,SK0248,Prometheus,2494,2504,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+a9df4469092f56be,CRM,SK0051,CRM,2186,2189,False,"NLP có trong yêu cầu, không chỉ trong giới thiệu công ty."
+a9df4469092f56be,Natural Language Processing,SK0220,NLP,436,439,False,"NLP có trong yêu cầu, không chỉ trong giới thiệu công ty."
+a9df4469092f56be,Large Language Models,SK0179,LLMs,2388,2392,False,"NLP có trong yêu cầu, không chỉ trong giới thiệu công ty."
+a9df4469092f56be,Cloud Computing,SK0062,cloud infrastructure,2400,2420,False,"NLP có trong yêu cầu, không chỉ trong giới thiệu công ty."
+a9df4469092f56be,Amazon Web Services,SK0018,AWS,2422,2425,False,"NLP có trong yêu cầu, không chỉ trong giới thiệu công ty."
+a9df4469092f56be,Microsoft Azure,SK0201,Azure,2427,2432,False,"NLP có trong yêu cầu, không chỉ trong giới thiệu công ty."
+0b39872d0c820562,Debugging,SK0110,debugging,511,520,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+0b39872d0c820562,Python,SK0256,Python,1035,1041,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+0b39872d0c820562,CI/CD,SK0050,CI/CD,1591,1596,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+0b39872d0c820562,Reporting,SK0272,reporting,1751,1760,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+0b39872d0c820562,Claude,SK0059,Claude,2230,2236,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+0b39872d0c820562,ChatGPT,SK0056,ChatGPT,2255,2262,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+0b39872d0c820562,Java,SK0168,Java,2412,2416,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Statistical Analysis,SK0292,statistical tests,866,883,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Funnel Analysis,SK0144,funnel analysis,907,922,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Clustering,SK0063,clustering,947,957,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Segmentation,SK0281,segmentation,968,980,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,A/B Testing,SK0001,AB test,1080,1087,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Dashboarding,SK0076,dashboards,1316,1326,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Data Modeling,SK0091,data models,1519,1530,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Data Warehouse,SK0102,data warehouse,1627,1641,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Data Pipelines,SK0093,pipeline,137,145,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Statistics,SK0295,statistics skills,2130,2147,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Data Visualization,SK0101,visualize,2208,2217,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,SQL,SK0278,SQL,29,32,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,Python,SK0256,Python,33,39,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+ad743ae699103d9b,R,SK0258,R,40,41,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,Databases,SK0107,databases,1284,1293,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,PostgreSQL,SK0243,PostgreSQL,31,41,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,Amazon Web Services,SK0018,AWS,42,45,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,Oracle Database,SK0236,Oracle,1101,1107,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,Query Optimization,SK0257,query tuning,1395,1407,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,Monitoring,SK0216,Monitor database health,1585,1608,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,SQL,SK0278,SQL,38,41,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+d17dc4bd6eba3779,Data Security,SK0097,database security,2176,2193,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+dee32c5ca8844d69,Data Mining,SK0090,khai phá dữ liệu,209,225,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Data Analysis,SK0078,phân tích dữ liệu,741,758,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Feature Store,SK0139,kho dữ liệu đặc trưng,270,291,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Predictive Modeling,SK0246,mô hình dự đoán,1329,1344,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Machine Learning,SK0195,học máy,851,858,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Big Data,SK0043,dữ liệu lớn,1005,1016,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Python,SK0256,Python,1110,1116,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Apache Spark,SK0028,Spark,1118,1123,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,SQL,SK0278,SQL,1125,1128,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Tableau,SK0304,Tableau,1130,1137,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Power BI,SK0244,Power BI,1139,1147,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Oracle Database,SK0236,Oracle,1149,1155,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Data Visualization,SK0101,Data visualization,1157,1175,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,R,SK0258,R,1442,1443,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Apache Hadoop,SK0024,Hadoop,1596,1602,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Amazon S3,SK0016,S3,1604,1606,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+dee32c5ca8844d69,Statistics,SK0295,kiến thức thống kê,1713,1731,False,Các nhãn từ bản dịch tiếng Việt và Feature Store cần người rà soát xác nhận.
+5da5a30910b64f2d,Fine-Tuning,SK0140,fine-tuning,400,411,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5da5a30910b64f2d,Model Serving,SK0212,inference/serving,424,441,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5da5a30910b64f2d,Retrieval-Augmented Generation,SK0273,RAG,444,447,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.
+5da5a30910b64f2d,Data Governance,SK0082,quản trị dữ liệu,2742,2758,False,Chờ người rà soát đầy đủ cả nhãn đã gán và kỹ năng có thể bị bỏ sót.

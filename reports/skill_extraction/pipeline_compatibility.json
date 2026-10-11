@@ -1,0 +1,20 @@
+{
+  "checked_on": "2026-10-11",
+  "pipeline_ref": "origin/feature/pipeline-integration-schema-22",
+  "pipeline_commit": "2d4fca2bd81c031e6719ad63d75167eed0cdb660",
+  "status": "completed",
+  "extractor_entry_point": "src.parser.features:run",
+  "clean_rq_analysis": "fixtures; no research algorithms executed",
+  "counts": {
+    "raw_records": 2,
+    "clean_records": 2,
+    "valid_records": 1,
+    "duplicates": 1,
+    "out_of_scope": 0,
+    "overlap": 0,
+    "skill_records": 1,
+    "matrix_rows": 1
+  },
+  "research_acceptance": false,
+  "schema_fields": 22
+}

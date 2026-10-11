@@ -1,0 +1,21 @@
+{
+  "prepared_on": "2026-10-11",
+  "records": 50,
+  "annotations": 634,
+  "annotation_status": "assistant_annotated_draft",
+  "annotated_by": "Codex",
+  "human_reviewed": false,
+  "source_ref": "origin/feature/data-collection-sample",
+  "source_commit": "8d4749d61599b8cac8107e74f80e5ca69ca80ddd",
+  "source_path": "data/pilot/jobs_pilot.jsonl",
+  "source_records": 252,
+  "source_blob_sha256": "f63a5794db9c4c327f718ba67ada722da66c34856f0cd0f9b7ae6f3ee2c05572",
+  "reference_path": "data/sample/sample_jobs.jsonl",
+  "reference_sha256": "c0a6032280543c45554ed8527af90e95f08bcf8da47523d27811dfae6e211f83",
+  "gold_sha256": "329292e4ccb5b5b455412478711c5186f6afc744655aaa5615bcbd8be54ef86a",
+  "selection": "50 shortest eligible titles, then job_id; word-shingle Jaccard < 0.5; no shared ID/URL/source_job_id",
+  "max_shingle_similarity_to_sample": 0.2510948905109489,
+  "max_shingle_similarity_within_gold": 0.2069364161849711,
+  "labels_assigned_before_parser_predictions": true,
+  "review_required": true
+}
