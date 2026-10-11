@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "run_kind": "integration",
+  "paths": {
+    "raw": "../data/sample/sample_jobs.jsonl",
+    "clean": "../data/processed/jobs_clean.parquet",
+    "skills": "../data/features/job_skills.parquet",
+    "matrix": "../data/features/job_skill_matrix.parquet",
+    "taxonomy": "../taxonomy/skills_taxonomy.csv",
+    "rq1": "../reports/analysis/rq1",
+    "analysis": "../reports/analysis/rq2_rq4",
+    "report": "../reports/integration/latest_run.json"
+  },
+  "modules": {
+    "clean": "src.pipeline.adapters:cleaner",
+    "rq1": null,
+    "extract": null,
+    "analysis": null
+  },
+  "options": {
+    "clean": {},
+    "rq1": {"seed": 42},
+    "extract": {},
+    "analysis": {
+      "seed": 42,
+      "min_jobs_per_title": 5,
+      "min_jobs_per_skill": 3,
+      "min_cooccurrence": 5,
+      "min_skills_for_similarity": 2,
+      "min_jobs_for_clustering": 300
+    }
+  }
+}

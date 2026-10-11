@@ -199,16 +199,7 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         if exp_text:
             raw_experience = clean_text(exp_text)
 
-    # 9. Trích xuất salary_raw
-    salary_raw = None
-    sal_elem = soup.select_one(".salary")
-    if sal_elem:
-        sal_text = sal_elem.get_text(strip=True)
-        if "sign in" not in sal_text.lower():
-            salary_raw = sal_text
-    salary_raw = clean_text(salary_raw)
-
-    # 10. Trích xuất job_description & job_requirements
+    # 9. Trích xuất job_description & job_requirements
     job_description = None
     job_requirements = None
     
@@ -262,16 +253,9 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         "normalized_location": None,
         "posted_date": posted_date,
         "raw_experience": raw_experience,
-        "experience_min_years": None,
-        "experience_max_years": None,
-        "education": None,
         "job_description": job_description,
         "job_requirements": job_requirements,
         "job_text": None,
-        "salary_raw": salary_raw,
-        "salary_min": None,
-        "salary_max": None,
-        "salary_currency": None,
         "relevance_flag": None,
         "exclusion_reason": None,
         "duplicate_flag": None,
