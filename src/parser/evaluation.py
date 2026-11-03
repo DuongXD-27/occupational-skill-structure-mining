@@ -12,6 +12,20 @@ from .features import read_jobs
 from .skill_extractor import SkillExtractor, document_text
 
 
+SPLIT_SALT = "gold-split-v1"
+SUBSETS = ("all", "tune", "holdout")
+
+
+def gold_split(job_id: str) -> str:
+    """Nửa cố định của gold theo job_id (quyết định 2026-11-03, F.9).
+
+    `tune`: được xem lỗi để chỉnh alias/taxonomy. `holdout`: chỉ dùng báo cáo P/R/F1
+    chính thức. Băm theo job_id nên tin thêm sau không làm đổi nhóm của tin cũ.
+    """
+    digest = hashlib.sha256(f"{SPLIT_SALT}:{job_id}".encode()).hexdigest()
+    return "holdout" if int(digest[:8], 16) % 2 == 0 else "tune"
+
+
 def shingles(row):
     text = " ".join(str(row.get(k) or "") for k in ("job_description", "job_requirements"))
     words = re.findall(r"\w+", text.casefold())
@@ -62,7 +76,9 @@ def score_predictions(gold, predicted):
             "errors": errors}
 
 
-def evaluate_file(gold_path, output_dir, taxonomy_path, reference_path):
+def evaluate_file(gold_path, output_dir, taxonomy_path, reference_path, subset="all"):
+    if subset not in SUBSETS:
+        raise ValueError(f"subset phải là một trong {SUBSETS}.")
     gold_path, output_dir = Path(gold_path), Path(output_dir)
     inputs = {Path(p).resolve() for p in (gold_path, taxonomy_path, reference_path)}
     if any((output_dir / name).resolve() in inputs for name in ("metrics.json", "errors.jsonl", "per_skill.csv", "predictions.jsonl")):
@@ -93,12 +109,18 @@ def evaluate_file(gold_path, output_dir, taxonomy_path, reference_path):
                 raise ValueError("Gold evidence span không hợp lệ.")
             if text[a:b] != annotation.get("evidence") or by_name[annotation["canonical_name"]] != annotation.get("skill_id"):
                 raise ValueError("Gold evidence/skill_id không khớp.")
+    all_jobs = len(rows)
+    if subset != "all":
+        rows = [r for r in rows if gold_split(r["job_id"]) == subset]
+        if not rows:
+            raise ValueError(f"Không có tin nào thuộc nhóm {subset}.")
     predictions = {r["job_id"]: extractor.extract(r["text"]) for r in rows}
     scored = score_predictions({r["job_id"]: r["gold_skills"] for r in rows}, predictions)
     human_reviewed = all(r["annotation_status"] == "human_reviewed" and r.get("human_reviewed") is True for r in rows)
     report = {"evaluation_kind": "human_reviewed_gold" if human_reviewed else "assistant_annotated_draft",
               "research_acceptance": False, "human_reviewed": human_reviewed,
-              "jobs": len(rows), "gold_annotations": sum(len(r["gold_skills"]) for r in rows),
+              "subset": subset, "split_rule": f"sha256('{SPLIT_SALT}:'+job_id) chẵn → holdout",
+              "gold_jobs_total": all_jobs, "jobs": len(rows), "gold_annotations": sum(len(r["gold_skills"]) for r in rows),
               "prediction_annotations": sum(len(p) for p in predictions.values()),
               "jobs_with_errors": len(scored["errors"]), "micro": scored["micro"],
               "scoring_scope": "canonical skills in frozen taxonomy; OOV concepts excluded",

@@ -25,11 +25,13 @@ def main():
     item.add_argument("--output-dir", type=Path, required=True)
     item.add_argument("--taxonomy", type=Path, default=DEFAULT_TAXONOMY)
     item.add_argument("--reference", type=Path, default=Path(__file__).resolve().parents[2] / "data/sample/sample_jobs.jsonl")
+    item.add_argument("--subset", choices=("all", "tune", "holdout"), default="all",
+                      help="tune: nửa dùng để chỉnh alias; holdout: nửa báo cáo P/R/F1 chính thức")
     args = parser.parse_args()
     try:
         if args.command == "evaluate":
             from .evaluation import evaluate_file
-            report = evaluate_file(args.gold, args.output_dir, args.taxonomy, args.reference)
+            report = evaluate_file(args.gold, args.output_dir, args.taxonomy, args.reference, args.subset)
         else:
             preview = args.command == "preview"
             if preview and args.output_dir.resolve().name != "development":
