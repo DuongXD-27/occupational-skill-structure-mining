@@ -245,7 +245,7 @@ The integration pipeline calls the same code through
 ---
 ---
 
-# PART 6 — ONE OPEN QUESTION FOR THE LEADER
+# PART 6 — CHOOSING k (DECIDED 2026-11-03)
 
 `analysis_spec_v0.1.md` states the rule for choosing k as: highest stability →
 ties broken by silhouette → within 0.02 stability, take the smaller k.
@@ -256,5 +256,6 @@ last clause picks k=3 and agreement drops to ARI 0.71. Applying the silhouette
 clause first picks k=4 — silhouette separates them clearly, 0.41 against
 0.54 — and agreement rises to ARI 0.99.
 
-`select_k` currently applies silhouette first. The spec needs rewording to say
-so explicitly.
+`select_k` applies silhouette first. The leader approved this order on
+2026-11-03 and the spec wording was corrected to match
+(`docs/decisions/integration_decisions.md`, section F.11).

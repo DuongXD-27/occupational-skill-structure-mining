@@ -3,8 +3,9 @@
 analysis_spec_v0.1.md cam kết không để con số nào nằm rải rác trong code.
 File này chính là cam kết đó.
 
-Mọi giá trị bên dưới đều là ĐỀ XUẤT, spec ghi rõ là provisional — phải chờ
-leader duyệt. Khi đổi, chỉ sửa ở đây, không sửa trong rq2/rq3/rq4.
+Leader đã duyệt giữ nguyên các ngưỡng ngày 2026-11-03 (docs/decisions/
+integration_decisions.md mục F). Khi đổi, ghi lý do và chỉ sửa ở đây, không sửa
+trong rq2/rq3/rq4.
 """
 
 RANDOM_SEED = 42
@@ -15,6 +16,7 @@ MIN_COOCCURRENCE = 5       # dưới 5 lần cùng xuất hiện, chỉ số lif
 
 # --- RQ3: ngưỡng cho title và tin (spec mục 7) ---
 MIN_POSTINGS_PER_TITLE = 5     # 5 tin cho ra 10 cặp để so sánh
+MIN_TITLES_FOR_RQ3 = 3         # chốt 2026-11-03: dưới 3 title đạt ngưỡng thì không báo cáo RQ3
 MIN_SKILLS_PER_POSTING = 2     # 1 skill thì không có gì để so
 BOOTSTRAP_ITERATIONS = 1000    # số lần bốc nhóm ngẫu nhiên cho mỗi title
 

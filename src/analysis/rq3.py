@@ -188,9 +188,10 @@ def notable_title_pairs(M, titles, similarity, top=5, nguong=0.5):
 def run_rq3(M, titles, iterations=config.BOOTSTRAP_ITERATIONS):
     disp, skipped = compute_title_dispersion(M, titles)
 
-    if disp.empty:
+    if len(disp) < config.MIN_TITLES_FOR_RQ3:
         return {
-            "status": f"no title reaches {config.MIN_POSTINGS_PER_TITLE} postings",
+            "status": (f"only {len(disp)} title(s) reach {config.MIN_POSTINGS_PER_TITLE} postings; "
+                       f"RQ3 needs at least {config.MIN_TITLES_FOR_RQ3}"),
             "skipped_titles": skipped,
             "dispersion": disp,
         }
