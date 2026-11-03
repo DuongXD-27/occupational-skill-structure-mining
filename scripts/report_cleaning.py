@@ -32,8 +32,10 @@ def main(argv=None) -> int:
             stream.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", required=True)
-    ap.add_argument("--clean", default="data/processed/jobs_clean.parquet")
-    ap.add_argument("--rq1-dir", default="reports/analysis/rq1")
+    ap.add_argument("--clean", default="data/processed/pilot/jobs_clean_pilot.parquet",
+                    help="bảng sạch của lần chạy báo cáo (tách khỏi đầu ra pipeline data/processed/jobs_clean.parquet)")
+    ap.add_argument("--rq1-dir", default="reports/data_quality/rq1_pilot",
+                    help="thư mục bảng/biểu đồ RQ1 của lần chạy báo cáo (pipeline ghi vào reports/analysis/rq1)")
     ap.add_argument("--report-dir", default="reports/data_quality")
     args = ap.parse_args(argv)
 

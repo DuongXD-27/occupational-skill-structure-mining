@@ -1,5 +1,5 @@
 """
-tests/cleaner/test_pipeline.py
+tests/cleaner/test_cleaner_pipeline.py
 End-to-end checks of run_pipeline: 22-field output, quality log, no deleted records.
 """
 import json
