@@ -205,6 +205,93 @@ def compare_to_titles(labels, titles, M):
     }
 
 
+def cluster_title_crosstab(labels, titles, M):
+    """Bảng chéo cụm × title (số tin). Chỉ gọi SAU khi nhãn cụm đã chốt."""
+    nhan, nghe = _with_titles(labels, titles, M)
+    return pd.crosstab(pd.Series(nghe, name="title"), pd.Series(nhan, name="cluster"))
+
+
+def cluster_examples(M, labels, titles=None, n=3):
+    """Mỗi cụm `n` tin gần tâm cụm nhất (cosine) — để người đọc thấy cụm là gì."""
+    X = M.values.astype(float)
+    labels = np.asarray(labels)
+    norm = np.linalg.norm(X, axis=1)
+    rows = []
+    for c in sorted(set(labels)):
+        idx = np.where(labels == c)[0]
+        tam = X[idx].mean(axis=0)
+        cos = X[idx] @ tam / np.where(norm[idx] * np.linalg.norm(tam) == 0, 1, norm[idx] * np.linalg.norm(tam))
+        for rank, i in enumerate(idx[np.argsort(-cos)][:n], 1):
+            jid = M.index[i]
+            rows.append({
+                "cluster": int(c), "rank": rank, "job_id": jid,
+                "title": None if titles is None else titles.get(jid),
+                "cosine_to_centroid": round(float(cos[list(idx).index(i)]), 4),
+                "skills": ", ".join(M.columns[X[i] > 0]),
+            })
+    return pd.DataFrame(rows)
+
+
+# Phân cụm phân cấp — phương pháp đối chứng cho K-Means (phạm vi bắt buộc §11)
+
+def hierarchical_labels(M, k,
+                        metric=config.HIERARCHICAL_METRIC,
+                        method=config.HIERARCHICAL_LINKAGE):
+    """Cắt cây phân cấp thành k cụm. Nhãn 0..k-1, cùng quy ước với K-Means.
+
+    Khoảng cách Jaccard hợp với vector skill nhị phân hơn Euclid (hai tin cùng
+    THIẾU một skill không làm chúng giống nhau). Title không phải đầu vào.
+    """
+    from scipy.cluster.hierarchy import fcluster, linkage
+    from scipy.spatial.distance import pdist
+
+    X = M.values.astype(bool)
+    Z = linkage(pdist(X, metric=metric), method=method)
+    nhan = fcluster(Z, t=k, criterion="maxclust")
+    _, nhan = np.unique(nhan, return_inverse=True)
+    return nhan
+
+
+def _diem_noi_tai(X, nhan):
+    """Silhouette (cosine) và Davies-Bouldin; None khi chỉ có 1 cụm."""
+    if len(set(nhan)) < 2:
+        return None, None
+    return (round(float(silhouette_score(X, nhan, metric="cosine")), 4),
+            round(float(davies_bouldin_score(X, nhan)), 4))
+
+
+def compare_methods(M, kmeans_labels, hier_labels, titles=None):
+    """Bảng so sánh K-Means với phân cấp ở cùng k.
+
+    Ngoài điểm nội tại còn ghi cỡ cụm lớn nhất: liên kết average hay tạo một cụm
+    khổng lồ cộng vài cụm lẻ, silhouette vẫn đẹp nhưng cấu trúc vô dụng.
+    """
+    X = M.values.astype(float)
+    rows = []
+    for ten, nhan in (("kmeans", kmeans_labels), ("hierarchical", hier_labels)):
+        nhan = np.asarray(nhan)
+        sil, db = _diem_noi_tai(X, nhan)
+        co = pd.Series(nhan).value_counts()
+        row = {
+            "method": ten,
+            "k": int(len(co)),
+            "silhouette": sil,
+            "davies_bouldin": db,
+            "largest_cluster_share": round(float(co.max() / len(nhan)), 4),
+            "singleton_clusters": int((co == 1).sum()),
+        }
+        if titles is not None:
+            row.update({f"{m}_vs_titles": v for m, v in compare_to_titles(nhan, titles, M).items()
+                        if m != "n_compared"})
+        rows.append(row)
+    bang = pd.DataFrame(rows)
+    giong_nhau = {
+        "ari_between_methods": round(float(adjusted_rand_score(kmeans_labels, hier_labels)), 4),
+        "nmi_between_methods": round(float(normalized_mutual_info_score(kmeans_labels, hier_labels)), 4),
+    }
+    return bang, giong_nhau
+
+
 # PCA chỉ để trực quan hóa
 
 def pca_coordinates(M, labels):
@@ -243,6 +330,7 @@ def run_rq4(
     k = select_k(sweep)                          # vẫn chưa
 
     labels = nhan_theo_k[k]                      # cụm chốt tại đây
+    hier = hierarchical_labels(M, k)             # đối chứng, cùng k, vẫn chưa thấy title
 
     result = {
         "status": "ok",
@@ -255,11 +343,17 @@ def run_rq4(
         "profiles": cluster_profiles(M, labels),
         "pca": pca_coordinates(M, labels),
         "labels": pd.Series(labels, index=M.index, name="cluster"),
+        "hierarchical_labels": pd.Series(hier, index=M.index, name="cluster_hierarchical"),
     }
 
     # mọi thứ phía trên đã tính xong khi title còn bị giấu
     if titles is not None:
         result["unblinded"] = unblind(labels, titles, M)
         result["agreement"] = compare_to_titles(labels, titles, M)
+        result["crosstab"] = cluster_title_crosstab(labels, titles, M)
+    result["examples"] = cluster_examples(M, labels, titles)
+
+    result["method_comparison"], result["method_agreement"] = compare_methods(
+        M, labels, hier, titles)
 
     return result

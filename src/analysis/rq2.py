@@ -154,6 +154,47 @@ def detect_communities(assoc, weight="npmi", min_weight=0.0, skills=None):
     }
 
 
+# Bảng phụ — top cặp theo từng thước đo, và các cặp liên kết âm
+
+def top_pairs_by_metric(assoc, top=config.TOP_PAIRS_PER_METRIC):
+    """Top `top` cặp theo lift, NPMI và Jaccard (dạng dài: metric, rank, cặp)."""
+    if assoc.empty:
+        return pd.DataFrame(columns=["metric", "rank", "skill_a", "skill_b", "joint", "value"])
+    parts = []
+    for metric in ("lift", "npmi", "jaccard"):
+        t = assoc.sort_values([metric, "joint"], ascending=False).head(top)
+        parts.append(pd.DataFrame({
+            "metric": metric, "rank": range(1, len(t) + 1),
+            "skill_a": t["skill_a"].values, "skill_b": t["skill_b"].values,
+            "joint": t["joint"].values, "value": t[metric].values,
+        }))
+    return pd.concat(parts, ignore_index=True)
+
+
+def negative_pairs(M, min_expected=config.MIN_COOCCURRENCE, top=config.TOP_PAIRS_PER_METRIC):
+    """Các cặp ít đi cùng nhau hơn mức ngẫu nhiên (lift < 1).
+
+    Chỉ xét cặp mà NẾU độc lập thì kỳ vọng gặp nhau ít nhất `min_expected` lần;
+    nếu không, "ít gặp" chỉ là do cả hai đều hiếm.
+    """
+    so_tin = len(M)
+    n = M.sum()
+    joint = M.T.values @ M.values
+    ten = list(M.columns)
+    rows = []
+    for i, j in itertools.combinations(range(len(ten)), 2):
+        expected = n.iloc[i] * n.iloc[j] / so_tin
+        if expected < min_expected:
+            continue
+        lift = joint[i, j] / expected
+        if lift >= 1:
+            continue
+        rows.append({"skill_a": ten[i], "skill_b": ten[j], "joint": int(joint[i, j]),
+                     "expected": round(float(expected), 2), "lift": round(float(lift), 3)})
+    out = pd.DataFrame(rows, columns=["skill_a", "skill_b", "joint", "expected", "lift"])
+    return out.sort_values(["lift", "expected"], ascending=[True, False]).head(top).reset_index(drop=True)
+
+
 # Chạy toàn bộ RQ2
 
 def run_rq2(M):
@@ -164,6 +205,8 @@ def run_rq2(M):
         "skill_frequency": compute_skill_frequency(M),
         "skills_per_posting": skills_per_posting(M),
         "pairs": assoc,
+        "top_pairs": top_pairs_by_metric(assoc),
+        "negative_pairs": negative_pairs(M),
         # mọi skill của M đều có nhóm; skill không có cặp đạt ngưỡng là nút cô lập
         "communities": detect_communities(assoc, skills=M.columns),
     }

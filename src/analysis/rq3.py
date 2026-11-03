@@ -107,6 +107,7 @@ def add_baselines(dispersion, M, iterations=config.BOOTSTRAP_ITERATIONS):
 
     out["baseline_mean"] = out["n_postings"].map(lambda n: moc[n]["mean"])
     out["baseline_p5"] = out["n_postings"].map(lambda n: moc[n]["p5"])
+    out["baseline_p95"] = out["n_postings"].map(lambda n: moc[n]["p95"])
     out["informative"] = out["dispersion"] < out["baseline_p5"]
 
     return out
@@ -183,6 +184,40 @@ def notable_title_pairs(M, titles, similarity, top=5, nguong=0.5):
     return pd.DataFrame(rows)
 
 
+# Hồ sơ kỹ năng của từng title và các cặp bị cảnh báo theo 3 ngưỡng
+
+def title_profiles(M, titles, min_postings=config.MIN_POSTINGS_PER_TITLE, top=10):
+    """Mỗi title đủ ngưỡng: `top` skill có tỉ lệ tin yêu cầu cao nhất (dạng dài)."""
+    t = titles.reindex(M.index)
+    so_tin = t.value_counts()
+    rows = []
+    for title, nhom in M.groupby(t.values):
+        if so_tin.get(title, 0) < min_postings:
+            continue
+        share = nhom.mean().sort_values(ascending=False).head(top)
+        for rank, (skill, v) in enumerate(share.items(), 1):
+            rows.append({"title": title, "n_postings": int(so_tin[title]), "rank": rank,
+                         "skill": skill, "share": round(float(v), 4)})
+    return pd.DataFrame(rows, columns=["title", "n_postings", "rank", "skill", "share"])
+
+
+def flag_title_pairs(similarity, thresholds=config.TITLE_SIMILARITY_THRESHOLDS):
+    """Cặp title có cosine ≥ từng ngưỡng; cột `level` = ngưỡng cao nhất mà cặp vượt."""
+    if similarity.empty:
+        return pd.DataFrame(columns=["title_a", "title_b", "cosine", "level"])
+    out = similarity[similarity["cosine"] >= min(thresholds)].copy()
+    out["level"] = out["cosine"].map(lambda c: max(t for t in thresholds if c >= t))
+    return out.reset_index(drop=True)
+
+
+def title_profile_matrix(M, titles, min_postings=config.MIN_POSTINGS_PER_TITLE):
+    """Ma trận title × skill (tỉ lệ tin), chỉ title đủ ngưỡng — dùng cho heatmap/dendrogram."""
+    t = titles.reindex(M.index)
+    so_tin = t.value_counts()
+    ho_so = M.groupby(t.values).mean()
+    return ho_so.loc[[x for x in ho_so.index if so_tin.get(x, 0) >= min_postings]]
+
+
 # Chạy toàn bộ RQ3
 
 def run_rq3(M, titles, iterations=config.BOOTSTRAP_ITERATIONS):
@@ -204,4 +239,7 @@ def run_rq3(M, titles, iterations=config.BOOTSTRAP_ITERATIONS):
         "skipped_titles": skipped,
         "title_similarity": similarity,
         "notable": notable_title_pairs(M, titles, similarity),
+        "profiles": title_profiles(M, titles),
+        "flagged": flag_title_pairs(similarity),
+        "profile_matrix": title_profile_matrix(M, titles),
     }
