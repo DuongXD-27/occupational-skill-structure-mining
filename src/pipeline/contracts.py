@@ -15,6 +15,8 @@ FIELDS = (
     "duplicate_flag duplicate_group_id extracted_skills skill_count"
 ).split()
 BOOLS = {"relevance_flag", "duplicate_flag"}
+# Lý do loại trừ hợp lệ cho tin không có văn bản (data_quality_rules QR-01 §2.2/§2.4)
+NO_TEXT_REASONS = {"INSUFFICIENT_TEXT", "SCRAPE_ERROR"}
 RAW_FIELDS = (
     "source source_job_id source_url crawl_timestamp parser_version raw_job_title company "
     "raw_location raw_experience job_description job_requirements posted_date"
@@ -113,8 +115,14 @@ def validate_jobs(path: Path, stage: str, *, cleaned=False):
                 date.fromisoformat(row["posted_date"])
         except ValueError:
             fail(stage, path, f"ngày/dấu thời gian không đúng ISO 8601, job_id={key}")
-        if not (nonempty(row["job_description"]) or nonempty(row["job_requirements"])):
-            fail(stage, path, f"thiếu cả job_description và job_requirements, job_id={key}")
+        has_text = nonempty(row["job_description"]) or nonempty(row["job_requirements"])
+        # Bản ghi thô thiếu cả hai trường văn bản vẫn được chuyển cho cleaner để gắn cờ;
+        # sau làm sạch, nó phải nằm trong bảng kiểm toán với relevance_flag=false và lý do.
+        if cleaned and not has_text and not (
+            row["relevance_flag"] is False and row["exclusion_reason"] in NO_TEXT_REASONS
+        ):
+            fail(stage, path, f"tin thiếu cả job_description và job_requirements phải có "
+                              f"relevance_flag=false và exclusion_reason thuộc {sorted(NO_TEXT_REASONS)}, job_id={key}")
         if cleaned:
             for field in BOOLS:
                 if type(row[field]) is not bool:
@@ -182,7 +190,10 @@ def validate_features(clean, skills_path, matrix_path, taxonomy):
             fail(stage, skills_path, f"skill_count không khớp danh sách, job_id={row['job_id']}")
         by_id[row["job_id"]] = set(values)
     columns = set(matrix[0]) - {"job_id"}
-    if not columns or not columns <= set(taxonomy):
+    # Cột toàn 0 được phép bỏ, nên khi không tin nào có kỹ năng, ma trận chỉ còn job_id.
+    if not columns and any(by_id.values()):
+        fail(stage, matrix_path, "ma trận không có cột kỹ năng dù extracted_skills có kỹ năng")
+    if not columns <= set(taxonomy):
         fail(stage, matrix_path, "cột kỹ năng phải dùng skill_id của taxonomy đang hoạt động")
     for row in matrix:
         if set(row) != columns | {"job_id"}:

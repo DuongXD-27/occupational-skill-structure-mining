@@ -85,6 +85,11 @@ def validate_inputs(config, stage):
     return counts, rows, taxonomy
 
 
+def quality_log_path(clean_path):
+    """Đường dẫn log cờ chất lượng đi kèm bảng sạch: <tên>.quality_flags.jsonl."""
+    return clean_path.with_name(clean_path.stem + ".quality_flags.jsonl")
+
+
 def publish(source, target):
     if source.is_dir():
         for file in sorted(source.rglob("*")):
@@ -100,8 +105,9 @@ def publish(source, target):
 def run_stage(config, stage, report):
     counts, inputs, taxonomy = validate_inputs(config, stage)
     report["counts"].update(counts)
-    function = resolve_module(config, stage)
+    # Hash đầu vào TRƯỚC khi import module, để phát hiện cả tác dụng phụ lúc import.
     fingerprints = {key: digest(config.paths[key]) for key in INPUTS[stage]}
+    function = resolve_module(config, stage)
     report["stages"][stage]["inputs"] = {
         key: {"path": str(config.paths[key]), "sha256": value}
         for key, value in fingerprints.items()
@@ -137,6 +143,12 @@ def run_stage(config, stage, report):
             write_json(paths[stage] / "manifest.json", result)
         for key in OUTPUTS[stage]:
             publish(paths[key], config.paths[key])
+        if stage == "clean":
+            # Cờ chất lượng không thuộc schema 22 trường: cleaner ghi file JSONL cạnh bảng sạch.
+            sidecar = quality_log_path(paths["clean"])
+            if sidecar.is_file():
+                publish(sidecar, quality_log_path(config.paths["clean"]))
+                report["stages"][stage]["quality_log"] = str(quality_log_path(config.paths["clean"]))
         if stage in QUESTIONS:
             for rq, item in result.items():
                 report["rq"][rq].update(**item, directory=str(config.paths[stage]))

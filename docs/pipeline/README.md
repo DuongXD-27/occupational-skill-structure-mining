@@ -32,16 +32,22 @@ Nếu môi trường chặn thư mục temp hệ thống, tạo thư mục `.tmp
 Cấu hình [config/pipeline.json](../../config/pipeline.json) dùng dữ liệu mẫu đã có,
 nên pipeline không tự gọi crawler hay ghi đè dữ liệu crawl.
 
-Adapter cleaner tham chiếu API quan sát được trên nhánh
-`origin/feature/data-cleaner-rq1`: `src.cleaner.pipeline.run_pipeline(input_path, output_path, ...)`.
-Nhánh này chưa được merge trong thay đổi tích hợp. RQ1, extractor và analysis
-để `null` cho đến khi người phụ trách bàn giao API. Chạy cấu hình này hiện tại
-sẽ báo thiếu module; không dùng fixture làm module mặc định.
+Cấu hình trỏ tới entry point của từng thành viên:
 
-Cleaner trên nhánh đó cần xử lý các điểm bàn giao trước khi nghiệm thu:
-`quality_flags` đang là cột bổ sung, QR-01 có thể bỏ bản ghi, và quy tắc bỏ cấp bậc/
-hậu tố công nghệ cần đối chiếu với [quyết định chung](../decisions/integration_decisions.md).
-Pipeline sẽ phát hiện schema thay đổi, mất `job_id` hoặc ghi đè trường gốc.
+| Bước | Entry point | Nhánh bàn giao |
+|---|---|---|
+| `clean` | `src.pipeline.adapters:cleaner` → `src.cleaner.pipeline.run_pipeline` | `feature/data-cleaner-rq1` (PR #13) |
+| `rq1` | `src.cleaner.rq1:run` | `feature/data-cleaner-rq1` (PR #13) |
+| `extract` | `src.parser.features:run` | `feature/shared-skill-parser-evaluation` (PR #16) |
+| `analysis` | `src.analysis.report:run` | `feature/analysis-check` (PR #14) |
+
+Khi nhánh tương ứng chưa được merge, bước đó báo `Không nạp được module ...`;
+không dùng fixture làm module mặc định.
+
+Cleaner xuất đúng 22 trường; cờ chất lượng ghi ở file
+`<tên bảng sạch>.quality_flags.jsonl` cạnh bảng sạch, pipeline xuất bản file này
+cùng bảng sạch sau khi kiểm tra đạt. Cleaner không xóa bản ghi: tin lỗi kỹ thuật
+hoặc thiếu văn bản được giữ với `relevance_flag=false` và lý do loại trừ.
 Lương và học vấn không có cột riêng trong schema; crawler không trích xuất riêng,
 cleaner không xuất các cột lương/học vấn của schema cũ.
 Phần kinh nghiệm chỉ giữ `raw_experience`; cleaner bỏ bước parse số năm và không
@@ -144,6 +150,10 @@ trong thư mục tạm mà context cung cấp, gồm cả bảng và biểu đ�
 
 ## 6. Kiểm tra và báo cáo
 
+Tin thô thiếu cả `job_description` và `job_requirements` vẫn được chuyển cho
+cleaner; sau làm sạch tin đó phải có `relevance_flag=false` và `exclusion_reason`
+là `INSUFFICIENT_TEXT` hoặc `SCRAPE_ERROR`.
+
 Các kiểm tra chính: đủ 22 trường, đúng kiểu/giá trị bắt buộc, `job_id` duy nhất,
 cờ relevance/duplicate đã gán boolean, lý do loại trừ, `job_text` và title chuẩn
 hóa cho tin hợp lệ, bảo toàn trường gốc và tập ID từ raw sang clean. Cleaner
@@ -153,7 +163,7 @@ Extractor phải lọc `relevance_flag=true AND duplicate_flag=false`; pipeline 
 kiểm tra tập ID đầu ra, không tự làm lại quy tắc lọc/chuẩn hóa của thành viên.
 `extracted_skills` là danh sách canonical names duy nhất; không tìm thấy kỹ năng
 thì `[]`, `skill_count=0`. Ma trận chỉ dùng cột `skill_id` thuộc taxonomy; các cột
-toàn 0 có thể bỏ. Ma trận và danh sách kỹ năng phải khớp chính xác từng tin.
+toàn 0 có thể bỏ (nếu không tin nào có kỹ năng, ma trận chỉ còn `job_id`). Ma trận và danh sách kỹ năng phải khớp chính xác từng tin.
 Bảng rỗng bị chặn để tránh tạo một lần nghiệm thu không có dữ liệu.
 
 Báo cáo `report` ghi thời gian UTC, hash cấu hình và từng file đầu vào, số bản ghi,
@@ -172,7 +182,8 @@ trích xuất và tính phù hợp của kết luận theo đặc tả.
 
 Nếu lỗi sau khi đọc cấu hình thành công, báo cáo vẫn được ghi. Lỗi ngay khi đọc
 cấu hình thì chỉ in lỗi vì chưa xác định được vị trí báo cáo đáng tin cậy.
-Hash phát hiện module sửa đầu vào nhưng không phục hồi file nếu module vi phạm.
+Hash đầu vào được tính trước khi import module, nên phát hiện cả việc sửa đầu vào
+lúc import; pipeline không phục hồi file nếu module vi phạm.
 Đầu ra đã có chỉ được thay sau khi toàn bộ hợp đồng của bước đạt; việc xuất bản
 nhiều file không phải một giao dịch filesystem nguyên tử, nên lỗi I/O giữa chừng
 có thể để lại một phần đầu ra mới. File cũ trong thư mục phân tích không tự xóa;

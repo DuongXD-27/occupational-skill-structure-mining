@@ -13,9 +13,9 @@
   },
   "modules": {
     "clean": "src.pipeline.adapters:cleaner",
-    "rq1": null,
-    "extract": null,
-    "analysis": null
+    "rq1": "src.cleaner.rq1:run",
+    "extract": "src.parser.features:run",
+    "analysis": "src.analysis.report:run"
   },
   "options": {
     "clean": {},
