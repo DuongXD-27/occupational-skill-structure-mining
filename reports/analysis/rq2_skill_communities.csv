@@ -1,18 +1,18 @@
 ﻿skill,community
-Computer Vision,0
-Docker,0
-Jira,0
-Linux,0
-OpenCV,0
-PyTorch,0
-YOLO,0
-English,1
-Git,1
-LLM,1
-LangChain,1
-Python,1
-RAG,1
-Vector Database,1
+English,0
+Git,0
+LLM,0
+LangChain,0
+Python,0
+RAG,0
+Vector Database,0
+Computer Vision,1
+Docker,1
+Jira,1
+Linux,1
+OpenCV,1
+PyTorch,1
+YOLO,1
 Agile,2
 Communication,2
 Excel,2

@@ -73,9 +73,11 @@ def compute_stability(
         if len(phan_giao) < k:
             continue
 
-        # clustering riêng từng mẫu
-        nhan_a = pd.Series(_fit(X[mau_a], k, seed), index=mau_a)
-        nhan_b = pd.Series(_fit(X[mau_b], k, seed), index=mau_b)
+        # clustering riêng từng mẫu, mỗi lần một seed khởi tạo khác nhau để độ ổn
+        # định phản ánh cả dao động do khởi tạo K-Means
+        seed_a, seed_b = (int(v) for v in rng.integers(0, 2**31 - 1, size=2))
+        nhan_a = pd.Series(_fit(X[mau_a], k, seed_a), index=mau_a)
+        nhan_b = pd.Series(_fit(X[mau_b], k, seed_b), index=mau_b)
 
         # bước 5: chỉ chấm trên phần giao, so theo cặp
         diem.append(
@@ -164,12 +166,17 @@ def cluster_profiles(M, labels, top=5):
 
 # Bước 2 — Sau khi clustering xong mới ghép title
 
+def _with_titles(labels, titles, M):
+    """Nhãn cụm và title của các tin CÓ title (tin thiếu title bị bỏ khỏi so sánh)."""
+    nghe_that = titles.reindex(M.index)
+    co = nghe_that.notna().values
+    return np.asarray(labels)[co], nghe_that.values[co]
+
+
 def unblind(labels, titles, M):
     """Ghép title vào các cụm — chỉ đến lúc này, và chỉ để diễn giải."""
-    df = pd.DataFrame({
-        "cluster": labels,
-        "title": titles.reindex(M.index).values,
-    })
+    nhan, nghe = _with_titles(labels, titles, M)
+    df = pd.DataFrame({"cluster": nhan, "title": nghe})
 
     return (
         df.groupby("cluster")["title"]
@@ -184,13 +191,17 @@ def compare_to_titles(labels, titles, M):
     Gần 1: dữ liệu tái tạo lại đúng các title đang dùng.
     Gần 0: tên nghề và công việc thật đã lệch nhau.
     """
-    nghe_that = titles.reindex(M.index).values
+    nhan, nghe_that = _with_titles(labels, titles, M)
+    if len(nghe_that) == 0:
+        raise ValueError("no posting has a title; cannot compare clusters to titles")
+    labels = nhan
 
     return {
         "ari": round(float(adjusted_rand_score(nghe_that, labels)), 4),
         "nmi": round(
             float(normalized_mutual_info_score(nghe_that, labels)), 4
         ),
+        "n_compared": int(len(nghe_that)),
     }
 
 

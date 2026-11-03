@@ -265,12 +265,16 @@ jaccard TB = 0.167      phân tán = 0.833
 
 ```
 nhóm bốc đại    : 0.833
-ML Engineer     : 0.600     thấp hơn  →  có ý nghĩa
-BI Analyst      : 0.500     thấp hơn  →  có ý nghĩa
-Data Analyst    : 0.333     thấp hơn  →  có ý nghĩa
+ML Engineer     : 0.600     thấp hơn nhóm này
+BI Analyst      : 0.500     thấp hơn nhóm này
+Data Analyst    : 0.333     thấp hơn nhóm này
 ```
 
-Cả ba title đều gom được các tin giống nhau hơn mức ngẫu nhiên.
+Cả ba title đều có độ phân tán thấp hơn **một** nhóm bốc đại ở bước 6. Một lần so
+sánh như vậy chưa đủ để nói title "có ý nghĩa": trong 84 cách chọn 3 tin từ 9 tin,
+có 14 nhóm có độ phân tán ≤ 0.333, nên ngưỡng phân vị 5% tính trên toàn bộ các
+nhóm là 0.333. Kết luận `informative` chỉ dựa vào kết quả bootstrap của
+`add_baselines()` (1.000 nhóm ngẫu nhiên cùng kích thước), không dựa vào ví dụ này.
 
 ML Engineer là title **yếu nhất** trong ba cái — 0.600 đã khá gần 0.833. Nhìn
 lại dữ liệu thì rõ: có tin đòi `PyTorch, OpenCV` (thị giác máy tính), có tin

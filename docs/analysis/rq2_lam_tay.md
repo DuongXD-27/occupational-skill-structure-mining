@@ -213,14 +213,17 @@ Python + SQL:       0.50 / 0.33 = 1.50
 
 **Python có mặt ở 4 trên 6 tin.** Nó ở khắp nơi.
 
-Một skill phổ biến như thế thì đụng SQL 3 lần là **chuyện đương nhiên** — không
-cần có liên hệ gì giữa chúng.
+Nếu Python và SQL độc lập, ta kỳ vọng chúng gặp nhau khoảng 4/6 × 3/6 × 6 = 2
+tin. Thực tế là 3 tin, nên lift = 1.50 > 1: cặp này **vẫn có liên hệ dương**,
+chỉ là yếu. Phần lớn trong 3 lần gặp nhau đã được giải thích bởi việc Python
+có mặt ở khắp nơi.
 
 OpenCV và PyTorch mỗi cái chỉ 3/6, ít phổ biến hơn, **vậy mà vẫn dính nhau đủ
-3 lần**. Lần nào có OpenCV là có PyTorch. Đó mới là liên hệ thật.
+3 lần** — gấp đôi mức kỳ vọng nếu độc lập (lift = 2.00). Lần nào có OpenCV là có
+PyTorch. Liên hệ này mạnh hơn hẳn cặp Python–SQL.
 
-lift chia đúng cho mức phổ biến, nên nó tách được hai trường hợp. Đếm thô thì
-không.
+Đếm thô cho hai cặp cùng con số 3. lift chia cho mức phổ biến, nên nó cho thấy
+cặp nào liên hệ mạnh hơn.
 
 ---
 ---

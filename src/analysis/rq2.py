@@ -100,10 +100,11 @@ def compute_associations(M, pairs=None):
         p_thuc_te / p_ngau_nhien
     ).round(3)
 
-    out["npmi"] = (
-        np.log(p_thuc_te / p_ngau_nhien)
-        / -np.log(p_thuc_te)
-    ).round(3)
+    # NPMI = PMI / -log p(a,b). Khi p(a,b) = 1 (cả hai skill có ở mọi tin) mẫu số
+    # bằng 0 → 0/0; theo định nghĩa, đồng xuất hiện hoàn toàn có NPMI = 1.
+    with np.errstate(divide="ignore", invalid="ignore"):
+        npmi = np.log(p_thuc_te / p_ngau_nhien) / -np.log(p_thuc_te)
+    out["npmi"] = npmi.where(p_thuc_te < 1, 1.0).round(3)
 
     # Jaccard
     so_tin_co_it_nhat_mot = n_a + n_b - pairs["joint"]
@@ -119,15 +120,20 @@ def compute_associations(M, pairs=None):
 
 # Bước 6 — Gom skill thành nhóm
 
-def detect_communities(assoc, weight="npmi", min_weight=0.0):
-    """Gom các skill có liên hệ dương thành các nhóm."""
-    canh = assoc[assoc[weight] > min_weight]
+def detect_communities(assoc, weight="npmi", min_weight=0.0, skills=None):
+    """Gom các skill có liên hệ dương thành các nhóm.
+
+    `skills`: toàn bộ skill của ma trận. Skill không có cặp nào đạt ngưỡng vẫn có
+    mặt trong kết quả, mỗi skill là một nhóm riêng (nút cô lập).
+    """
+    canh = assoc[assoc[weight] > min_weight] if not assoc.empty else assoc
 
     G = nx.Graph()
 
-    G.add_nodes_from(
-        set(assoc["skill_a"]) | set(assoc["skill_b"])
-    )
+    nodes = set(skills) if skills is not None else set()
+    if not assoc.empty:
+        nodes |= set(assoc["skill_a"]) | set(assoc["skill_b"])
+    G.add_nodes_from(sorted(nodes))
 
     for _, r in canh.iterrows():
         G.add_edge(
@@ -158,9 +164,6 @@ def run_rq2(M):
         "skill_frequency": compute_skill_frequency(M),
         "skills_per_posting": skills_per_posting(M),
         "pairs": assoc,
-        "communities": (
-            detect_communities(assoc)
-            if not assoc.empty
-            else {}
-        ),
+        # mọi skill của M đều có nhóm; skill không có cặp đạt ngưỡng là nút cô lập
+        "communities": detect_communities(assoc, skills=M.columns),
     }

@@ -59,9 +59,11 @@ def generate_jobs(n=400, noise=0.15, drop=0.2, seed=config.RANDOM_SEED):
         skills = [s for s in spec["core"] if rng.random() > drop]
         # tin nào cũng có vài skill chung chung, giống quảng cáo thật
         skills += list(rng.choice(FILLER, size=rng.integers(1, 3), replace=False))
-        # thỉnh thoảng lẫn một skill vốn thuộc nghề khác
+        # thỉnh thoảng lẫn một skill vốn thuộc nghề KHÁC (không lấy skill lõi của
+        # chính nghề này, nếu không `noise` không còn là xác suất có skill lạc)
         if rng.random() < noise:
-            skills.append(str(rng.choice(all_core)))
+            foreign = [x for x in all_core if x not in spec["core"]]
+            skills.append(str(rng.choice(foreign)))
 
         rows.append({
             "job_id": f"job_{i:04d}",
@@ -85,4 +87,9 @@ def build_matrix(df, min_skill_count=config.MIN_SKILL_COUNT):
         [[1 if s in set(row) else 0 for s in skills] for row in df["extracted_skills"]],
         index=df["job_id"], columns=skills, dtype=int,
     )
-    return M.loc[:, M.sum() >= min_skill_count]
+    kept = M.loc[:, M.sum() >= min_skill_count]
+    if kept.shape[1] == 0:
+        raise ValueError(
+            f"no skill reaches min_skill_count={min_skill_count}; "
+            "the filtered matrix has no skill columns")
+    return kept
