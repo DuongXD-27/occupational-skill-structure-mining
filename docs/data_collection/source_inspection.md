@@ -152,3 +152,23 @@ Khảo sát ngày 2026-11-03, khi kích hoạt TopCV làm nguồn thứ hai
 * Rủi ro còn lại: §6.2 hạn chế sao chép và sản phẩm phái sinh từ nội dung TopCV. Đây là
   hạn chế cần ghi trong phần hạn chế của báo cáo; nhóm chịu trách nhiệm cân nhắc và
   có thể hỏi giảng viên hướng dẫn trước khi thu ở quy mô lớn.
+
+### Cấu trúc trang (khảo sát 2026-11-03) và cách chạy
+* Trang tìm kiếm `https://www.topcv.vn/tim-viec-lam-<từ khóa>?page=N`, tối đa 50 thẻ/trang
+  (`div.job-item-search-result[data-job-id]`), trang kế tiếp ở `a[rel=next][data-href]`.
+  Số tin ngày khảo sát: data-analyst 70, ai-engineer 83, data-engineer 48,
+  business-intelligence 18, llm 14, data-scientist 7; từ khóa rộng `data` 351, `ai` 238
+  (lẫn nhiều vai trò ngoài phạm vi).
+* Trang chi tiết có hai dạng URL (`/viec-lam/<slug>/<id>.html`,
+  `/brand/<công ty>/tuyen-dung/<slug>-j<id>.html`), cùng có JSON-LD `JobPosting`; mô tả chia
+  bằng `<h2>` "Mô tả công việc" / "Yêu cầu ứng viên" / "Quyền lợi được hưởng". `identifier`
+  trong JSON-LD là mã công ty nên `source_job_id` lấy từ URL.
+* Tiêu đề TopCV thường kèm lương, số năm kinh nghiệm, nơi làm việc; `raw_job_title` giữ
+  nguyên, cleaner bỏ phần này khỏi `normalized_job_title` (cờ `RECRUITMENT_NOISE_REMOVED`).
+* Chạy (module trên nhánh `feature/topcv-source`):
+
+```powershell
+python -m src.crawler.main --source topcv                 # 18 từ khóa Data/AI
+python -m src.crawler.main --source topcv --include-broad # thêm 'data', 'ai'
+python scripts/combine_raw.py data/pilot/jobs_pilot.jsonl data/raw/itviec/*.jsonl data/raw/topcv/*.jsonl --output data/raw/jobs_raw.jsonl
+```
