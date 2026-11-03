@@ -13,7 +13,6 @@
 - **Các trường thô (Giai đoạn A):** Được thu thập ở định dạng nguyên bản bởi crawler; được pipeline làm sạch coi là chỉ đọc (read-only).
 - **Các trường phái sinh (Giai đoạn B) do Pipeline làm sạch tạo ra:**
   - `normalized_location` (chuẩn hóa từ `raw_location` qua QR-02)
-  - `experience_min_years`, `experience_max_years` (bóc tách từ `raw_experience` qua QR-03)
   - `normalized_job_title` (làm sạch bề mặt từ `raw_job_title` qua QR-04)
   - `duplicate_flag`, `duplicate_group_id` (đánh cờ qua QR-05)
   - `relevance_flag`, `exclusion_reason` (đánh cờ qua QR-06 và QR-01)
@@ -45,7 +44,7 @@ Một trường được coi là bị thiếu nếu giá trị của nó là `nu
 | `crawl_timestamp` | Giữ lại, ghi nhận cờ; **không tự ý chèn giá trị giả định** | `MISSING_CRAWL_TIMESTAMP` |
 | `company` | Giữ lại, ghi nhận cờ; **không tự ý chèn giá trị giả định** | `MISSING_COMPANY` |
 | `raw_location` | Giữ lại, đặt `normalized_location = null`; ghi nhận cờ | `MISSING_LOCATION` |
-| `raw_experience` | Giữ lại, đặt `experience_min_years = null`, `experience_max_years = null` | `MISSING_EXPERIENCE` |
+| `raw_experience` | Giữ lại bản ghi; không có dữ liệu nguồn thì dùng `null`, không suy diễn số năm | `MISSING_EXPERIENCE` |
 | `parser_version` | Giữ lại, ghi nhận cờ | `MISSING_PARSER_VERSION` |
 
 > **Tại sao `raw_job_title`, `source`, và `source_url` bị loại bỏ thay vì chỉ gắn cờ:** Ba trường này đại diện cho **các lỗi kỹ thuật nghiêm trọng** (bản ghi không thể định danh, không thể truy vết hoặc không thể khử trùng lặp). Tiêu chí loại trừ của Phạm vi §7 được thiết kế để bảo vệ các bản ghi có ý nghĩa phân tích — không áp dụng cho các bản ghi bị hỏng về mặt kỹ thuật không thể tham chiếu.
@@ -131,47 +130,18 @@ Tóm tắt các mẫu chính:
 
 ---
 
-## 4. QR-03: Quy tắc Chuẩn hóa Kinh nghiệm (`raw_experience` → `experience_min_years` / `experience_max_years`)
+## 4. QR-03: Bảo toàn kinh nghiệm thô (`raw_experience`)
 
-> Schema §9: `raw_experience` bảo toàn văn bản thô nguyên bản. `experience_min_years` và `experience_max_years` là các trường số phái sinh. Nếu số năm không thể bóc tách tin cậy, gán `null`. **Tuyệt đối không đưa ra giả định vô căn cứ hoặc ước tính tùy tiện.**
+Theo quyết định ngày 2026-10-04, phần kinh nghiệm chỉ có `raw_experience: string/null`.
+Không parse số năm tối thiểu/tối đa, quy đổi cấp bậc thành số năm hoặc suy diễn từ
+nội dung khác. RQ1–RQ4 hiện tại không dùng số năm kinh nghiệm.
 
-### 4.1 Các biến thể quan sát được
-
-Trường `raw_experience` thể hiện nhiều cách diễn đạt:
-- Khoảng: `"1-3 năm"`, `"1 - 3 years"`, `"từ 1 đến 3 năm"`
-- Chỉ có cận dưới: `"Trên 2 năm"`, `"Over 2 years"`, `"2+ years"`, `">2 năm"`
-- Chỉ có cận trên: `"Dưới 1 năm"`, `"< 1 year"`, `"Fresher"`
-- Không xác định / Mở: `"Không yêu cầu"`, `"All levels"`, `"Any"`, `"N/A"`
-- Một số nguyên duy nhất: `"3 năm"` (coi min và max bằng nhau)
-- Cấp bậc không kèm số năm: `"Senior"`, `"Junior"`, `"Mid-level"`
-- Bất thường do crawler: Vô tình bóc tách hình thức làm việc hoặc địa chỉ văn phòng (ví dụ: `"At office"`, `"Hybrid"`, `"174 Thai Ha"`).
-
-### 4.2 Quy tắc bóc tách → `experience_min_years` / `experience_max_years`
-
-> **Phân biệt các giá trị đặc biệt — sử dụng sai sẽ làm lệch phân phối thống kê:**
-> - `null` = **Không xác định / Không rõ** (không có dữ liệu hoặc bóc tách thất bại)
-> - `-1` trong `experience_max_years` = **Không giới hạn cận trên một cách tường minh** (ví dụ: "2+ years")
->
-> Khi tính toán thống kê kinh nghiệm: lọc `IS NOT NULL` trước, sau đó tách riêng `experience_max_years != -1` cho các phép tính cận trên.
-
-| Mẫu trong `raw_experience` | `experience_min_years` | `experience_max_years` | Ghi chú |
-|---|---|---|---|
-| `"X-Y năm/years"` | X | Y | Khoảng số cụ thể |
-| `"Trên X"`, `"X+"`, `">X"`, `"≥X"` | X | -1 | Đã biết tối thiểu X, cận trên mở |
-| `"Dưới X"`, `"<X"`, `"≤X"` | 0 | X | Đã biết tối đa X |
-| `"X năm/years"` (một số duy nhất) | X | X | Giả định min = max |
-| `"Fresher"`, `"0 năm"`, `"Không yêu cầu"` | 0 | 0 | Cấp độ mới vào nghề |
-| `"Any"`, `"All levels"`, bị thiếu/null | null | null | Không xác định |
-| `"Senior"`, `"Junior"`, `"Mid-level"` | null | null | Lưu ý: Không quy đổi cấp bậc thành số năm. Gắn cờ `EXPERIENCE_LEVEL_ONLY`. Schema §9 nghiêm cấm ước lượng. |
-| Chuỗi hình thức làm việc (`"At office"`, `"Hybrid"`...) | null | null | Lỗi lệch trường crawler. Gắn cờ `MISSING_EXPERIENCE` và thông báo cho người phụ trách crawler. |
-
-### 4.3 Quy tắc áp dụng
-
-1. Đầu vào: `raw_experience` — bất biến, không bao giờ chỉnh sửa tại chỗ.
-2. Chuẩn hóa văn bản để khớp regex: chuyển chữ thường, bỏ dấu tiếng Việt.
-3. Thứ tự ưu tiên: parse khoảng chặn hai đầu (X-Y) trước, tiếp theo là bất đẳng thức một phía (X+, <X), và cuối cùng là số đơn lẻ.
-4. Nếu không thể parse được → `experience_min_years = null`, `experience_max_years = null`, gắn cờ `EXPERIENCE_PARSE_FAILED`.
-5. Nếu chỉ có cấp bậc seniority → `null`/`null` + gắn cờ `EXPERIENCE_LEVEL_ONLY`.
+- Nguồn có thông tin như `At least 3 years`, `3+ years`, `1-3 năm kinh nghiệm`
+  hoặc `Fresh graduates are welcome` thì crawler lưu nguyên văn trong `raw_experience`.
+- Không có thông tin nguồn thì dùng `null`; không làm mất hiệu lực bản ghi vì thiếu trường này.
+- Cleaner giữ nguyên `raw_experience`, không sửa hoặc bổ sung giá trị từ `job_requirements`.
+- Nếu crawler lấy nhầm hình thức làm việc/địa chỉ, ghi log lỗi để người phụ trách
+  sửa selector cho đợt thu thập sau; không tự ghi đè dữ liệu thô đã thu thập.
 
 ---
 
@@ -191,7 +161,7 @@ Tạo ra `normalized_job_title` như một bản **làm sạch văn bản thuầ
 
 1. Cắt tỉa khoảng trắng đầu và cuối chuỗi
 2. Chuẩn hóa khoảng trắng nội bộ (gộp nhiều dấu cách liên tiếp thành một dấu cách đơn)
-3. Loại bỏ các ký tự đặc biệt vô nghĩa: (), [], số thứ tự danh sách ở đầu, dấu sao (*), dấu thăng (#)
+3. Loại bỏ số thứ tự danh sách ở đầu và ký tự trang trí vô nghĩa; không mặc định xóa mọi nội dung trong () hoặc []
    - Giữ lại: /, +, - khi chúng tạo thành các token kỹ thuật (ví dụ: "C++", "R/Python")
 4. Chuyển dạng Title Case: viết hoa chữ cái đầu tiên của mỗi từ
 5. Chuẩn hóa các từ viết tắt về mặt định dạng (không làm méo mó ngữ nghĩa):
@@ -201,14 +171,21 @@ Tạo ra `normalized_job_title` như một bản **làm sạch văn bản thuầ
    - "Eng." → "Engineer"
    - "Dev." → "Developer"
 6. Loại bỏ nhiễu ngoài chức danh: thông tin lương ("Up to 75M"), đãi ngộ ("- BONUS"), dấu câu treo ở cuối ("/")
+7. Theo quyết định 2026-10-03: "Senior Data Analyst" → "Data Analyst"; xử lý hậu tố công nghệ rõ ràng trong normalized_job_title, giữ nguyên raw_job_title
 ```
 
 ### 5.3 Quy tắc bổ sung
 
 - Nếu tiêu đề chứa rõ ràng hai vai trò riêng biệt (ví dụ: `Data Engineer / Data Analyst`): giữ lại cả hai, gắn cờ `AMBIGUOUS_TITLE` để nhóm phân tích xử lý.
 - Nếu tiêu đề quá ngắn (< 3 ký tự sau khi làm sạch): gắn cờ `TITLE_TOO_SHORT`.
-- Nếu tiêu đề quá dài (> 100 ký tự): cắt bớt ở 100 ký tự, gắn cờ `TITLE_TOO_LONG`.
+- Nếu tiêu đề quá dài (> 100 ký tự): gắn cờ `TITLE_TOO_LONG` và rà soát; không cắt máy móc làm mất vai trò/chuyên môn.
 - Tuyệt đối không xóa `raw_job_title` gốc.
+
+Đức phụ trách chuẩn hóa chức danh và RQ1. Crawler không ghép skill tags vào
+`raw_job_title`; công nghệ có sẵn trong chức danh nguồn phải được bảo toàn ở trường
+thô. Quy tắc bỏ cấp bậc và hậu tố công nghệ phải được tài liệu hóa; không bỏ các
+vai trò/chuyên môn trong ngoặc một cách máy móc. Xem
+[quyết định chung](../decisions/integration_decisions.md).
 
 > **Lưu ý cho Nhóm Phân tích:** Việc ánh xạ `normalized_job_title` sang các nhóm nghề nghiệp được thực hiện hoàn toàn trong giai đoạn phân tích dựa trên phân cụm thực nghiệm — không mã hóa cứng (hard-code) trong pipeline làm sạch.
 
@@ -339,11 +316,11 @@ Schema §11 bắt buộc sử dụng các nhãn chuẩn hóa. Tập từ vựng 
 
 | STT | Vấn đề Thực nghiệm Quan sát được | Tỷ lệ Bị ảnh hưởng | Các trường Bị ảnh hưởng | Đánh giá & Cách Xử lý dựa trên Quy tắc |
 |---|---|---|---|---|
-| 1 | **Lệch trường Kinh nghiệm của Crawler:** Crawler map nhầm hình thức làm việc và địa chỉ văn phòng vào `raw_experience` thay vì số năm kinh nghiệm. Chi tiết (khớp chuỗi con): `At office`: 33 bản ghi (chính xác); `Hybrid`: 5 bản ghi (3 chính xác + 2 phức hợp `"Hybrid, [địa chỉ]"`); `Remote`: 2 bản ghi (1 chính xác + 1 phức hợp `"Remote, Da Nang"`); chỉ có địa chỉ văn phòng: 5 bản ghi (#09, #10, #20, #28, #45). | 45/45 bản ghi (100.0%) | `raw_experience` | **Yêu cầu Đạt sửa crawler.** QR-03 không thể parse số năm kinh nghiệm từ trường này cho đến khi crawler được vá; số năm kinh nghiệm tạm thời phải bóc tách từ `job_requirements`. |
+| 1 | **Lệch trường Kinh nghiệm của Crawler:** Crawler map nhầm hình thức làm việc và địa chỉ văn phòng vào `raw_experience` thay vì số năm kinh nghiệm. Chi tiết (khớp chuỗi con): `At office`: 33 bản ghi (chính xác); `Hybrid`: 5 bản ghi (3 chính xác + 2 phức hợp `"Hybrid, [địa chỉ]"`); `Remote`: 2 bản ghi (1 chính xác + 1 phức hợp `"Remote, Da Nang"`); chỉ có địa chỉ văn phòng: 5 bản ghi (#09, #10, #20, #28, #45). | 45/45 bản ghi (100.0%) | `raw_experience` | **Yêu cầu Đạt sửa crawler.** Bảo toàn dữ liệu đã thu thập và ghi log lỗi selector; đợt thu thập sau chỉ lưu yêu cầu kinh nghiệm nguyên văn nếu nguồn có, nếu thiếu thì `null`. Không bóc tách số năm từ `job_requirements`. |
 | 2 | **Địa điểm Thiếu Tỉnh/Thành phố & Có chuỗi Giữ chỗ:** 20 bản ghi chứa chuỗi `'Not Available'` tại bất kỳ vị trí nào (44.4%); 8 bản ghi là chuỗi đa địa điểm chứa dấu phẩy (ví dụ: `'Quận 1, Quận Đống Đa'`, `'Quận Phú Nhuận, Not Available'`); 21 bản ghi chỉ chứa tên quận/huyện (`Quận 1`, `Quận 7`, `Thanh Xuân`, `Cầu Giấy`, `Tây Hồ`, `Nam Từ Liêm`, `Thành phố Thủ Đức`...) mà không có tên thành phố. Lưu ý: các nhóm này có sự giao thoa lẫn nhau. | 45/45 bản ghi (100.0%) | `raw_location` | Áp dụng QR-02: chuyển thành phần `'Not Available'` thành `null` với cờ `MISSING_LOCATION`. Ánh xạ tên quận huyện về Tỉnh/Thành phố qua `location_mapping.csv`. Các tin đa địa điểm ánh xạ thành `'Nhiều địa điểm'`. |
 | 3 | **Nhiễu Định dạng Chức danh:** Tiêu đề dính mức lương (`Up to 75M`), đãi ngộ (`- BONUS`), dấu câu treo ở đuôi (`English required, /`), lỗi chính tả (`Appllication/Intergration`), và 34/45 tiêu đề bị nối dính từ khóa kỹ năng công nghệ. | 38/45 bản ghi (84.4%) | `raw_job_title` | Áp dụng QR-04: thực hiện làm sạch bề mặt, loại bỏ nhiễu lương/thưởng/dấu câu thừa, chuẩn hóa chữ hoa thường sang `normalized_job_title`. Văn bản gốc được giữ nguyên trong `raw_job_title`. |
 | 4 | **Tin Tuyển dụng Nằm ngoài Phạm vi:** 4 bản ghi thuộc vai trò ERP (`Senior SAP Specialist`), chương trình học bổng chung (`VPBank Scholarship`), vận hành quảng cáo (`Ad Monetization Specialist`), và kiểm thử phần mềm (`Internship BA/QA`). | 4/45 bản ghi (8.9%) | `raw_job_title`, `job_description` | Áp dụng QR-06: loại khỏi tập phân tích chính bằng cách gán `relevance_flag = false`, `exclusion_reason = "NOT_DATA_AI_ROLE"`. |
 | 5 | **Tin Tuyển dụng Trùng lặp Gần — Đã Kiểm chứng Thực nghiệm:** Tính toán qua TF-IDF cosine (JD) và Jaccard (token chức danh) trực tiếp từ dữ liệu. **Cặp tin xác nhận:** #36 `"Senior AI Expert Machine Learning, Deep Learning, LLM"` so với #40 `"AI Expert Computer Vision/NLP/LLM"` (đều của MB Bank) — Title Jaccard = 0.30 (dưới ngưỡng 60%), JD TF-IDF cosine = 0.988 (vượt xa ngưỡng 80%). **Chưa bị bắt bởi QR-05** vì logic AND đòi hỏi cả 2 điều kiện — đây là trường hợp biên đã gắn cờ báo cáo Leader. **Cặp tin loại trừ đúng (False positive):** #27 `"Snr/Lead Data Engineer Pyspark, Snowflake - BONUS"` so với #33 `"Snr/Lead Data Software Engineer Pyspark, Snowflake"` (đều của EPAM Vietnam) — Title Jaccard = 0.75 (trên 60%), JD cosine = 0.51 (dưới 80%). Cổng JD loại bỏ chính xác cặp này — hai bản mô tả vai trò hoàn toàn khác nhau dưới tiêu đề tương tự. | 4/45 bản ghi (8.9%) | `company`, `job_description` | **Đối với cặp MB Bank:** Logic AND của QR-05b không bắt được dưới ngưỡng hiện tại (Jaccard tiêu đề 0.30 < 60%). Đề xuất Leader cho phép sử dụng riêng Cosine của JD như một cổng đủ điều kiện khi cosine $\ge 0.95$ — điều này sẽ bắt được cặp #36/#40 mà không tăng rủi ro dương tính giả. **Đối với cặp EPAM:** Không cần can thiệp; cổng JD đã loại trừ đúng. |
-| 6 | **Thiếu các trường Lương và Học vấn:** 100% bản ghi thiếu `salary_raw` và `education` do ITviec ẩn lương sau màn hình đăng nhập và không có phần tử học vấn độc lập trên giao diện. | 45/45 bản ghi (100.0%) | `salary_raw`, `education` | Áp dụng QR-01: gán `null`, tránh dùng giá trị nhân tạo theo chuẩn bất biến của Schema §2 và §10. |
+| 6 | **Quan sát lịch sử về Lương và Học vấn:** Hai cột này toàn `null` trong mẫu theo schema cũ. | 45/45 bản ghi (100.0%) | Đã bỏ khỏi schema hiện tại | Không thu thập riêng hoặc bổ sung các cột lương/học vấn vì không phục vụ RQ1–RQ4; giữ nguyên văn bản mô tả/yêu cầu. |
 
 > **Ghi chú gửi Leader — Giới hạn Logic AND của QR-05:** Cặp tin MB Bank (#36 Senior AI Expert ML/DL/LLM so với #40 AI Expert CV/NLP/LLM) có JD cosine = 0.988 nhưng Jaccard tiêu đề = 0.30. Dưới logic AND hiện tại (tiêu đề $\ge 60\%$ VÀ JD $\ge 0.80$), cặp này không bị đánh cờ. Đây gần như chắc chắn là cùng một template việc làm được đăng dưới các chuyên ngành khác nhau. Điều chỉnh đề xuất: đưa vào luồng ưu tiên độ tin cậy cao dựa trên JD — nếu JD cosine $\ge 0.95$ VÀ cùng công ty → gán cờ `DUPLICATE_NEAR` + `SENIORITY_VARIANT` bất kể độ trùng khớp tiêu đề. Điều này vừa giữ an toàn cho các cặp có độ tương đồng thấp vừa bắt được các template JD gần như giống hệt nhau.

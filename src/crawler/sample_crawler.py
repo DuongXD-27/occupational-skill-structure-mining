@@ -7,7 +7,7 @@ import hashlib
 import sys
 from datetime import datetime, timezone
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment, NavigableString
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -28,18 +28,58 @@ SEED_URLS = [
     "https://itviec.com/it-jobs/data-scientist",
 ]
 
-PARSER_VERSION = "v0.1"
+PARSER_VERSION = "v0.1.1"  # v0.1.1: giữ nguyên văn bản thô, dừng khi bị chặn
 OUTPUT_JSONL = "data/sample/sample_jobs.jsonl"
 OUTPUT_LOG_CSV = "data/sample/crawl_log_sample.csv"
 TARGET_MIN_RECORDS = 35
 TARGET_MAX_RECORDS = 45
 
 
-def clean_text(text: str) -> str or None:
-    if not text:
+# Nguồn từ chối truy cập tự động → dừng toàn bộ đợt thu thập, không thử vượt qua
+# (docs/data_collection/source_inspection.md, project_scope §7 và §13).
+BLOCK_STATUS_CODES = {401, 403, 503}
+CHALLENGE_MARKERS = (
+    "cf-challenge", "challenge-platform", "cf-browser-verification",
+    "just a moment...", "attention required! | cloudflare", "g-recaptcha", "h-captcha",
+)
+
+
+class AccessBlocked(RuntimeError):
+    def __init__(self, url, status, reason):
+        super().__init__(f"Bị chặn tại {url} (HTTP {status}): {reason}")
+        self.url, self.status, self.reason = url, status, reason
+
+
+def check_blocked(url, res):
+    """Ném AccessBlocked nếu phản hồi là HTTP 401/403/503 hoặc trang thử thách chống bot."""
+    if res.status_code in BLOCK_STATUS_CODES:
+        raise AccessBlocked(url, res.status_code, f"HTTP {res.status_code}")
+    head = (res.text or "")[:20000].lower()
+    for marker in CHALLENGE_MARKERS:
+        if marker in head:
+            raise AccessBlocked(url, res.status_code, f"bot challenge ({marker})")
+
+
+def raw_or_none(text) -> str or None:
+    """Giữ nguyên văn bản nguồn (không strip, không gộp khoảng trắng); rỗng → None."""
+    if text is None:
         return None
-    cleaned = " ".join(text.split())
-    return cleaned if cleaned else None
+    text = str(text)
+    return text if text.strip() else None
+
+
+def section_text(container, heading) -> str or None:
+    """Văn bản của khối nội dung, bỏ phần tiêu đề h2, giữ nguyên khoảng trắng/xuống dòng."""
+    pieces = []
+    for node in container.descendants:
+        if not isinstance(node, NavigableString) or isinstance(node, Comment):
+            continue
+        if any(parent is heading for parent in node.parents):
+            continue
+        if node.parent is not None and node.parent.name in ("script", "style"):
+            continue
+        pieces.append(str(node))
+    return raw_or_none("".join(pieces))
 
 
 def init_files():
@@ -91,6 +131,7 @@ def collect_job_links():
         try:
             res = requests.get(seed_url, headers=HEADERS, timeout=15)
             time.sleep(random.uniform(1.5, 2.5))
+            check_blocked(seed_url, res)
             if res.status_code != 200:
                 print(f"Tải seed {seed_url} thất bại, mã trạng thái: {res.status_code}")
                 continue
@@ -107,6 +148,8 @@ def collect_job_links():
                     if detail_url not in seen_urls:
                         seen_urls.add(detail_url)
                         job_targets.append((detail_url, job_key))
+        except AccessBlocked:
+            raise
         except Exception as e:
             print(f"Lỗi khi tải seed {seed_url}: {e}")
             
@@ -117,7 +160,8 @@ def collect_job_links():
 def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
     res = requests.get(url, headers=HEADERS, timeout=15)
     crawl_timestamp = datetime.now(timezone.utc).isoformat()
-    
+    check_blocked(url, res)
+
     if res.status_code != 200:
         log_crawl_result(
             source_url=url,
@@ -147,11 +191,10 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         source_job_id = str(json_ld_data.get("identifier", {}).get("value"))
         
     # 4. Trích xuất raw_job_title
-    raw_job_title = json_ld_data.get("title")
+    raw_job_title = raw_or_none(json_ld_data.get("title"))
     if not raw_job_title:
         h1 = soup.select_one("h1")
-        raw_job_title = h1.get_text(strip=True) if h1 else None
-    raw_job_title = clean_text(raw_job_title)
+        raw_job_title = raw_or_none(h1.get_text()) if h1 else None
     
     # 5. Trích xuất company
     company = None
@@ -159,8 +202,8 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         company = json_ld_data.get("hiringOrganization", {}).get("name")
     if not company:
         comp_elem = soup.select_one(".employer-name, .job-details__sub-title, .job-header-info a")
-        company = comp_elem.get_text(strip=True) if comp_elem else None
-    company = clean_text(company)
+        company = comp_elem.get_text() if comp_elem else None
+    company = raw_or_none(company)
     
     # 6. Trích xuất raw_location
     raw_location = None
@@ -181,8 +224,8 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
     else:
         loc_elem = soup.select_one(".job-header-info .location, [title='Ha Noi'], [title='Ho Chi Minh']")
         if loc_elem:
-            raw_location = loc_elem.get_text(strip=True)
-    raw_location = clean_text(raw_location)
+            raw_location = loc_elem.get_text()
+    raw_location = raw_or_none(raw_location)
     
     # 7. Trích xuất posted_date (YYYY-MM-DD)
     posted_date = json_ld_data.get("datePosted")
@@ -195,45 +238,26 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
     raw_experience = None
     exp_badge = soup.select_one(".preview-header-item")
     if exp_badge:
-        exp_text = exp_badge.get_text(strip=True)
-        if exp_text:
-            raw_experience = clean_text(exp_text)
+        raw_experience = raw_or_none(exp_badge.get_text())
 
-    # 9. Trích xuất salary_raw
-    salary_raw = None
-    sal_elem = soup.select_one(".salary")
-    if sal_elem:
-        sal_text = sal_elem.get_text(strip=True)
-        if "sign in" not in sal_text.lower():
-            salary_raw = sal_text
-    salary_raw = clean_text(salary_raw)
-
-    # 10. Trích xuất job_description & job_requirements
+    # 9. Trích xuất job_description & job_requirements
     job_description = None
     job_requirements = None
     
     for h2 in soup.find_all("h2"):
         h2_text = h2.get_text(strip=True).lower()
-        if any(keyword in h2_text for keyword in ["job description", "mô tả công việc"]):
-            parent = h2.find_parent("div")
-            if parent:
-                text_content = parent.get_text(separator="\n", strip=True)
-                lines = [l for l in text_content.split("\n") if l.lower() not in ["job description", "mô tả công việc"]]
-                job_description = "\n".join(lines)
-        elif any(keyword in h2_text for keyword in ["your skills and experience", "yêu cầu", "skills and experience"]):
-            parent = h2.find_parent("div")
-            if parent:
-                text_content = parent.get_text(separator="\n", strip=True)
-                lines = [l for l in text_content.split("\n") if l.lower() not in ["your skills and experience", "yêu cầu", "skills and experience"]]
-                job_requirements = "\n".join(lines)
+        parent = h2.find_parent("div")
+        if parent is None:
+            continue
+        if job_description is None and any(k in h2_text for k in ["job description", "mô tả công việc"]):
+            job_description = section_text(parent, h2)
+        elif job_requirements is None and any(k in h2_text for k in ["your skills and experience", "yêu cầu", "skills and experience"]):
+            job_requirements = section_text(parent, h2)
 
     # Dự phòng sang description của JSON-LD nếu job_description bị thiếu
     if not job_description and json_ld_data.get("description"):
         desc_soup = BeautifulSoup(json_ld_data.get("description"), "html.parser")
-        job_description = desc_soup.get_text(separator="\n", strip=True)
-        
-    job_description = clean_text(job_description)
-    job_requirements = clean_text(job_requirements)
+        job_description = raw_or_none(desc_soup.get_text())
 
     # Kiểm tra quy tắc bắt buộc của Schema:
     # "Phải có raw_job_title và ít nhất một trong hai trường job_description hoặc job_requirements không rỗng."
@@ -262,16 +286,9 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
         "normalized_location": None,
         "posted_date": posted_date,
         "raw_experience": raw_experience,
-        "experience_min_years": None,
-        "experience_max_years": None,
-        "education": None,
         "job_description": job_description,
         "job_requirements": job_requirements,
         "job_text": None,
-        "salary_raw": salary_raw,
-        "salary_min": None,
-        "salary_max": None,
-        "salary_currency": None,
         "relevance_flag": None,
         "exclusion_reason": None,
         "duplicate_flag": None,
@@ -292,6 +309,16 @@ def parse_job_detail(url: str, source_job_id: str or None) -> dict or None:
 
 def main():
     init_files()
+    try:
+        _crawl()
+    except AccessBlocked as exc:
+        print(f"\n[DỪNG] {exc}. Kết thúc thu thập; đánh giá lại tính khả thi của nguồn.")
+        log_crawl_result(source_url=exc.url, status="FAILURE", http_status=exc.status,
+                         error_type="ACCESS_BLOCKED", error_message=exc.reason)
+        sys.exit(2)
+
+
+def _crawl():
     job_targets = collect_job_links()
     
     valid_records = []
@@ -314,6 +341,8 @@ def main():
                 print(f"  -> Lưu thành công bản ghi #{len(valid_records)} ({record['raw_job_title']})")
             else:
                 print("  -> Bản ghi bị bỏ qua hoặc thất bại.")
+        except AccessBlocked:
+            raise
         except Exception as e:
             print(f"  -> Lỗi ngoại lệ khi bóc tách {url}: {e}")
             log_crawl_result(

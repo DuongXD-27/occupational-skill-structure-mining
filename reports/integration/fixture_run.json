@@ -1,0 +1,135 @@
+{
+  "started_at": "2026-10-04T10:17:06.901750+00:00",
+  "config": "<fixture-root>\\pipeline.json",
+  "stage": "all",
+  "run_kind": "integration",
+  "config_sha256": "3cc2f515e896ff0c70142d457001e01744f556af00e552bfd2250e9c7bca2e4c",
+  "status": "completed",
+  "counts": {
+    "raw_records": 4,
+    "clean_records": 4,
+    "valid_records": 2,
+    "duplicates": 1,
+    "out_of_scope": 1,
+    "overlap": 0,
+    "skill_records": 2,
+    "matrix_rows": 2
+  },
+  "stages": {
+    "clean": {
+      "status": "completed",
+      "started_at": "2026-10-04T10:17:06.901750+00:00",
+      "module": "fixture_modules:clean",
+      "inputs": {
+        "raw": {
+          "path": "<fixture-root>\\raw.jsonl",
+          "sha256": "08beb7f543d92f60192d917c37446bd0936e17bc71b712ef3c73a054bd50709e"
+        }
+      },
+      "outputs": {
+        "clean": "<fixture-root>\\clean.parquet"
+      },
+      "finished_at": "2026-10-04T10:17:07.615299+00:00"
+    },
+    "rq1": {
+      "status": "completed",
+      "started_at": "2026-10-04T10:17:07.615299+00:00",
+      "module": "fixture_modules:rq1",
+      "inputs": {
+        "clean": {
+          "path": "<fixture-root>\\clean.parquet",
+          "sha256": "856591578ff7e9f5b5555e0158b5100002709ab2469827b32a79974b026ccfee"
+        }
+      },
+      "outputs": {
+        "rq1": "<fixture-root>\\rq1"
+      },
+      "finished_at": "2026-10-04T10:17:07.627335+00:00"
+    },
+    "extract": {
+      "status": "completed",
+      "started_at": "2026-10-04T10:17:07.627335+00:00",
+      "module": "fixture_modules:extract",
+      "inputs": {
+        "clean": {
+          "path": "<fixture-root>\\clean.parquet",
+          "sha256": "856591578ff7e9f5b5555e0158b5100002709ab2469827b32a79974b026ccfee"
+        },
+        "taxonomy": {
+          "path": "<fixture-root>\\taxonomy.csv",
+          "sha256": "756d775b0abbb4a394a4de69bcce57701bb3e45760dbec09f7a7f583b2db1350"
+        }
+      },
+      "outputs": {
+        "skills": "<fixture-root>\\skills.parquet",
+        "matrix": "<fixture-root>\\matrix.parquet"
+      },
+      "finished_at": "2026-10-04T10:17:07.650792+00:00"
+    },
+    "analysis": {
+      "status": "completed",
+      "started_at": "2026-10-04T10:17:07.650792+00:00",
+      "module": "fixture_modules:analysis",
+      "inputs": {
+        "clean": {
+          "path": "<fixture-root>\\clean.parquet",
+          "sha256": "856591578ff7e9f5b5555e0158b5100002709ab2469827b32a79974b026ccfee"
+        },
+        "skills": {
+          "path": "<fixture-root>\\skills.parquet",
+          "sha256": "00ed8d13370e6e6c0b42c9620ec2dea335045e5f6a8fe4dd9fee583f0f29c81e"
+        },
+        "matrix": {
+          "path": "<fixture-root>\\matrix.parquet",
+          "sha256": "617e5e0dad70726a2ca5d4ad1299bbaf9224fd2cf1620da620418c8feda9759b"
+        },
+        "taxonomy": {
+          "path": "<fixture-root>\\taxonomy.csv",
+          "sha256": "756d775b0abbb4a394a4de69bcce57701bb3e45760dbec09f7a7f583b2db1350"
+        }
+      },
+      "outputs": {
+        "analysis": "<fixture-root>\\analysis"
+      },
+      "finished_at": "2026-10-04T10:17:07.672341+00:00"
+    }
+  },
+  "rq": {
+    "RQ1": {
+      "status": "completed",
+      "owner": "Đức",
+      "artifacts": [
+        "fixture.csv"
+      ],
+      "directory": "<fixture-root>\\rq1"
+    },
+    "RQ2": {
+      "status": "completed",
+      "owner": "Triều",
+      "artifacts": [
+        "fixture.csv"
+      ],
+      "directory": "<fixture-root>\\analysis"
+    },
+    "RQ3": {
+      "status": "completed",
+      "owner": "Triều",
+      "artifacts": [
+        "fixture.csv"
+      ],
+      "directory": "<fixture-root>\\analysis"
+    },
+    "RQ4": {
+      "status": "completed",
+      "owner": "Triều",
+      "artifacts": [
+        "fixture.csv"
+      ],
+      "directory": "<fixture-root>\\analysis"
+    }
+  },
+  "finished_at": "2026-10-04T10:17:07.672341+00:00",
+  "research_acceptance": false,
+  "evidence_source": "tests/integration/test_pipeline.py::test_full_chain_and_counts",
+  "path_note": "Đường dẫn tuyệt đối được thay bằng nhãn để lưu bằng chứng trong repo."
+}

@@ -26,7 +26,7 @@ Dự án **"Vietnam Data & AI Job Skill Landscape 2026: Khai phá cấu trúc ng
 │       └── sample_jobs.jsonl    # 45 tin tuyển dụng mẫu dạng JSON Lines
 ├── docs/                        # Tài liệu đặc tả và hướng dẫn
 │   ├── project_scope.md         # Phạm vi dự án, mục tiêu và 4 câu hỏi nghiên cứu
-│   ├── data_schema.md           # Đặc tả lược đồ dữ liệu chuẩn (29 trường)
+│   ├── data_schema.md           # Đặc tả lược đồ dữ liệu chuẩn (22 trường)
 │   ├── data_collection/
 │   │   └── source_inspection.md # Báo cáo khảo sát và đánh giá nguồn tuyển dụng
 │   ├── skill_extraction/
@@ -57,10 +57,10 @@ Dự án **"Vietnam Data & AI Job Skill Landscape 2026: Khai phá cấu trúc ng
 ## 3. Các tài liệu đặc tả cốt lõi
 
 1. **Phạm vi nghiên cứu:** [docs/project_scope.md](docs/project_scope.md) — Khóa 4 câu hỏi nghiên cứu (RQ1–RQ4), tiêu chí xác định vị trí Data/AI hợp lệ, tiêu chuẩn giữ/loại tin và nguồn dữ liệu (chính: ITviec, dự phòng: TopCV).
-2. **Lược đồ dữ liệu:** [docs/data_schema.md](docs/data_schema.md) — Quy chuẩn 29 trường dữ liệu qua 4 giai đoạn xử lý, nguyên tắc bảo toàn dữ liệu thô và định dạng trao đổi giữa các module.
+2. **Lược đồ dữ liệu:** [docs/data_schema.md](docs/data_schema.md) — Quy chuẩn 22 trường dữ liệu qua 4 giai đoạn xử lý, nguyên tắc bảo toàn dữ liệu thô và định dạng trao đổi giữa các module.
 3. **Khảo sát nguồn:** [docs/data_collection/source_inspection.md](docs/data_collection/source_inspection.md) — Đánh giá chi tiết cấu trúc DOM, JSON-LD, phân trang và tính khả thi của cổng ITviec.
 4. **Hướng dẫn gán nhãn kỹ năng:** [docs/skill_extraction/annotation_guideline.md](docs/skill_extraction/annotation_guideline.md) — Định nghĩa kỹ năng kỹ thuật, quy tắc bao hàm/loại trừ, xử lý từ đồng nghĩa, từ viết tắt và kỹ năng ngầm.
-5. **Quy tắc chất lượng dữ liệu:** [docs/data_cleaning/data_quality_rules.md](docs/data_cleaning/data_quality_rules.md) — Hệ thống quy tắc làm sạch dữ liệu từ QR-01 đến QR-06, xử lý missing value, chuẩn hóa địa điểm/kinh nghiệm/chức danh và phát hiện trùng lặp.
+5. **Quy tắc chất lượng dữ liệu:** [docs/data_cleaning/data_quality_rules.md](docs/data_cleaning/data_quality_rules.md) — Hệ thống quy tắc làm sạch dữ liệu từ QR-01 đến QR-06, xử lý missing value, chuẩn hóa địa điểm/chức danh, bảo toàn kinh nghiệm thô và phát hiện trùng lặp.
 6. **Đặc tả phân tích:** [docs/analysis/analysis_spec.md](docs/analysis/analysis_spec.md) — Phương pháp luận tính toán chỉ số cho RQ1 (cấu trúc thị trường), RQ2 (tần suất & co-occurrence), RQ3 (độ tương đồng chức danh) và RQ4 (phân cụm không giám sát & PCA).
 
 ---
@@ -81,3 +81,23 @@ python scripts/recount_taxonomy.py --check
 python src/crawler/sample_crawler.py
 ```
 Dữ liệu thu thập sẽ được ghi vào `data/sample/sample_jobs.jsonl` và nhật ký sẽ ghi vào `data/sample/crawl_log_sample.csv`.
+
+### Điều phối pipeline và kiểm thử tích hợp
+
+```powershell
+python -m pip install -r requirements-pipeline.txt
+python -m pytest tests/integration -q
+python -m src.pipeline --config config/pipeline.json --stage extract
+```
+
+Khung tích hợp nằm ở `src/pipeline/`, hỗ trợ chạy riêng `clean`, `rq1`, `extract`,
+`analysis` hoặc toàn chuỗi với `--stage all`. Hiện cleaner chưa được đưa vào
+`main`, RQ1/extractor/analysis chưa bàn giao; cấu hình thật báo thiếu module rõ
+ràng. Kiểm thử tích hợp dùng module giả lập và không thay thế nghiệm thu nghiên cứu.
+
+- [Quyết định chung](docs/decisions/integration_decisions.md): Đức phụ trách RQ1,
+  Triều phụ trách RQ2–RQ4, quy ước title và việc bỏ trường lương/học vấn khỏi schema.
+- [So sánh nguồn](docs/data_collection/source_comparison.md): ITviec chính,
+  TopCV dự phòng, mức bằng chứng hiện có.
+- [Hướng dẫn pipeline và API bàn giao](docs/pipeline/README.md).
+- [Báo cáo bàn giao tích hợp](reports/integration/acceptance.md).

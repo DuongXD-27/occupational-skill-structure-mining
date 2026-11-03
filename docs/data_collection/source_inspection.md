@@ -12,7 +12,7 @@
     * `https://itviec.com/it-jobs/business-analyst`
     * URL phân khúc chuyên môn: `https://itviec.com/segments/viec-lam-ai-data`
   * Mẫu URL trang chi tiết: `https://itviec.com/it-jobs/<job-slug>`
-* **Đánh giá tính khả thi**: **KHẢ THI CAO (ĐÃ PHÊ DUYỆT)**
+* **Đánh giá tính khả thi ở đợt khảo sát mẫu**: **KHẢ THI CAO**. ITviec được chọn làm nguồn chính theo phạm vi; trước crawl quy mô lớn vẫn phải kiểm tra điều khoản và điều kiện truy cập hiện tại.
 
 ### Các lý do chính chứng minh tính khả thi
 1. **HTML kết xuất phía máy chủ (Server-Side Rendered - SSR)**: ITviec kết xuất phản hồi trang ban đầu từ phía máy chủ (Ruby on Rails), cho phép các yêu cầu HTTP GET truyền thống lấy được toàn bộ nội dung HTML chi tiết của việc làm mà không đòi hỏi thực thi JavaScript nặng để bóc tách văn bản thô.
@@ -79,7 +79,6 @@ flowchart TD
 | **`raw_experience`** | **Bán cấu trúc** | Huy hiệu cấp bậc HTML / Thẻ metadata | Chuỗi văn bản thô bảo toàn (ví dụ: "3+ years", "Senior"). |
 | **`job_description`**| **Có thể bóc tách hoàn toàn** | `JSON-LD.description` / Phần "Job Description" HTML | Chi tiết trách nhiệm, nhiệm vụ và bối cảnh dự án. |
 | **`job_requirements`**| **Có thể bóc tách hoàn toàn**| Phần "Your Skills and Experience" HTML | Phần văn bản mục tiêu chính để trích xuất kỹ năng. |
-| **`salary_raw`**     | **Bị khóa một phần** | Thẻ chứa `.salary` HTML / Đoạn văn tự do | Thường bị che dạng `"Sign in to view salary"`. Ghi nhận nguyên bản. |
 
 ---
 
@@ -90,7 +89,7 @@ flowchart TD
 * **Giải pháp giảm thiểu**:
   * Thiết lập header yêu cầu trình duyệt thực tế (`User-Agent`, `Accept-Language`, `Referer`, `sec-ch-ua`).
   * Sử dụng cơ chế điều tiết phiên (session throttling) và khoảng thời gian chờ hợp lý (delay từ 1.5 đến 3.0 giây giữa các yêu cầu tải trang chi tiết).
-  * Dự phòng sử dụng các công cụ tự động hóa trình duyệt (như Playwright / Selenium kèm plugin stealth) hoặc thư viện xử lý Cloudflare nếu client HTTP cơ bản gặp thử thách HTTP 403/503.
+  * Nếu gặp HTTP 403/503 hoặc CAPTCHA/xác thực, dừng thu thập tự động, ghi log và đánh giá lại tính khả thi; chỉ chuyển sang TopCV theo quy trình nguồn dự phòng. Không dùng stealth hoặc công cụ vượt biện pháp phòng vệ, theo phạm vi dự án §14.
 
 ### 4.2 Kết xuất giao diện động (Hotwire / Turbo Rails)
 * **Quan sát**: Trang danh sách sử dụng Turbo JS để hoán đổi động phần xem trước chi tiết công việc trên chế độ chia đôi màn hình máy tính.
@@ -104,7 +103,7 @@ flowchart TD
 
 ### 4.4 Thông tin mức lương bị ẩn
 * **Quan sát**: Số liệu mức lương chính xác bị ẩn sau màn hình xác thực tài khoản đối với phần lớn các tin đăng tuyển.
-* **Giải pháp giảm thiểu**: Xử lý trường `salary` cho phép giá trị null trong giai đoạn thu thập thô. Sử dụng bộ trích xuất regex trên đoạn văn `description` để bắt các khoảng lương được công bố công khai khi có sẵn.
+* **Quyết định phạm vi hiện tại**: Không thu thập riêng lương hoặc học vấn vì không phục vụ RQ1–RQ4. Không xây regex bóc tách lương từ mô tả hoặc truy cập phần lương cần đăng nhập; giữ nguyên nội dung mô tả/yêu cầu đã thu thập.
 
 ---
 
@@ -117,3 +116,59 @@ ITviec là một **nguồn dữ liệu lý tưởng** cho dự án Khóa luận 
 3. **Hiệu quả bóc tách**: Sự hiện diện của dữ liệu có cấu trúc nhúng JSON-LD giúp tinh gọn đáng kể pipeline trích xuất dữ liệu và bảo vệ pipeline trước các thay đổi giao diện nhỏ.
 
 **Khuyến nghị**: Tiếp tục phát triển module scraper thu thập dữ liệu nhắm vào ITviec làm nguồn mẫu Data/AI chính thức của dự án.
+
+---
+
+## TopCV
+
+Khảo sát ngày 2026-11-03, khi kích hoạt TopCV làm nguồn thứ hai
+([quyết định F.1](../decisions/integration_decisions.md#f-quyết-định-ngày-2026-11-03)).
+
+### robots.txt (`https://www.topcv.vn/robots.txt`)
+* Một nhóm luật `User-agent: *`. Các đường dẫn bị chặn đều liên quan CV/hồ sơ cá nhân:
+  `/cv/get-private-url/`, `/private/`, `/xem-cv/`, `/xem-cv-draft/`, `/sua-cv/`,
+  `/viet-cv/`, `/edit/cv/`, `/cv-ung-vien/`, `/cv-ung-tuyen/`, `/p/`.
+* Không chặn trang danh sách (`/tim-viec-lam-...`) hay trang chi tiết tin (`/viec-lam/...`).
+* Không có `Crawl-delay`; có `Sitemap: https://www.topcv.vn/sitemap.xml`.
+
+### Điều khoản sử dụng (`https://www.topcv.vn/terms-of-service`)
+* Không có điều khoản nhắc trực tiếp tới truy cập tự động, crawler, scraping hay bot.
+* §2.1 định nghĩa "Cơ sở dữ liệu TopCV.vn" bao gồm các bài quảng cáo việc làm đăng trên TopCV.
+* §6.2: người dùng "không được sao chép, sửa đổi, điều chỉnh, chuẩn bị các sản phẩm
+  phái sinh dựa trên" và không được "cấp phép hoặc khai thác Nội dung TopCV".
+* §3, §6.4: TopCV có thể chấm dứt hoặc chặn quyền truy cập khi vi phạm.
+* Không có ngoại lệ cho mục đích nghiên cứu/phi thương mại.
+
+### Cách dùng trong dự án
+* Chỉ dùng cho nghiên cứu học thuật của đề tài. Không công bố lại văn bản tin tuyển
+  dụng; báo cáo chỉ dùng số liệu tổng hợp (đếm chức danh, tần suất kỹ năng, cụm) và
+  trích đoạn ngắn khi cần minh họa, ghi rõ nguồn.
+* Không tải lên dữ liệu thô TopCV ở nơi công khai; repo chỉ giữ mẫu nhỏ phục vụ kiểm thử.
+* Chỉ đọc trang công khai không cần đăng nhập. Không thu thập thông tin cá nhân, CV,
+  hay phần cần tài khoản.
+* Tốc độ lịch sự giống ITviec (1,5–3 giây giữa các yêu cầu, một luồng). Gặp HTTP
+  401/403/503, CAPTCHA hoặc trang thử thách chống bot thì dừng toàn bộ đợt thu, ghi
+  log `ACCESS_BLOCKED` và báo Dương; không dùng stealth/vượt phòng vệ (phạm vi §13).
+* Rủi ro còn lại: §6.2 hạn chế sao chép và sản phẩm phái sinh từ nội dung TopCV. Đây là
+  hạn chế cần ghi trong phần hạn chế của báo cáo; nhóm chịu trách nhiệm cân nhắc và
+  có thể hỏi giảng viên hướng dẫn trước khi thu ở quy mô lớn.
+
+### Cấu trúc trang (khảo sát 2026-11-03) và cách chạy
+* Trang tìm kiếm `https://www.topcv.vn/tim-viec-lam-<từ khóa>?page=N`, tối đa 50 thẻ/trang
+  (`div.job-item-search-result[data-job-id]`), trang kế tiếp ở `a[rel=next][data-href]`.
+  Số tin ngày khảo sát: data-analyst 70, ai-engineer 83, data-engineer 48,
+  business-intelligence 18, llm 14, data-scientist 7; từ khóa rộng `data` 351, `ai` 238
+  (lẫn nhiều vai trò ngoài phạm vi).
+* Trang chi tiết có hai dạng URL (`/viec-lam/<slug>/<id>.html`,
+  `/brand/<công ty>/tuyen-dung/<slug>-j<id>.html`), cùng có JSON-LD `JobPosting`; mô tả chia
+  bằng `<h2>` "Mô tả công việc" / "Yêu cầu ứng viên" / "Quyền lợi được hưởng". `identifier`
+  trong JSON-LD là mã công ty nên `source_job_id` lấy từ URL.
+* Tiêu đề TopCV thường kèm lương, số năm kinh nghiệm, nơi làm việc; `raw_job_title` giữ
+  nguyên, cleaner bỏ phần này khỏi `normalized_job_title` (cờ `RECRUITMENT_NOISE_REMOVED`).
+* Chạy (module trên nhánh `feature/topcv-source`):
+
+```powershell
+python -m src.crawler.main --source topcv                 # 18 từ khóa Data/AI
+python -m src.crawler.main --source topcv --include-broad # thêm 'data', 'ai'
+python scripts/combine_raw.py data/pilot/jobs_pilot.jsonl data/raw/itviec/*.jsonl data/raw/topcv/*.jsonl --output data/raw/jobs_raw.jsonl
+```

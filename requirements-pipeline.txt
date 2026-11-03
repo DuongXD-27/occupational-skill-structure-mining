@@ -1,0 +1,5 @@
+# Đọc Parquet và tương thích với cleaner hiện có.
+pyarrow
+pandas
+# Kiểm thử tích hợp.
+pytest
