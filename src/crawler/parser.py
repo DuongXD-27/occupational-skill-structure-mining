@@ -1,14 +1,18 @@
 """
 Parser module for ITviec job postings.
-Adheres 100% to DATA SCHEMA V1 (29 fields) with exact raw title extraction
-and strict experience vs working model disambiguation.
+Emits records in the 22-field schema (docs/data_schema.md). Raw fields
+(`raw_job_title`, `company`, `raw_location`, `raw_experience`,
+`job_description`, `job_requirements`) keep the text exactly as rendered on the
+source page: no trimming or whitespace normalization. Cleanup belongs to the
+cleaner's derived fields. Salary and education are not collected (decision
+2026-10-04, docs/decisions/integration_decisions.md §B).
 """
 
 import hashlib
 import json
 import re
 from typing import Any, Dict, Optional, Tuple
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment, NavigableString, Tag
 
 # Working models and non-experience tags to strictly discard
 WORKING_MODEL_KEYWORDS = {
@@ -44,11 +48,40 @@ EXPERIENCE_PATTERNS = [
 
 
 def clean_text(text: Optional[str]) -> Optional[str]:
-    """Normalize internal whitespaces without modifying punctuation or casing."""
+    """Collapse whitespace. Use ONLY for matching/validation, never for stored raw values."""
     if not text:
         return None
     cleaned = " ".join(text.split())
     return cleaned if cleaned else None
+
+
+def raw_or_none(text: Optional[str]) -> Optional[str]:
+    """Return the source text unchanged, or None when it holds no visible characters."""
+    if text is None:
+        return None
+    text = str(text)
+    return text if text.strip() else None
+
+
+def element_raw_text(elem: Optional[Tag]) -> Optional[str]:
+    """Text of an element as rendered in the HTML, without strip/normalization."""
+    if elem is None:
+        return None
+    return raw_or_none(elem.get_text())
+
+
+def section_raw_text(container: Tag, heading: Tag) -> Optional[str]:
+    """Text of a section container, excluding the heading element itself."""
+    pieces = []
+    for node in container.descendants:
+        if not isinstance(node, NavigableString) or isinstance(node, Comment):
+            continue
+        if any(parent is heading for parent in node.parents):
+            continue
+        if node.parent is not None and node.parent.name in ("script", "style"):
+            continue
+        pieces.append(str(node))
+    return raw_or_none("".join(pieces))
 
 
 def is_working_model_or_metadata(text: str) -> bool:
@@ -87,31 +120,22 @@ def extract_raw_job_title(
     Never strips parentheses or merges disparate header elements.
     """
     # 1. Primary: exact <h1> element text displayed on the page
-    h1_elem = soup.select_one("h1")
-    if h1_elem:
-        h1_text = clean_text(h1_elem.get_text(strip=True))
-        if h1_text:
-            return h1_text
+    h1_text = element_raw_text(soup.select_one("h1"))
+    if h1_text:
+        return h1_text
 
     # 2. Secondary fallback: job-details title heading
-    title_elem = soup.select_one(".job-details__title, h3.job-details__title")
-    if title_elem:
-        title_text = clean_text(title_elem.get_text(strip=True))
-        if title_text:
-            return title_text
+    title_text = element_raw_text(soup.select_one(".job-details__title, h3.job-details__title"))
+    if title_text:
+        return title_text
 
     # 3. Listing card title fallback
-    if fallback_title:
-        fb_text = clean_text(fallback_title)
-        if fb_text:
-            return fb_text
+    fb_text = raw_or_none(fallback_title)
+    if fb_text:
+        return fb_text
 
     # 4. JSON-LD title as final fallback
-    json_title = json_ld_data.get("title")
-    if json_title:
-        return clean_text(str(json_title))
-
-    return None
+    return raw_or_none(json_ld_data.get("title"))
 
 
 def extract_raw_experience(
@@ -137,22 +161,23 @@ def extract_raw_experience(
     # 1. Check candidate HTML tags
     for selector in candidate_selectors:
         for elem in soup.select(selector):
-            elem_text = clean_text(elem.get_text(strip=True))
-            if not elem_text:
+            raw_text = element_raw_text(elem)
+            check_text = clean_text(raw_text)
+            if not check_text:
                 continue
             # Strictly reject working models, locations, and timestamps
-            if is_working_model_or_metadata(elem_text):
+            if is_working_model_or_metadata(check_text):
                 continue
-            # Accept if matches actual experience pattern
-            if is_valid_experience_string(elem_text):
-                return elem_text
+            # Accept if matches actual experience pattern; store the source text unchanged
+            if is_valid_experience_string(check_text):
+                return raw_text
 
     # 2. Check JSON-LD experienceRequirements if it's a string
     json_exp = json_ld_data.get("experienceRequirements")
     if isinstance(json_exp, str):
-        cleaned_exp = clean_text(json_exp)
-        if cleaned_exp and is_valid_experience_string(cleaned_exp):
-            return cleaned_exp
+        check_exp = clean_text(json_exp)
+        if check_exp and is_valid_experience_string(check_exp):
+            return raw_or_none(json_exp)
 
     return None
 
@@ -161,11 +186,8 @@ def extract_company(soup: BeautifulSoup, json_ld_data: Dict[str, Any]) -> Option
     """Extract hiring company name."""
     org = json_ld_data.get("hiringOrganization")
     if isinstance(org, dict) and org.get("name"):
-        return clean_text(str(org.get("name")))
-    comp_elem = soup.select_one(".employer-name, .job-details__sub-title, .job-header-info a")
-    if comp_elem:
-        return clean_text(comp_elem.get_text(strip=True))
-    return None
+        return raw_or_none(org.get("name"))
+    return element_raw_text(soup.select_one(".employer-name, .job-details__sub-title, .job-header-info a"))
 
 
 def extract_location(soup: BeautifulSoup, json_ld_data: Dict[str, Any]) -> Optional[str]:
@@ -183,12 +205,12 @@ def extract_location(soup: BeautifulSoup, json_ld_data: Dict[str, Any]) -> Optio
         if isinstance(addr, dict) and addr.get("addressLocality"):
             loc_list.append(str(addr.get("addressLocality")))
     if loc_list:
-        return clean_text(", ".join(loc_list))
+        # Multiple JSON-LD localities are joined as listed by the source.
+        return raw_or_none(", ".join(loc_list))
 
-    loc_elem = soup.select_one(".job-header-info .location, [title='Ha Noi'], [title='Ho Chi Minh']")
-    if loc_elem:
-        return clean_text(loc_elem.get_text(strip=True))
-    return None
+    return element_raw_text(
+        soup.select_one(".job-header-info .location, [title='Ha Noi'], [title='Ho Chi Minh']")
+    )
 
 
 def extract_posted_date(json_ld_data: Dict[str, Any]) -> Optional[str]:
@@ -199,50 +221,33 @@ def extract_posted_date(json_ld_data: Dict[str, Any]) -> Optional[str]:
     return None
 
 
-def extract_salary_raw(soup: BeautifulSoup) -> Optional[str]:
-    """Extract salary raw string if publicly available and not obfuscated."""
-    sal_elem = soup.select_one(".salary")
-    if sal_elem:
-        sal_text = sal_elem.get_text(strip=True)
-        if "sign in" not in sal_text.lower():
-            return clean_text(sal_text)
-    return None
+DESCRIPTION_HEADINGS = ("job description", "mô tả công việc")
+REQUIREMENT_HEADINGS = ("your skills and experience", "yêu cầu", "skills and experience", "kỹ năng")
 
 
 def extract_descriptions(
     soup: BeautifulSoup,
     json_ld_data: Dict[str, Any]
 ) -> Tuple[Optional[str], Optional[str]]:
-    """Extract job_description and job_requirements."""
+    """Extract job_description and job_requirements as raw section text (heading excluded)."""
     job_description = None
     job_requirements = None
 
     for h2 in soup.find_all("h2"):
         h2_text = h2.get_text(strip=True).lower()
-        if any(kw in h2_text for kw in ["job description", "mô tả công việc"]):
-            parent = h2.find_parent("div")
-            if parent:
-                lines = [
-                    line.strip()
-                    for line in parent.get_text(separator="\n", strip=True).split("\n")
-                    if line.strip() and line.strip().lower() not in ["job description", "mô tả công việc"]
-                ]
-                job_description = " ".join(lines)
-        elif any(kw in h2_text for kw in ["your skills and experience", "yêu cầu", "skills and experience", "kỹ năng"]):
-            parent = h2.find_parent("div")
-            if parent:
-                lines = [
-                    line.strip()
-                    for line in parent.get_text(separator="\n", strip=True).split("\n")
-                    if line.strip() and line.strip().lower() not in ["your skills and experience", "yêu cầu", "skills and experience", "kỹ năng"]
-                ]
-                job_requirements = " ".join(lines)
+        parent = h2.find_parent("div")
+        if parent is None:
+            continue
+        if job_description is None and any(kw in h2_text for kw in DESCRIPTION_HEADINGS):
+            job_description = section_raw_text(parent, h2)
+        elif job_requirements is None and any(kw in h2_text for kw in REQUIREMENT_HEADINGS):
+            job_requirements = section_raw_text(parent, h2)
 
     if not job_description and json_ld_data.get("description"):
         desc_soup = BeautifulSoup(str(json_ld_data.get("description")), "html.parser")
-        job_description = clean_text(desc_soup.get_text(separator=" ", strip=True))
+        job_description = raw_or_none(desc_soup.get_text())
 
-    return clean_text(job_description), clean_text(job_requirements)
+    return job_description, job_requirements
 
 
 def parse_job_html(
@@ -254,7 +259,7 @@ def parse_job_html(
     fallback_title: Optional[str] = None,
 ) -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]:
     """
-    Parse detail page HTML into a validated record following DATA SCHEMA V1 (29 fields).
+    Parse detail page HTML into a validated record in the 22-field schema.
 
     Returns:
         (is_valid, record_dict, error_message)
@@ -286,7 +291,6 @@ def parse_job_html(
     raw_location = extract_location(soup, json_ld_data)
     posted_date = extract_posted_date(json_ld_data)
     raw_experience = extract_raw_experience(soup, json_ld_data)
-    salary_raw = extract_salary_raw(soup)
     job_description, job_requirements = extract_descriptions(soup, json_ld_data)
 
     # 5. Schema Validation Rules (§4 & §14):
@@ -296,7 +300,7 @@ def parse_job_html(
     if not job_description and not job_requirements:
         return False, None, "Missing both job_description and job_requirements"
 
-    # 6. Construct complete 29-field record according to DATA SCHEMA V1
+    # 6. Construct the 22-field record (docs/data_schema.md §4)
     record = {
         "job_id": job_id,
         "source": "ITviec",
@@ -311,16 +315,9 @@ def parse_job_html(
         "normalized_location": None,
         "posted_date": posted_date,
         "raw_experience": raw_experience,
-        "experience_min_years": None,
-        "experience_max_years": None,
-        "education": None,
         "job_description": job_description,
         "job_requirements": job_requirements,
         "job_text": None,
-        "salary_raw": salary_raw,
-        "salary_min": None,
-        "salary_max": None,
-        "salary_currency": None,
         "relevance_flag": None,
         "exclusion_reason": None,
         "duplicate_flag": None,

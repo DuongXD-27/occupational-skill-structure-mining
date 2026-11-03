@@ -7,7 +7,7 @@ import re
 import sys
 from typing import Dict, Generator, List, Optional, Set, Tuple
 from bs4 import BeautifulSoup
-from src.crawler.fetcher import PoliteFetcher
+from src.crawler.fetcher import AccessBlockedError, PoliteFetcher, detect_block
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -82,6 +82,10 @@ class ListingCrawler:
                 status_code, html, error = self.fetcher.fetch(page_url)
                 self.pages_scanned_per_seed[seed_url] += 1
 
+                block_reason = detect_block(status_code, html)
+                if block_reason:
+                    raise AccessBlockedError(page_url, status_code, block_reason)
+
                 if status_code != 200 or not html:
                     print(f"[Listing] Dừng phân trang tại {page_url} (HTTP {status_code}, error={error})")
                     break
@@ -117,7 +121,7 @@ class ListingCrawler:
                         card_title = None
                         title_elem = card.select_one("h3 a, a.text-it-black, [data-search--job-selection-job-title-value]")
                         if title_elem:
-                            card_title = title_elem.get_text(strip=True)
+                            card_title = title_elem.get_text() if title_elem.get_text().strip() else None
 
                         yield (detail_url, job_key, card_title)
                         yielded_count += 1
@@ -149,7 +153,7 @@ class ListingCrawler:
                             self.visited_urls.add(detail_url)
                             links_found += 1
 
-                            card_title = a.get_text(strip=True) or None
+                            card_title = a.get_text() if a.get_text().strip() else None
                             yield (detail_url, None, card_title)
                             yielded_count += 1
 

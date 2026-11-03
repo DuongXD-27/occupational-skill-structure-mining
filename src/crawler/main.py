@@ -1,7 +1,7 @@
 """
 Main CLI entrypoint for the Data & AI Job Crawler.
 Supports CLI arguments for output data, logs, and max job limit.
-Maintains in-memory deduplication and adheres strictly to DATA SCHEMA V1.
+Maintains in-memory deduplication and writes records in the 22-field schema (docs/data_schema.md).
 Outputs full summary metrics upon completion.
 """
 
@@ -13,7 +13,7 @@ import sys
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Set
 
-from src.crawler.fetcher import PoliteFetcher
+from src.crawler.fetcher import AccessBlockedError, PoliteFetcher, detect_block
 from src.crawler.listing import DEFAULT_SEED_URLS, ListingCrawler
 from src.crawler.parser import parse_job_html
 
@@ -42,7 +42,7 @@ class CrawlerRunner:
         output_data: str,
         output_log: str,
         max_jobs: Optional[int] = None,
-        parser_version: str = "v0.2",
+        parser_version: str = "v0.3",
         delay_min: float = 1.5,
         delay_max: float = 2.5,
         seed_urls: Optional[List[str]] = None,
@@ -61,6 +61,7 @@ class CrawlerRunner:
         # Metrics tracking
         self.saved_records_count = 0
         self.failed_requests_count = 0
+        self.blocked: Optional[AccessBlockedError] = None
 
     def init_storage(self):
         """Prepare output files and write header to log CSV."""
@@ -129,8 +130,28 @@ class CrawlerRunner:
         print(f"Giới hạn số tin: {self.max_jobs or 'Toàn bộ khả dụng (Exhaustive)'}")
         print(f"Phiên bản parser: {self.parser_version}\n")
 
-        job_targets = self.listing.iter_job_targets(max_jobs=self.max_jobs)
+        # --max-jobs giới hạn số bản ghi lưu được (kiểm tra ở vòng lặp dưới), không giới hạn
+        # số URL mục tiêu: một trang chi tiết lỗi không được chiếm chỗ của tin hợp lệ.
+        job_targets = self.listing.iter_job_targets()
 
+        try:
+            self._crawl(job_targets)
+        except AccessBlockedError as exc:
+            # Nguồn chặn truy cập (HTTP 401/403/503 hoặc thử thách chống bot):
+            # dừng toàn bộ đợt thu thập, không thử vượt qua (source_inspection.md, project_scope §7).
+            self.blocked = exc
+            print(f"\n[DỪNG] {exc}. Kết thúc đợt thu thập theo quy định nguồn dữ liệu.")
+            self.log_result(
+                source_url=exc.url,
+                status="FAILURE",
+                http_status=exc.status,
+                error_type="ACCESS_BLOCKED",
+                error_message=exc.reason,
+            )
+
+        self.print_summary()
+
+    def _crawl(self, job_targets):
         for detail_url, source_job_key, card_title in job_targets:
             if self.max_jobs is not None and self.saved_records_count >= self.max_jobs:
                 print(f"\nĐã đạt chỉ tiêu tối đa {self.max_jobs} bản ghi. Kết thúc.")
@@ -143,6 +164,10 @@ class CrawlerRunner:
 
             crawl_timestamp = datetime.now(timezone.utc).isoformat()
             status_code, html, net_err = self.fetcher.fetch(detail_url)
+
+            block_reason = detect_block(status_code, html)
+            if block_reason:
+                raise AccessBlockedError(detail_url, status_code, block_reason)
 
             if status_code != 200 or not html:
                 print(f"[{self.saved_records_count + 1}] THẤT BẠI: {detail_url} (HTTP {status_code}: {net_err})")
@@ -218,8 +243,6 @@ class CrawlerRunner:
 
             self.fetcher.sleep_polite()
 
-        self.print_summary()
-
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -246,8 +269,8 @@ def parse_args():
     parser.add_argument(
         "--parser-version",
         type=str,
-        default="v0.2",
-        help="Phiên bản parser gán nhãn trong log và record (mặc định: v0.2)",
+        default="v0.3",
+        help="Phiên bản parser gán nhãn trong log và record (mặc định: v0.3)",
     )
     parser.add_argument(
         "--delay-min",
@@ -275,6 +298,8 @@ def main():
         delay_max=args.delay_max,
     )
     runner.run()
+    if runner.blocked is not None:
+        sys.exit(2)
 
 
 if __name__ == "__main__":
