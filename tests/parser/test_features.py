@@ -87,3 +87,26 @@ def test_clean_parquet_input(tmp_path):
     pq.write_table(pa.Table.from_pylist(rows), clean)
     report = export_features(clean, tmp_path / "skills.parquet", tmp_path / "matrix.parquet")
     assert report["feature_records"] == 2
+
+
+def test_paired_outputs_restored_when_second_replace_fails(tmp_path, monkeypatch):
+    import os
+    from src.parser import features
+
+    clean = jobs(tmp_path)
+    skills, matrix = tmp_path / "skills.parquet", tmp_path / "matrix.parquet"
+    skills.write_bytes(b"old-skills")
+    matrix.write_bytes(b"old-matrix")
+    real_replace = os.replace
+
+    def failing_replace(src, dst):
+        if Path(dst) == matrix and not str(src).endswith(".bak"):
+            raise OSError("disk full")
+        return real_replace(src, dst)
+
+    monkeypatch.setattr(features.os, "replace", failing_replace)
+    with pytest.raises(OSError, match="disk full"):
+        export_features(clean, skills, matrix, DEFAULT_TAXONOMY)
+    assert skills.read_bytes() == b"old-skills"
+    assert matrix.read_bytes() == b"old-matrix"
+    assert sorted(p.name for p in tmp_path.iterdir() if p.suffix in (".parquet", ".bak")) == ["matrix.parquet", "skills.parquet"]
