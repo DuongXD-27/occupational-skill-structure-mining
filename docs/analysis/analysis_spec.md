@@ -104,7 +104,9 @@ Một con số thô ở đây không mang nhiều ý nghĩa. Điểm số 0.62 t
 
 Xây dựng một hồ sơ (profile) cho mỗi chức danh (vector kỹ năng trung bình của các tin thuộc chức danh đó), so sánh các profile với nhau. Độ tương đồng cao → hai tên gọi khác nhau đang mô tả cùng một công việc.
 
-Đầu ra — 4 bảng: Độ phân tán nội bộ từng chức danh kèm baseline đối chứng · Các cặp chức danh tương đồng kèm kỹ năng chung và kỹ năng phân hóa · Các cặp bị cảnh báo tại 3 ngưỡng · Hồ sơ kỹ năng của từng chức danh.  
+Đầu ra — 4 bảng: Độ phân tán nội bộ từng chức danh kèm baseline đối chứng · Các cặp chức danh tương đồng kèm kỹ năng chung và kỹ năng phân hóa · Các cặp bị cảnh báo tại 3 ngưỡng · Hồ sơ kỹ năng của từng chức danh.
+
+Ba ngưỡng cảnh báo cosine giữa hồ sơ chức danh: 0,70 · 0,80 · 0,90 (đề xuất 2026-11-03, chờ Leader duyệt; `config.TITLE_SIMILARITY_THRESHOLDS`). Cột `level` trong `rq3_flagged_pairs.csv` là ngưỡng cao nhất cặp vượt qua.  
 3 biểu đồ: Biểu đồ độ phân tán so với baseline · Biểu đồ phân cấp Dendrogram của chức danh · Heatmap tương đồng chức danh - chức danh.
 
 ---
@@ -141,6 +143,8 @@ Công bố toàn bộ kết quả quét, không chỉ mỗi giá trị chiến t
 
 Đầu ra — 5 bảng: Kết quả quét qua các giá trị $k$ · Hồ sơ đặc trưng từng cụm · Bảng chéo Cụm $\times$ Chức danh · Điểm số đồng thuận · Các tin tuyển dụng ví dụ đại diện cho mỗi cụm.  
 4 biểu đồ: Biểu đồ quét chọn $k$ · Biểu đồ PCA tô màu theo Cụm · Biểu đồ PCA tô màu theo Chức danh · Heatmap Cụm $\times$ Chức danh.
+
+**Phương pháp đối chứng — phân cụm phân cấp (phạm vi bắt buộc, project_scope §11).** Cùng $k$ đã chọn cho K-Means, chạy phân cụm phân cấp với khoảng cách Jaccard (hợp với vector nhị phân: hai tin cùng *thiếu* một skill không làm chúng giống nhau) và liên kết average, rồi so sánh trong `rq4_method_comparison.csv`: silhouette, Davies-Bouldin, tỉ lệ cụm lớn nhất, số cụm một phần tử, ARI/NMI so với chức danh; `rq4_method_agreement.csv` ghi ARI/NMI giữa hai phương pháp. Hai phương pháp khác nguyên lý cho cùng cấu trúc → cấu trúc đó nằm trong dữ liệu chứ không phải do thuật toán. Nhãn phân cấp cũng được tính khi chức danh còn bị giấu.
 
 Hai biểu đồ PCA được đặt cạnh nhau. Điểm số đồng thuận trừu tượng rất khó hình dung; hai bức tranh không khớp nhau sẽ được thấu hiểu ngay lập tức — và sự khác biệt giữa chúng *chính là* câu trả lời cho RQ4.
 
@@ -184,6 +188,21 @@ Các phân tích này phải được loại bỏ hoàn toàn, không công bố
 # 9. KIỂM SOÁT CHẤT LƯỢNG VÀ TÍNH TÁI LẬP
 
 Tám kiểm tra chất lượng phải chạy trước bất kỳ phân tích nào. Một kiểm tra thất bại sẽ chuyển trả công việc về khâu thu thập hoặc làm sạch, không được phép đưa vào biểu đồ báo cáo.
+
+**Danh sách tám kiểm tra — ĐỀ XUẤT 2026-11-03, chờ Leader duyệt** (code: `src/analysis/quality.py`, ngưỡng: `src/analysis/config.py`, kết quả: `quality_checks.csv` trong thư mục phân tích). Chỉ xét tin `relevance_flag=true AND duplicate_flag=false`.
+
+| Mã | Kiểm tra | Ngưỡng đạt | Lỗi nó bắt |
+|---|---|---|---|
+| QC1 | `job_id` khớp 1-1 giữa bảng sạch và bảng skill | 0 lệch, 0 trùng | Bước trích xuất chạy trên phiên bản dữ liệu khác |
+| QC2 | `extracted_skills` không null | 0 | Bộ trích xuất chưa chạy trên một phần dữ liệu (§2) |
+| QC3 | Số skill trung bình mỗi tin | ≥ 3 | Trích xuất yếu → thổi phồng độ phân tán, làm yếu liên kết |
+| QC4 | Tỉ lệ tin không có skill nào | ≤ 10% | Taxonomy thiếu mảng lớn hoặc crawler lấy sai phần văn bản |
+| QC5 | Tỉ lệ tin của skill phổ biến nhất | ≤ 90% | Alias quá rộng / bắt nhầm từ thông dụng |
+| QC6 | Trùng còn sót (cùng công ty + title chuẩn + nội dung) | ≤ 2% | Khử trùng bỏ sót → một tin được đếm nhiều lần |
+| QC7 | Độ dài trung vị mô tả + yêu cầu | ≥ 300 ký tự | Crawler lấy thiếu nội dung |
+| QC8 | Tin thiếu `normalized_job_title` | 0 | Tin rơi lặng lẽ khỏi RQ1/RQ3/RQ4 |
+
+Có kiểm tra thất bại thì bước `analysis` của pipeline trả RQ2–RQ4 `skipped` kèm lý do; `scripts/run_analysis.py --real` dừng với mã lỗi 1. Chạy thử ngày 2026-11-03 trên pilot ITviec (209 tin hợp lệ): đạt cả 8 (TB 10,85 skill/tin; 6,7% tin không có skill; skill phổ biến nhất SQL 40,7%; trung vị văn bản 2.568 ký tự).
 
 Tầm quan trọng: một bộ trích xuất yếu tạo ra danh sách kỹ năng ngắn → danh sách ngắn làm cho mọi tin trông đều khác biệt → điều đó làm thổi phồng độ phân tán và làm suy yếu mọi mối liên kết. Lỗi kỹ thuật sẽ tạo ra chính xác kết luận mà chúng ta kỳ vọng một cách giả tạo, thay vì kiểm chứng nó một cách khách quan.
 
