@@ -1,21 +1,21 @@
 rank,normalized_job_title,n_postings,share
-1,Business Analyst,7,0.0332
-2,Data Engineer,6,0.0284
-3,AI Engineer,6,0.0284
-4,Machine Learning Engineer,3,0.0142
-5,Data Analyst,2,0.0095
-6,IT Business Analyst,2,0.0095
-7,Technical Business Analyst,2,0.0095
-8,Fullstack Engineer,2,0.0095
-9,Data Analyst (CRM & Loyalty),1,0.0047
-10,Product Data Analyst,1,0.0047
-11,Head of Enterprise Data (AI/Database/Data Science),1,0.0047
-12,Business Analyst / Data Analyst,1,0.0047
-13,Data & Business Intelligence Professional / Senior Prof,1,0.0047
-14,Internship - BA,1,0.0047
-15,Business Intelligence Analyst (Financial Services),1,0.0047
-16,"Data Manager (Data Analytics, Business Intelligence)",1,0.0047
-17,AI Engineer (Computer Vision/NLP/LLM),1,0.0047
-18,AI Data Engineer,1,0.0047
-19,"Data Engineer (C++, Python, AI/LLM)",1,0.0047
-20,Chuyên Gia Tích Hợp Dữ Liệu (Data Engineer Expert),1,0.0047
+1,Business Analyst,8,0.0383
+2,AI Engineer,7,0.0335
+3,Data Engineer,6,0.0287
+4,Machine Learning Engineer,3,0.0144
+5,Data Analyst,2,0.0096
+6,IT Business Analyst,2,0.0096
+7,Technical Business Analyst,2,0.0096
+8,Fullstack Engineer,2,0.0096
+9,Data Analyst (CRM & Loyalty),1,0.0048
+10,Product Data Analyst,1,0.0048
+11,Head of Enterprise Data (AI/Database/Data Science),1,0.0048
+12,Business Analyst / Data Analyst,1,0.0048
+13,Data & Business Intelligence Professional / Senior Prof,1,0.0048
+14,Internship - BA,1,0.0048
+15,Business Intelligence Analyst (Financial Services),1,0.0048
+16,"Data Manager (Data Analytics, Business Intelligence)",1,0.0048
+17,AI Engineer (Computer Vision/NLP/LLM),1,0.0048
+18,AI Data Engineer,1,0.0048
+19,"Data Engineer (C++, Python, AI/LLM)",1,0.0048
+20,Chuyên Gia Tích Hợp Dữ Liệu (Data Engineer Expert),1,0.0048

@@ -173,3 +173,33 @@ class TestClassifyRelevance:
             "Analyze data using SQL and Python.", "Fresher or 0-1 year experience.",
         )
         assert flag is True
+
+
+
+class TestTopCVNonTechRoles:
+    JD = "Ứng dụng các công cụ AI như ChatGPT vào công việc hằng ngày, phối hợp nhóm. " * 3
+
+    @pytest.mark.parametrize("title", [
+        "Chuyên Viên Content Marketing & Sáng Tạo Video AI",
+        "Nhân Viên Kinh Doanh / Sales B2B - Giải Pháp AI",
+        "Nhân Viên Thiết Kế - Graphic Designer (Sử Dụng AI)",
+        "AI Creative Designer (Generative AI)",
+        "Sales Operations Executive",
+    ])
+    def test_excluded(self, title):
+        rel, reason, _ = classify_relevance(title, title, self.JD, self.JD)
+        assert rel is False and reason == "NOT_DATA_AI_ROLE"
+
+    @pytest.mark.parametrize("title", [
+        "Chuyên Viên Dữ Liệu Marketing",
+        "Digital Marketing Analytics Specialist",
+        "Sales Data Analyst",
+    ])
+    def test_data_role_kept(self, title):
+        rel, reason, _ = classify_relevance(title, title, "Phân tích dữ liệu bằng SQL và Python. " * 3, "SQL, Python")
+        assert rel is True
+
+    def test_vietnamese_whitelist(self):
+        rel, reason, flags = classify_relevance("Chuyên Viên Phân Tích", "Chuyên Viên Phân Tích",
+                                                "Thực hiện phân tích dữ liệu bán hàng hằng tuần cho ban giám đốc.", "")
+        assert rel is True and "MANUAL_REVIEW_REQUIRED" not in flags

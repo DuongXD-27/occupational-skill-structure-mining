@@ -71,6 +71,24 @@ _EXCLUSION_RULES: list[tuple[re.Pattern, str]] = [
         re.IGNORECASE), "NOT_DATA_AI_ROLE"),
 ]
 
+# Step 1b: Non-technical role nouns (many on TopCV: "Content Marketing (Ứng Dụng AI)",
+# "Nhân Viên Kinh Doanh - Giải Pháp AI", "Graphic Designer (Sử Dụng AI)"). Excluded only
+# when the title has no data/technical role word (scope §6: has "AI"/"Data" but the core
+# job is not Data/AI engineering).
+_NON_TECH_ROLE_RE = re.compile(
+    r"\b(content|copywriter|biên\s+kịch|designer|thiết\s+kế|graphic|chăm\s+sóc\s+khách\s+hàng|"
+    r"customer\s+service|kinh\s+doanh|sales|presale|bán\s+hàng|telesales?|đào\s+tạo|giảng\s+viên|"
+    r"trainer|tuyển\s+dụng|nhân\s+sự|kế\s+toán|cố\s+vấn|marketing|truyền\s+thông|thu\s+mua|"
+    r"lễ\s+tân|hành\s+chính|creator)\b",
+    re.IGNORECASE,
+)
+_TECH_ROLE_RE = re.compile(
+    r"\b(data|dữ\s+liệu|analyst|analytics|phân\s+tích|engineer|kỹ\s+sư|scientist|developer|"
+    r"lập\s+trình|machine\s+learning|ml|nlp|llm|mlops|business\s+intelligence|bi|thống\s+kê|"
+    r"research|researcher|nghiên\s+cứu)\b",
+    re.IGNORECASE,
+)
+
 # ---------------------------------------------------------------------------
 # Step 2: Whitelist keywords (scan title + JD + requirements)
 # ---------------------------------------------------------------------------
@@ -96,6 +114,9 @@ _WHITELIST_KEYWORDS = [
     "data analysis", "data mining", "data science", "data quality",
     "feature engineering", "model training", "model deployment",
     "business intelligence", "business analytics",
+    # Vietnamese (TopCV)
+    "phân tích dữ liệu", "kỹ sư dữ liệu", "khoa học dữ liệu", "học máy", "trí tuệ nhân tạo",
+    "dữ liệu lớn", "kho dữ liệu", "trực quan hóa dữ liệu", "xử lý ngôn ngữ tự nhiên", "thị giác máy tính",
 ]
 
 # Pre-compile for speed (word-boundary aware where possible)
@@ -153,6 +174,10 @@ def classify_relevance(
             if _WHITELIST_RE.search(check_title):
                 flags.append("AMBIGUOUS_CLASSIFICATION")
             return False, reason, flags
+
+    # --- Step 1b: non-technical role without any data/technical role word ---
+    if check_title and _NON_TECH_ROLE_RE.search(check_title) and not _TECH_ROLE_RE.search(check_title):
+        return False, "NOT_DATA_AI_ROLE", flags
 
     # --- Step 2: Whitelist Check ---
     combined = " ".join([title_raw, jd, jr])

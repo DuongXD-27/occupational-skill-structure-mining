@@ -10,16 +10,16 @@
 | Tổng bản ghi đầu vào | 252 |
 | Bản ghi trong bảng sạch (không xóa bản ghi nào) | 252 |
 | Lỗi kỹ thuật QR-01 (`exclusion_reason=SCRAPE_ERROR`) | 0 |
-| Ngoài phạm vi (`relevance_flag=false`) | 36 (14.3%) |
+| Ngoài phạm vi (`relevance_flag=false`) | 38 (15.1%) |
 | Trùng lặp (`duplicate_flag=true`) | 5 (2.0%) |
 | Vừa ngoài phạm vi vừa trùng lặp (tính một lần) | 0 |
-| **Tin hợp lệ (`relevance=true AND duplicate=false`)** | **211** |
+| **Tin hợp lệ (`relevance=true AND duplicate=false`)** | **209** |
 
 Lý do loại trừ:
 
 | `exclusion_reason` | Số lượng |
 |---|---|
-| `NOT_DATA_AI_ROLE` | 36 |
+| `NOT_DATA_AI_ROLE` | 38 |
 
 ## 2. Kết quả chuẩn hóa
 
@@ -30,7 +30,7 @@ Lý do loại trừ:
 | `job_text` | 252 | 0 |
 
 - Số chức danh thô khác biệt (trim + lowercase, toàn bảng): 246
-- Số chức danh chuẩn hóa khác biệt (toàn bảng): 229
+- Số chức danh chuẩn hóa khác biệt (toàn bảng): 227
 - Số địa điểm chuẩn hóa khác biệt: 3
 
 ## 3. Cờ chất lượng
@@ -42,7 +42,8 @@ Cờ không thuộc schema 22 trường nên được ghi ở file riêng `data/
 | `MISSING_EXPERIENCE` | 252 |
 | `MISSING_LOCATION` | 83 |
 | `SENIORITY_REMOVED` | 74 |
-| `MANUAL_REVIEW_REQUIRED` | 47 |
+| `MANUAL_REVIEW_REQUIRED` | 39 |
+| `RECRUITMENT_NOISE_REMOVED` | 24 |
 | `LOCATION_UNRECOGNIZED` | 18 |
 | `TECH_SUFFIX_REMOVED` | 13 |
 | `MULTI_LOCATION` | 6 |

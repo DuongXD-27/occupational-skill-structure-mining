@@ -156,3 +156,32 @@ class TestNormalizeTitle:
         title, flags = normalize_title(raw)
         assert "TITLE_TOO_LONG" in flags
         assert len(title) > 100
+
+
+class TestTopCVTitles:
+    """Tiêu đề kiểu TopCV hay kèm lương, số năm kinh nghiệm, nơi làm việc, phúc lợi."""
+
+    @pytest.mark.parametrize("raw,expected", [
+        ("Data Analyst (Từ 1 Năm Kinh Nghiệm)", "Data Analyst"),
+        ("AI Engineer - Thu Nhập Hấp Dẫn Upto 40M - Tại Hà Nội", "AI Engineer"),
+        ("Chuyên Viên Phân Tích Dữ Liệu Tài Chính [Hồ Chí Minh] - Thu Nhập Cạnh Tranh, Làm Việc Tại Doanh Nghiệp Top Đầu Việt Nam",
+         "Chuyên Viên Phân Tích Dữ Liệu Tài Chính"),
+        ("Data Lead (Lương Upto 35 Triệu)", "Data Lead"),
+        ("Data Engineer (Junior-Middle)", "Data Engineer"),
+        ("Data Engineer Fresher", "Data Engineer"),
+        ("Senior Data Engineer (ONSITE VPBANK)", "Data Engineer"),
+        ("Data Analyst (Mobile Game/ App) - Sign On Bonus 01 Tháng Lương", "Data Analyst (Mobile Game / App)"),
+        ("Audit Data Analytics Specialist - ID11908", "Audit Data Analytics Specialist"),
+        ("Data Engineer (Senior/Leader) English", "Data Engineer (Senior/Leader)"),
+    ])
+    def test_noise_removed(self, raw, expected):
+        assert normalize_title(raw)[0] == expected
+
+    def test_salary_with_trieu_not_half_cut(self):
+        assert "iệu" not in normalize_title("Data Analyst Lên Tới 30 Triệu")[0]
+
+    def test_source_casing_kept(self):
+        assert normalize_title("Software Tester / QC Engineer AI-Powered Testing")[0].endswith("AI-Powered Testing")
+
+    def test_role_word_never_stripped_away(self):
+        assert normalize_title("PowerBI (Business Intelligence)")[0] == "PowerBI (Business Intelligence)"

@@ -53,7 +53,7 @@ _ABBREV_COMPILED = [(re.compile(pat, re.IGNORECASE), repl) for pat, repl in _ABB
 
 # Salary: "Up to 75M", "upto 1500 USD", "$2000", "2000$", "lên đến 50tr"
 _SALARY_RE = re.compile(
-    r"(\b(up\s*to|upto|lên\s*đến|tới)\s*\d[\d,.]*\s*(M|K|USD|VND|tr|triệu)?|"
+    r"(\b(up\s*to|upto|lên\s*đến|tới)\s*\d[\d,.]*\s*(triệu|USD|VND|tr|M|K)?\b|"
     r"\$\s*\d[\d,.]*|\d[\d,.]*\s*\$)",
     re.IGNORECASE,
 )
@@ -66,9 +66,71 @@ _BONUS_RE = re.compile(
 
 # "English required" type trailing suffix after comma or dash
 _TRAILING_SUFFIX_RE = re.compile(
-    r"\s*[,\-–|]\s*(english\s+required|yêu\s+cầu\s+tiếng\s+anh|fluent\s+english).*$",
+    r"\s*[,\-–|]\s*(english\s+required|yêu\s+cầu\s+tiếng\s+anh|fluent\s+english).*$"
+    r"|\s+(english|tiếng\s+anh(\s+tốt)?)\s*$",
     re.IGNORECASE,
 )
+
+# Recruitment noise in titles (common on TopCV): salary, experience years, workplace,
+# perks, internal codes. A bracket group or a trailing " - " / "," segment made of such
+# noise is dropped from normalized_job_title (raw_job_title keeps it).
+_RECRUIT_NOISE_RE = re.compile(
+    r"thu\s+nhập|lương|salary|\bup\s*to\b|\bupto\b|triệu|\d\s*(tr|m|k|usd|vnđ|vnd)\b|"
+    r"kinh\s+nghiệm|\bkn\b|\btại\b|xe\s+đưa\s+đón|bonus|thưởng|nghỉ\s+t7|t7\s*&\s*cn|"
+    r"\bid\s*\d+|quận\s*\d+|\bonsite\b|hội\s+sở|tiếng\s+anh|english|ob\s+sớm",
+    re.IGNORECASE,
+)
+
+
+def _is_place(segment: str) -> bool:
+    """Segment chỉ gồm tên địa điểm (dùng bảng location_mapping của QR-02)."""
+    from .location import normalize_location  # local import: avoid cycle at module load
+    parts = [p for p in re.split(r"[/,]|\bvà\b", segment) if p.strip()]
+    return bool(parts) and all(normalize_location(p.strip(" ()[]"))[0] for p in parts)
+
+
+def _split_top_level(text: str) -> list[str]:
+    """Tách theo " - ", " – ", " | ", ", " ở cấp ngoài cùng (không cắt trong ngoặc)."""
+    parts, depth, cur, i = [], 0, "", 0
+    while i < len(text):
+        ch = text[i]
+        depth += ch in "([" ; depth -= ch in ")]"
+        if depth == 0:
+            m = re.match(r"\s+[-–|]\s+|,\s+", text[i:])
+            if m:
+                parts.append(cur)
+                cur, i = "", i + m.end()
+                continue
+        cur += ch
+        i += 1
+    parts.append(cur)
+    return [p.strip() for p in parts if p.strip()]
+
+
+def _strip_recruitment_noise(text: str) -> tuple[str, bool]:
+    removed = False
+
+    def _bracket(m: re.Match) -> str:
+        nonlocal removed
+        inner = m.group(1)
+        if _RECRUIT_NOISE_RE.search(inner) or _is_place(inner):
+            removed = True
+            return " "
+        return m.group(0)
+
+    text = re.sub(r"[(\[]\s*([^()\[\]]+?)\s*[)\]]", _bracket, text)
+    parts = _split_top_level(text)
+    if len(parts) > 1:
+        keep = [parts[0]] + [p for p in parts[1:] if not (_RECRUIT_NOISE_RE.search(p) or _is_place(p))]
+        if len(keep) != len(parts):
+            removed = True
+        text = " - ".join(keep)
+    # Inline salary phrase without delimiter: "... Lương Từ 22 - 35 Triệu"
+    new = re.sub(r"\s+(lương|thu\s+nhập)\b.*$", "", text, flags=re.IGNORECASE)
+    if new != text and new.strip():
+        text, removed = new, True
+    return re.sub(r"\s{2,}", " ", text).strip(" ,-–|"), removed
+
 
 # Language requirement in brackets: "(Good English)", "[Japanese N2]", "(Tiếng Anh tốt)"
 _BRACKET_LANGUAGE_RE = re.compile(
@@ -86,7 +148,7 @@ _LEADING_NOISE_RE = re.compile(r"^[\d]+\.\s*|^[-*#•]\s*")
 # Seniority levels and technology suffixes
 # ---------------------------------------------------------------------------
 
-_SENIORITY_WORDS = r"(?:senior|sr\.?|snr\.?|junior|jr\.?|middle|mid(?:[\s-]level)?|fresher|entry[\s-]level)"
+_SENIORITY_WORDS = r"(?:senior|sr\.?|snr\.?|sen|junior|jr\.?|middle|mid(?:[\s-]level)?|fresher|entry[\s-]level)"
 # "Senior Data Analyst", "Sr. Data Engineer", "Junior/Middle Data Analyst"
 _LEADING_SENIORITY_RE = re.compile(
     rf"^\s*{_SENIORITY_WORDS}(?:\s*[/&,-]\s*{_SENIORITY_WORDS})*\s*(?:[/&,-]\s*)?(?=\S)",
@@ -101,6 +163,13 @@ _TAXONOMY_PATH = Path(__file__).resolve().parents[2] / "taxonomy" / "skills_taxo
 _ROLE_NOUN_RE = re.compile(
     r"\b(analyst|engineer|scientist|developer|architect|specialist|consultant|"
     r"researcher|administrator|manager|lead|expert|programmer)\b",
+    re.IGNORECASE,
+)
+# Any role word (English or Vietnamese). A tech-suffix removal that would leave a title
+# without any role word ("PowerBI (Business Intelligence)" → "PowerBI") is undone.
+_ANY_ROLE_RE = re.compile(
+    _ROLE_NOUN_RE.pattern[:-3] + r"|intern|developer|tester|chuyên\s+viên|kỹ\s+sư|nhân\s+viên|"
+    r"trưởng\s+nhóm|trưởng\s+phòng|quản\s+lý|thực\s+tập\s+sinh|chuyên\s+gia)\b",
     re.IGNORECASE,
 )
 _ITEM_SPLIT_RE = re.compile(r"\s*(?:,|/|&|\||;|\band\b|\bvà\b)\s*", re.IGNORECASE)
@@ -161,6 +230,15 @@ def _strip_tech_suffix(text: str, terms: frozenset[str]) -> tuple[str, bool]:
     """Remove explicit tech-stack segments; return (text, removed?)."""
     if not terms:
         return text, False
+    new, removed = _strip_tech_suffix_raw(text, terms)
+    if removed and _ANY_ROLE_RE.search(text) and not _ANY_ROLE_RE.search(new):
+        return text, False
+    if removed and not _ANY_ROLE_RE.search(text):
+        return text, False
+    return new, removed
+
+
+def _strip_tech_suffix_raw(text: str, terms: frozenset[str]) -> tuple[str, bool]:
     removed = False
 
     # 1) Bracketed segments made only of technologies: "(SQL/Python/R)", "[Azure, Power BI]"
@@ -201,12 +279,16 @@ def _strip_seniority(text: str) -> tuple[str, bool]:
     # "Data Analyst (Senior)", "Data Engineer (Junior/Middle)"
     def _bracket(mm: re.Match) -> str:
         nonlocal removed
-        items = [i for i in _ITEM_SPLIT_RE.split(mm.group(1)) if i.strip()]
+        items = [i for i in re.split(r"\s*[,/&|-]\s*", mm.group(1)) if i.strip()]
         if items and all(_SENIORITY_ONLY_RE.match(i.strip()) for i in items):
             removed = True
             return " "
         return mm.group(0)
     text = re.sub(r"[(\[]\s*([^()\[\]]+?)\s*[)\]]", _bracket, text)
+    # "Data Engineer Fresher", "AI Engineer Senior"
+    new = re.sub(rf"\s+{_SENIORITY_WORDS}\s*$", "", text, flags=re.IGNORECASE)
+    if new != text and new.strip():
+        text, removed = new, True
     return re.sub(r"\s{2,}", " ", text).strip(" ,-–"), removed
 
 # ---------------------------------------------------------------------------
@@ -258,15 +340,19 @@ def _smart_title_case(text: str) -> str:
         elif i > 0 and lower_word in _SMALL_WORDS and core == word:
             result.append(lower_word)
         else:
-            result.append(_capitalize_core(word))
+            result.append(_capitalize_core(word, lower_rest=all_caps_title))
     return " ".join(result)
 
 
-def _capitalize_core(word: str) -> str:
-    """Capitalize the first letter, keep leading punctuation such as '('."""
+def _capitalize_core(word: str, lower_rest: bool = True) -> str:
+    """Capitalize the first letter, keep leading punctuation such as '('.
+
+    lower_rest=False keeps the source casing of the rest (PowerBI, C&B, AI-Powered).
+    """
     for idx, ch in enumerate(word):
         if ch.isalpha():
-            return word[:idx] + ch.upper() + word[idx + 1:].lower()
+            rest = word[idx + 1:]
+            return word[:idx] + ch.upper() + (rest.lower() if lower_rest else rest)
     return word
 
 
@@ -299,6 +385,11 @@ def normalize_title(
 
     # Step 1: collapse whitespace (raw text may keep source line breaks)
     text = re.sub(r"\s+", " ", raw).strip()
+
+    # Step 1b: recruitment noise (salary, years of experience, workplace, perks)
+    text, noise_removed = _strip_recruitment_noise(text)
+    if noise_removed:
+        flags.append("RECRUITMENT_NOISE_REMOVED")
 
     # Step 2: strip leading list markers
     text = _LEADING_NOISE_RE.sub("", text).strip()
