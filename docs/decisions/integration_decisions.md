@@ -9,7 +9,7 @@ Ngày chốt: 2026-10-03. Người chịu trách nhiệm: Dương.
 |---|---|---|
 | Thu thập dữ liệu | Đạt | Nguồn được phê duyệt |
 | Cleaner, chuẩn hóa chức danh và RQ1 | Đức | Dữ liệu crawler |
-| Trích xuất kỹ năng, danh sách kỹ năng và ma trận job–skill | Cường | Dữ liệu sạch, taxonomy |
+| Trích xuất kỹ năng, danh sách kỹ năng và ma trận job–skill | Cường (từ 2026-11-03: duyệt gold, alias, số liệu P/R/F1; xem mục F) | Dữ liệu sạch, taxonomy |
 | RQ2–RQ4 | Triều | Dữ liệu sạch, đặc trưng kỹ năng |
 | Phạm vi, schema, điều phối và nghiệm thu tích hợp | Dương | Các module bàn giao |
 
@@ -105,3 +105,42 @@ sau khi Đạt, Đức, Cường và Triều bàn giao module, kiểm thử vớ
 các yêu cầu đánh giá nghiên cứu. Module giả lập chỉ dùng kiểm thử ranh giới bàn giao.
 
 Nguồn chính tiếp tục là ITviec; TopCV là dự phòng. Xem [so sánh nguồn](../data_collection/source_comparison.md).
+
+## F. Quyết định ngày 2026-11-03
+
+Dương chốt các điểm dưới đây. Mốc chính: **chốt dữ liệu 2026-11-23**, báo cáo
+kết quả giữa tháng 12/2026.
+
+1. **Bật TopCV làm nguồn thứ hai.** Điều kiện kích hoạt ở phạm vi §7 đã xảy ra:
+   đợt thu ITviec 30/09 quét hết các danh mục hạt giống và chỉ được 252 tin
+   (211 tin hợp lệ sau làm sạch), không đủ 300 tin cho RQ4. Kết quả khảo sát nguồn ở
+   [source_inspection.md](../data_collection/source_inspection.md#topcv). Bản ghi
+   TopCV dùng cùng schema 22 trường, cùng tiêu chí giữ/loại, giữ `source=TopCV`
+   và `source_url`. Vẫn tối đa hai nguồn.
+2. **Bản sửa sau review được đẩy thẳng vào nhánh của thành viên** (PR #12–#16);
+   người phụ trách duyệt lại trong 2 ngày. Thứ tự merge: #15 → #12 → #13 → #14 → #16.
+3. **Gold kỹ năng.** Cường và Dương duyệt. Mỗi người gán độc lập cùng 15–20 tin
+   trước để đo độ đồng thuận (Cohen's kappa), sau đó mới duyệt phần còn lại từ bản
+   nháp Codex. Mở rộng lên 100 tin nếu kịp tiến độ.
+4. **Phân công lại.** Cường chịu trách nhiệm duyệt gold, bổ sung alias và số liệu
+   P/R/F1; Dương giữ phần điều phối, schema và nghiệm thu.
+5. **Chuẩn hóa chức danh** theo quy tắc đã cài trong cleaner: chỉ bỏ cấp bậc thuần túy
+   (Senior/Junior/Middle/Fresher); giữ Lead, Intern, Head; chỉ bỏ ngoặc/hậu tố khi
+   mọi mục là công cụ trong taxonomy; giữ phần chuyên môn như `- Computer Vision`,
+   `(LLM/RAG)`.
+6. **Luồng trùng gần chỉ dựa trên mô tả (cosine ≥ 0,95) giữ tắt.** QR-05 giữ đủ bốn
+   điều kiện AND. Cặp MB Bank #36/#40 được ghi vào phần hạn chế.
+7. **Khung thời gian quan sát:** tin thu được từ 2026-09-30 đến 2026-11-23. Cùng
+   `source_url` thu nhiều lần thì giữ bản thu sớm nhất.
+8. **Pilot thu bằng parser v0.2:** thu lại bằng v0.3 các tin còn đang đăng. Tin đã gỡ
+   giữ bản v0.2 (phân biệt bằng `parser_version`) và ghi vào phần hạn chế.
+9. **Khóa taxonomy và parser ngày 2026-11-23.** Gold được chia cố định thành hai
+   nửa theo `job_id`: nửa `tune` dùng để chỉnh alias, nửa `holdout` dùng để báo cáo
+   P/R/F1 chính thức (`python -m src.parser evaluate --subset holdout`).
+10. **Ngưỡng phân tích giữ nguyên** (mục 7 đặc tả). Thêm điều kiện: RQ3 chỉ báo cáo khi
+    có ít nhất 3 chức danh đạt 5 tin.
+11. **Quy tắc chọn k:** độ ổn định cao nhất (trong biên 0,02) → silhouette cao nhất
+    (trong biên 0,02) → k nhỏ hơn. Đặc tả đã sửa câu chữ cho khớp; chốt trước khi chạy.
+12. **Không làm mô hình dự đoán chức danh** cho RQ3.
+13. **Nếu đến 2026-11-23 vẫn dưới 300 tin hợp lệ:** không hạ ngưỡng. RQ4 được trình bày
+    như phương pháp đã kiểm chứng trên dữ liệu giả lập; RQ1–RQ3 báo cáo đầy đủ.
