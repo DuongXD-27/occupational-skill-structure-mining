@@ -49,6 +49,24 @@ taxonomy 246 kỹ năng. Các đề xuất và bằng chứng ở
 Chúng không được thêm lén vào parser hoặc tính vào TP/FN của đánh giá canonical
 hiện tại; chỉ số này không đo khả năng bao phủ mọi công nghệ ngoài taxonomy.
 
+## Rà soát lượt hai (trợ lý AI, 2026-11-03)
+
+[review_pass2.jsonl](review_pass2.jsonl) là góp ý của Claude sau khi đọc lại cả 50 tin theo
+[hướng dẫn gán nhãn](../../docs/skill_extraction/annotation_guideline.md). File **không sửa**
+`gold_jobs.draft.jsonl` và **không thay thế người duyệt**: mọi dòng có `human_reviewed=false`.
+
+- `kind=label`: nhãn gold đáng ngờ. `action=sửa bằng chứng` khi kỹ năng đúng nhưng đoạn bằng
+  chứng trỏ sai chỗ (ví dụ chữ «SQL» nằm trong «MSSQL», «học máy» nằm trong «khoa học máy tính»);
+  `thay` khi nên đổi sang kỹ năng khác; `xem` khi cần người quyết theo hướng dẫn.
+- `kind=missing`: kỹ năng có trong văn bản nhưng gold chưa gán, kèm offset đề xuất.
+- `level=cao`: gần như chắc chắn theo hướng dẫn; `level=xem`: cần người quyết.
+
+Tổng cộng 99 góp ý: 24 nhãn đáng ngờ (12 sửa bằng chứng, 1 thay, 11 cần xem) và 75 nhãn
+có thể bị sót (25 mức cao, 50 cần xem). Nếu chấp nhận toàn bộ góp ý mức cao, gold có 659
+nhãn và parser hiện tại đạt Precision 96,1%, Recall 81,9%, F1 88,5% (so với 96,3% / 85,3% /
+90,5% trên bản nháp). Phần lớn nhãn bị sót cũng là chỗ parser bỏ sót, nên bản nháp đang làm
+Recall trông cao hơn thực tế.
+
 ## Chia tune / holdout (quyết định 2026-11-03, F.9)
 
 Gold được chia cố định theo `job_id` (băm `sha256("gold-split-v1:" + job_id)`, chẵn →
