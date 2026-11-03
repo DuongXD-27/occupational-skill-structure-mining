@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import uuid
 from pathlib import Path
 import tempfile
 
@@ -52,6 +54,29 @@ def feature_rows(jobs: list[dict], extractor: SkillExtractor, *, preview: bool =
     return skills, matrix
 
 
+def publish_together(sources: list[Path], targets: list[Path]) -> None:
+    """Thay các file đích bằng file nguồn; lỗi giữa chừng thì khôi phục toàn bộ bản cũ."""
+    tag = uuid.uuid4().hex[:8]
+    moved: list[tuple[Path, Path | None]] = []
+    try:
+        for source, target in zip(sources, targets, strict=True):
+            backup = None
+            if target.exists():
+                backup = target.with_name(f"{target.name}.{tag}.bak")
+                os.replace(target, backup)
+            moved.append((target, backup))
+            os.replace(source, target)
+    except BaseException:
+        for target, backup in reversed(moved):
+            target.unlink(missing_ok=True)
+            if backup is not None:
+                os.replace(backup, target)
+        raise
+    for _, backup in moved:
+        if backup is not None:
+            backup.unlink(missing_ok=True)
+
+
 def export_features(clean_path, skills_path, matrix_path, taxonomy_path=DEFAULT_TAXONOMY, *, preview=False):
     import pyarrow as pa
     import pyarrow.parquet as pq
@@ -68,17 +93,18 @@ def export_features(clean_path, skills_path, matrix_path, taxonomy_path=DEFAULT_
                               ("skill_count", pa.int32())])
     matrix_schema = pa.schema([("job_id", pa.string()), *[(r["skill_id"], pa.uint8()) for r in extractor.rows]])
     tables = [pa.Table.from_pylist(skills, schema=skill_schema), pa.Table.from_pylist(matrix, schema=matrix_schema)]
-    # Ghi xong cả hai file tạm trước khi thay đầu ra cũ. Replace hai file không là giao dịch nguyên tử.
+    # Ghi xong cả hai file tạm trước khi thay đầu ra cũ, rồi xuất bản cả cặp như một
+    # phiên bản: nếu thay file thứ hai thất bại thì khôi phục cả hai file cũ, để người đọc
+    # không bao giờ thấy danh sách kỹ năng và ma trận thuộc hai lần chạy khác nhau.
     temporary = []
     try:
-        for target, table in zip(outputs, tables):
+        for target, table in zip(outputs, tables, strict=True):
             target.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.NamedTemporaryFile(dir=target.parent, suffix=".parquet", delete=False) as file:
                 temp = Path(file.name)
             temporary.append(temp)
             pq.write_table(table, temp)
-        for temp, target in zip(temporary, outputs):
-            temp.replace(target)
+        publish_together(temporary, outputs)
     finally:
         for temp in temporary:
             temp.unlink(missing_ok=True)

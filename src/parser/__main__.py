@@ -1,6 +1,7 @@
 """CLI xuất đặc trưng và đánh giá parser."""
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from .features import export_features
@@ -8,6 +9,10 @@ from .skill_extractor import DEFAULT_TAXONOMY
 
 
 def main():
+    # Thông báo lỗi và báo cáo có tiếng Việt: tránh UnicodeEncodeError trên console không UTF-8.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     for command in ("preview", "extract"):
