@@ -31,7 +31,7 @@ Runs on synthetic data and prints every result. Takes about 20 seconds.
 python -m pytest tests/analysis/ -q
 ```
 
-Must print `11 passed`.
+Must print `26 passed`.
 
 ## Common errors
 
@@ -222,14 +222,25 @@ df = synthetic.generate_jobs(n=400)
 M = synthetic.build_matrix(df)
 ```
 
-Once the skill extraction stage delivers its artifact:
+Once the skill extraction stage delivers its artifact, load it through the
+loader — not with a raw `pd.read_parquet`:
 
 ```python
-M = pd.read_parquet("data/features/job_skill_matrix.parquet")
+from src.analysis import loaders
+M = loaders.load_skill_matrix(
+    "data/features/job_skill_matrix.parquet",
+    taxonomy_path="taxonomy/skills_taxonomy.csv",
+)
 ```
 
-Everything downstream is untouched. The modules never knew where the matrix
-came from, which is the point of keeping them separate from the notebook.
+The handover file has `job_id` as a column, `skill_id` codes (SK0001, …) as
+column names and integer/bool cells. `load_skill_matrix` moves `job_id` to the
+index, maps codes to canonical names through the taxonomy (it fails if the
+taxonomy is missing), rejects any cell that is not 0/1, and drops skills below
+`MIN_SKILL_COUNT`. After that, everything downstream is untouched.
+
+The integration pipeline calls the same code through
+`src.analysis.report:run`, which returns the status of RQ2, RQ3 and RQ4.
 
 ---
 ---

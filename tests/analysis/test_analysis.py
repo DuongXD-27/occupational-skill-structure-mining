@@ -26,8 +26,7 @@ def test_related_pair_beats_common_pair(data):
     """Cái bẫy: Python và SQL hay gặp chung vì cả hai đều ở khắp nơi.
     PyTorch và OpenCV gặp chung vì chúng thực sự thuộc về nhau. Chỉ số liên hệ
     đúng phải tách được hai trường hợp; đếm thô thì không."""
-    assoc = rq2.compute_associations(M := data[1]).set_index(
-        lambda i: None) if False else rq2.compute_associations(data[1])
+    assoc = rq2.compute_associations(data[1])
     key = {frozenset([a, b]): n for a, b, n in
            zip(assoc["skill_a"], assoc["skill_b"], assoc["npmi"])}
     assert key[frozenset(["PyTorch", "OpenCV"])] > key[frozenset(["Python", "SQL"])]
@@ -138,11 +137,12 @@ def test_loader_normalises_a_schema_shaped_handover(data, tmp_path):
     assert loaded.equals(M)
 
 
-def test_loader_warns_when_taxonomy_is_missing(data, tmp_path):
+def test_loader_rejects_codes_when_taxonomy_is_missing(data, tmp_path):
+    """Thiếu taxonomy thì không đổi được mã sang tên → báo lỗi, không âm thầm trả mã."""
     _, M = data
     p, _ = _fake_handover(tmp_path, M)
-    loaded = loaders.load_skill_matrix(p, tmp_path / "does_not_exist.csv")
-    assert any("codes, not names" in n for n in loaders.warn_about(loaded))
+    with pytest.raises(loaders.MatrixProblem, match="taxonomy"):
+        loaders.load_skill_matrix(p, tmp_path / "does_not_exist.csv")
 
 
 def test_loader_rejects_a_matrix_the_extractor_never_filled(data):
@@ -226,3 +226,57 @@ def test_notable_pairs_shows_shared_and_distinguishing_skills(data):
     # phải có ít nhất một cặp chỉ ra được skill phân biệt
     co_phan_biet = notable["chi_title_a"].str.len() + notable["chi_title_b"].str.len()
     assert (co_phan_biet > 0).any()
+
+
+# --- Các trường hợp biên đã sửa sau review ---------------------------------
+
+def test_npmi_is_one_when_pair_in_every_posting():
+    M = pd.DataFrame({"A": [1] * 6, "B": [1] * 6, "C": [1, 0, 1, 0, 1, 0]})
+    assoc = rq2.compute_associations(M, rq2.compute_cooccurrence(M, min_joint=1))
+    row = assoc[(assoc["skill_a"] == "A") & (assoc["skill_b"] == "B")].iloc[0]
+    assert row["npmi"] == 1.0
+
+
+def test_communities_include_isolated_skills():
+    M = pd.DataFrame({"A": [1, 1, 1, 1, 1, 0], "B": [1, 1, 1, 1, 1, 0], "Z": [0, 0, 0, 0, 0, 1]})
+    res = rq2.run_rq2(M)
+    assert set(res["communities"]) == {"A", "B", "Z"}
+
+
+def test_loader_rejects_non_binary_cells(tmp_path):
+    p = tmp_path / "m.parquet"
+    pd.DataFrame({"job_id": ["a", "b"], "Python": [1.9, 0.0]}).to_parquet(p)
+    with pytest.raises(loaders.MatrixProblem):
+        loaders.load_skill_matrix(p, min_skill_count=1)
+
+
+def test_loader_maps_skill_ids(tmp_path):
+    p = tmp_path / "m.parquet"
+    tax = tmp_path / "tax.csv"
+    tax.write_text("skill_id,canonical_name\nSK0001,Python\nSK0002,SQL\n", encoding="utf-8")
+    pd.DataFrame({"job_id": ["a", "b", "c"], "SK0001": [1, 1, 0], "SK0002": [True, False, True]}).to_parquet(p)
+    M = loaders.load_skill_matrix(p, taxonomy_path=tax, min_skill_count=1)
+    assert list(M.columns) == ["Python", "SQL"] and M.index.name == "job_id"
+
+
+def test_loader_rejects_empty_after_filter(tmp_path):
+    p = tmp_path / "m.parquet"
+    pd.DataFrame({"job_id": ["a", "b"], "Python": [1, 0]}).to_parquet(p)
+    with pytest.raises(loaders.MatrixProblem):
+        loaders.load_skill_matrix(p, min_skill_count=5)
+
+
+def test_compare_to_titles_ignores_missing_titles():
+    M = pd.DataFrame({"A": [1, 1, 0, 0], "B": [0, 0, 1, 1]}, index=["j1", "j2", "j3", "j4"])
+    titles = pd.Series({"j1": "X", "j2": "X", "j3": "Y"})  # j4 has no title
+    out = rq4.compare_to_titles([0, 0, 1, 1], titles, M)
+    assert out["n_compared"] == 3 and out["ari"] == 1.0
+    assert "nan" not in " ".join(rq4.unblind([0, 0, 1, 1], titles, M)["titles_after_unblinding"]).lower()
+
+
+def test_synthetic_noise_is_foreign_skill():
+    df = synthetic.generate_jobs(n=200, noise=1.0, drop=0.0, seed=1)
+    for fam, skills in zip(df["true_family"], df["extracted_skills"]):
+        others = set().union(*(set(f["core"]) for k, f in synthetic.FAMILIES.items() if k != fam))
+        own = set(synthetic.FAMILIES[fam]["core"])
+        assert set(skills) & (others - own)

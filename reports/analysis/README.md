@@ -37,7 +37,7 @@ python scripts/run_analysis.py --real     # khi có dữ liệu thật
 | `rq3_title_dispersion.csv` | Phân tán skill trong cùng title, kèm mốc ngẫu nhiên | phân tán + bootstrap baseline |
 | `rq3_title_similarity.csv` | Cosine giữa hồ sơ các title | title có profile gần nhau |
 | `rq3_notable_pairs.csv` | Cặp title đáng chú ý, skill chung và skill phân biệt | bảng minh họa |
-| `rq3_skipped_titles.csv` | Title bị bỏ vì dưới 5 tin | — |
+| `rq3_skipped_titles.csv` | Title bị bỏ vì dưới 5 tin (chỉ ghi khi có title bị bỏ) | — |
 | `rq4_k_sweep.csv` | Silhouette, Davies-Bouldin, stability theo từng k | quét k + 3 chỉ số |
 | `rq4_cluster_profiles.csv` | Mỗi cụm gồm skill gì | — |
 | `rq4_cluster_assignment.csv` | Mỗi tin thuộc cụm nào | cluster assignment |

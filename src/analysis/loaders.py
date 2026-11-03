@@ -5,10 +5,10 @@ tên skill, trong ô chỉ có 0 và 1. Không có gì bảo đảm bản giao s
 đó, nên việc chuyển đổi và kiểm tra gom hết về đây, làm một lần, thay vì mỗi
 module lại tự xoay xở.
 
-Khác biệt đã biết giữa `data_schema_v1.md` và thứ module cần:
+Khác biệt đã biết giữa hợp đồng bàn giao (`docs/pipeline/README.md`) và thứ module cần:
 
-  Schema mục 14   job_id là một CỘT; cột skill đặt tên skill_001, skill_002,
-                  ... tham chiếu tới taxonomy
+  Bàn giao       job_id là một CỘT; cột skill là `skill_id` của taxonomy
+                  (SK0001, SK0002, ...), ô là số nguyên 0/1
   Module cần      job_id ở INDEX; cột đặt tên Python, PyTorch, ...
 
 Để nguyên mã số thì kết quả không ai đọc nổi — "cluster top skills:
@@ -89,6 +89,32 @@ def load_taxonomy(path="taxonomy/skills_taxonomy.csv"):
     return dict(zip(tax[code_col].astype(str), tax[name_col].astype(str)))
 
 
+def _to_binary(df, source="matrix"):
+    """Đưa ô về int 0/1; báo lỗi nếu có giá trị không phải nhị phân hoặc bị thiếu."""
+    def _column(col):
+        if col.dtype == bool:
+            return col.astype(int)
+        num = pd.to_numeric(col, errors="coerce")
+        bad = col[num.isna() | ~num.isin([0, 1])]
+        if len(bad):
+            raise MatrixProblem(
+                f"{source}: column {col.name!r} has non-binary or missing cells "
+                f"{list(pd.unique(bad.astype(str)))[:5]}; only 0/1 or true/false are allowed")
+        return num.astype(int)
+
+    return df.apply(_column)
+
+
+def _filter_skills(M, min_skill_count, source="matrix"):
+    """Bỏ skill dưới ngưỡng; báo lỗi nếu không còn cột nào."""
+    kept = M.loc[:, M.sum() >= min_skill_count]
+    if kept.shape[1] == 0:
+        raise MatrixProblem(
+            f"{source}: no skill reaches min_skill_count={min_skill_count}; "
+            "the filtered matrix has no skill columns")
+    return kept
+
+
 def load_skill_matrix(path="data/features/job_skill_matrix.parquet",
                       taxonomy_path="taxonomy/skills_taxonomy.csv",
                       min_skill_count=config.MIN_SKILL_COUNT):
@@ -103,19 +129,26 @@ def load_skill_matrix(path="data/features/job_skill_matrix.parquet",
     # bỏ mọi cột không phải skill
     df = df.drop(columns=NON_SKILL_COLUMNS, errors="ignore")
 
-    # mã kiểu skill_001 đổi thành tên đọc được, nếu taxonomy có
+    # mã kiểu skill_001 / SK0001 bắt buộc đổi thành tên đọc được qua taxonomy
     if any(_looks_like_a_code(c) for c in df.columns):
         try:
             mapping = load_taxonomy(taxonomy_path)
-        except FileNotFoundError:
-            mapping = {}
+        except FileNotFoundError as exc:
+            raise MatrixProblem(
+                f"Skill columns are taxonomy codes but the taxonomy {taxonomy_path} "
+                "is missing; cannot convert codes to names.") from exc
+        unknown = [c for c in df.columns if _looks_like_a_code(c) and str(c) not in mapping]
+        if unknown:
+            raise MatrixProblem(
+                f"Skill codes not found in taxonomy {taxonomy_path}: {unknown[:5]}")
         df = df.rename(columns=lambda c: mapping.get(str(c), str(c)))
 
-    # ô kiểu bool / float / chuỗi đưa hết về 0 và 1
-    df = df.apply(pd.to_numeric, errors="coerce").fillna(0).astype(int)
+    # ô kiểu bool / int / float / chuỗi "0"/"1": kiểm tra TRƯỚC khi ép kiểu, để 1.9
+    # hay "abc" không âm thầm thành 1 hay 0
+    df = _to_binary(df, path)
 
     validate_matrix(df)
-    return df.loc[:, df.sum() >= min_skill_count]
+    return _filter_skills(df, min_skill_count, path)
 
 
 def load_from_job_skills(path="data/features/job_skills.parquet",
@@ -143,7 +176,7 @@ def load_from_job_skills(path="data/features/job_skills.parquet",
                      index=rows.index, columns=skills, dtype=int)
     M.index.name = "job_id"
     validate_matrix(M)
-    return M.loc[:, M.sum() >= min_skill_count]
+    return _filter_skills(M, min_skill_count, path)
 
 
 def validate_matrix(M):
