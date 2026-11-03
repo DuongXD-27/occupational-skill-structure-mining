@@ -42,8 +42,8 @@ _EXCLUSION_RULES: list[tuple[re.Pattern, str]] = [
 
     # Sales / Marketing / HR
     (re.compile(
-        r"\b(sales\s+(executive|manager|representative|engineer)?|"
-        r"marketing\s+(manager|executive|specialist)?|"
+        r"\b(sales\s+(executive|manager|representative|engineer)|"
+        r"marketing\s+(manager|executive|specialist)|"
         r"business\s+development|account\s+manager|"
         r"human\s+resources|hr\s+(manager|executive|specialist)|recruiter|"
         r"talent\s+acquisition|monetization\s+specialist|"
