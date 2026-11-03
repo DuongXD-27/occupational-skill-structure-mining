@@ -70,18 +70,50 @@ def element_raw_text(elem: Optional[Tag]) -> Optional[str]:
     return raw_or_none(elem.get_text())
 
 
+BLOCK_TAGS = {
+    "p", "div", "li", "ul", "ol", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "table",
+    "section", "article", "header", "footer", "blockquote", "pre", "dl", "dt", "dd",
+}
+
+
+def rendered_text(node, skip=None) -> str:
+    """Văn bản của node như trình duyệt hiển thị: giữ nguyên chữ và khoảng trắng nguồn,
+    chỉ thêm xuống dòng ở ranh giới thẻ khối và <br> (để "<li>BI</li><li>SQL</li>"
+    không thành "BISQL"). Bỏ qua script/style/comment và node `skip`."""
+    out: list[str] = []
+
+    def newline():
+        if out and not out[-1].endswith("\n"):
+            out.append("\n")
+
+    def walk(el):
+        for child in el.children:
+            if child is skip:
+                continue
+            if isinstance(child, Comment):
+                continue
+            if isinstance(child, NavigableString):
+                out.append(str(child))
+            elif isinstance(child, Tag):
+                if child.name in ("script", "style"):
+                    continue
+                if child.name == "br":
+                    out.append("\n")
+                    continue
+                block = child.name in BLOCK_TAGS
+                if block:
+                    newline()
+                walk(child)
+                if block:
+                    newline()
+
+    walk(node)
+    return "".join(out)
+
+
 def section_raw_text(container: Tag, heading: Tag) -> Optional[str]:
     """Text of a section container, excluding the heading element itself."""
-    pieces = []
-    for node in container.descendants:
-        if not isinstance(node, NavigableString) or isinstance(node, Comment):
-            continue
-        if any(parent is heading for parent in node.parents):
-            continue
-        if node.parent is not None and node.parent.name in ("script", "style"):
-            continue
-        pieces.append(str(node))
-    return raw_or_none("".join(pieces))
+    return raw_or_none(rendered_text(container, skip=heading))
 
 
 def is_working_model_or_metadata(text: str) -> bool:
@@ -245,7 +277,7 @@ def extract_descriptions(
 
     if not job_description and json_ld_data.get("description"):
         desc_soup = BeautifulSoup(str(json_ld_data.get("description")), "html.parser")
-        job_description = raw_or_none(desc_soup.get_text())
+        job_description = raw_or_none(rendered_text(desc_soup))
 
     return job_description, job_requirements
 

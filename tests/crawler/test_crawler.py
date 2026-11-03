@@ -119,3 +119,9 @@ def test_crawl_stops_when_blocked(tmp_path):
     assert r.saved_records_count == 1
     lines = (tmp_path / "out.jsonl").read_text(encoding="utf-8").splitlines()
     assert len(lines) == 1 and list(json.loads(lines[0])) == SCHEMA_22
+
+
+def test_list_items_not_glued_together():
+    html = DETAIL_HTML.replace("<p>Python,  SQL</p>", "<ul><li>Power BI</li><li>SQL</li></ul>")
+    ok, rec, err = parse_job_html(html, "https://itviec.com/it-jobs/x-2", "t", "v0.3")
+    assert "Power BI\nSQL" in rec["job_requirements"]
