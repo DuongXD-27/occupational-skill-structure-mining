@@ -49,6 +49,21 @@ taxonomy 246 kỹ năng. Các đề xuất và bằng chứng ở
 Chúng không được thêm lén vào parser hoặc tính vào TP/FN của đánh giá canonical
 hiện tại; chỉ số này không đo khả năng bao phủ mọi công nghệ ngoài taxonomy.
 
+## Chia tune / holdout (quyết định 2026-11-03, F.9)
+
+Gold được chia cố định theo `job_id` (băm `sha256("gold-split-v1:" + job_id)`, chẵn →
+`holdout`). Với 50 tin hiện tại: 27 tin `tune`, 23 tin `holdout`; tin thêm sau không làm
+đổi nhóm của tin cũ.
+
+- Chỉ xem lỗi trên nửa `tune` khi bổ sung alias hoặc chỉnh parser.
+- Không mở `errors.jsonl`/`predictions.jsonl` của nửa `holdout` trước ngày khóa
+  taxonomy/parser (2026-11-23).
+- P/R/F1 chính thức báo cáo trên `holdout`, sau khi gold đã được người duyệt:
+
+```powershell
+python -m src.parser evaluate --gold <gold đã duyệt>.jsonl --output-dir reports/skill_extraction/holdout --subset holdout
+```
+
 ## Tái lập mẫu chờ gán nhãn
 
 Đọc snapshot pilot từ Git vào một file UTF-8, sau đó chạy:

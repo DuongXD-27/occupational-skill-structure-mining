@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from src.parser.evaluation import evaluate_file, metrics, score_predictions, verify_independence
+from src.parser.evaluation import evaluate_file, gold_split, metrics, score_predictions, verify_independence
 from src.parser.features import read_jobs
 from src.parser.skill_extractor import DEFAULT_TAXONOMY
 
@@ -76,3 +76,16 @@ def test_reports_cannot_overwrite_gold(tmp_path):
     with pytest.raises(ValueError, match="ghi đè"):
         evaluate_file(gold, tmp_path, DEFAULT_TAXONOMY, ROOT / "data/sample/sample_jobs.jsonl")
     assert gold.read_bytes() == before
+
+
+def test_gold_split_is_stable_and_disjoint(tmp_path):
+    rows = read_jobs(ROOT / "data/evaluation/gold_jobs.draft.jsonl")
+    groups = {r["job_id"]: gold_split(r["job_id"]) for r in rows}
+    assert set(groups.values()) == {"tune", "holdout"}
+    assert gold_split("abc") == gold_split("abc")
+    tune = evaluate_file(ROOT / "data/evaluation/gold_jobs.draft.jsonl", tmp_path / "t", DEFAULT_TAXONOMY,
+                         ROOT / "data/sample/sample_jobs.jsonl", subset="tune")
+    hold = evaluate_file(ROOT / "data/evaluation/gold_jobs.draft.jsonl", tmp_path / "h", DEFAULT_TAXONOMY,
+                         ROOT / "data/sample/sample_jobs.jsonl", subset="holdout")
+    assert tune["jobs"] + hold["jobs"] == tune["gold_jobs_total"] == 50
+    assert hold["subset"] == "holdout"
