@@ -2,7 +2,7 @@
 
 > **RQ1:** Những chức danh nào tồn tại và mỗi chức danh phổ biến ra sao?
 > Sinh tự động bởi `scripts/report_cleaning.py` (module `src/cleaner/rq1.py`);
-> bảng và biểu đồ đầy đủ ở `reports/analysis/rq1/`.
+> bảng và biểu đồ đầy đủ ở `reports/data_quality/rq1_pilot/`.
 
 **Tập phân tích:** 211 tin (`relevance_flag=true` VÀ `duplicate_flag=false`), cùng con số với báo cáo chất lượng.
 
@@ -56,4 +56,4 @@
 | 19 | Data Engineer (C++, Python, AI/LLM) | 1 | 0.5% |
 | 20 | Chuyên Gia Tích Hợp Dữ Liệu (Data Engineer Expert) | 1 | 0.5% |
 
-Danh sách 185 chức danh hiếm (≤ 2 tin) kèm công ty và URL: `reports/analysis/rq1/rq1_rare_titles.csv`.
+Danh sách 185 chức danh hiếm (≤ 2 tin) kèm công ty và URL: `reports/data_quality/rq1_pilot/rq1_rare_titles.csv`.

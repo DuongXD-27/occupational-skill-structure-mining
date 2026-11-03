@@ -35,7 +35,7 @@ Lý do loại trừ:
 
 ## 3. Cờ chất lượng
 
-Cờ không thuộc schema 22 trường nên được ghi ở file riêng `data/processed/jobs_clean.quality_flags.jsonl`.
+Cờ không thuộc schema 22 trường nên được ghi ở file riêng `data/processed/pilot/jobs_clean_pilot.quality_flags.jsonl`.
 
 | Cờ | Số lượng |
 |---|---|
