@@ -12,9 +12,9 @@
 
 ## 2. Nâng cấp Kiến trúc & Khắc phục Lỗi Bộ cào
 Mã nguồn crawler được tái cấu trúc thành các module rõ ràng trong thư mục `src/crawler/`:
-- **`PoliteFetcher`:** Xử lý gửi HTTP request kèm User-Agent chuẩn trình duyệt, kiểm soát ngoại lệ và duy trì độ trễ ngẫu nhiên (1.5s - 2.5s) giữa các request để đảm bảo không bị chặn bởi Cloudflare hay vượt quá rate limit.
+- **`PoliteFetcher`:** Xử lý gửi HTTP request kèm User-Agent chuẩn trình duyệt, kiểm soát ngoại lệ và duy trì độ trễ ngẫu nhiên (1.5s - 2.5s) giữa các request để không vượt rate limit. Khi nguồn trả HTTP 401/403/503 hoặc trang thử thách chống bot, crawler dừng toàn bộ đợt thu thập và ghi `ACCESS_BLOCKED` vào log, không thử vượt qua (từ parser v0.3).
 - **`ListingCrawler`:** Tự động duyệt phân trang (`?page=1, 2...`) qua các từ khóa tìm kiếm và trang chuyên mục phân khúc (segment). Tích hợp hàm `extract_slug` xử lý triệt để lỗi lặp đường dẫn tương đối (`/it-jobs/it-jobs/...`).
-- **`JobParser`:** Bóc tách dữ liệu từ HTML và JSON-LD schema của ITviec, chuẩn hóa cấu trúc theo đúng 29 trường của `DATA SCHEMA V1`. Tự động sinh `job_id` nội bộ bất biến bằng thuật toán băm SHA-256 từ `source_url`.
+- **`JobParser`:** Bóc tách dữ liệu từ HTML và JSON-LD schema của ITviec, xuất bản ghi theo schema 22 trường hiện hành (`docs/data_schema.md`). Tự động sinh `job_id` nội bộ bất biến bằng thuật toán băm SHA-256 từ `source_url`.
 - **Khử trùng lặp trên bộ nhớ (In-memory Deduplication):** Lưu trữ tập `set` các URL/Job ID đã quét qua các từ khóa, loại bỏ hoàn toàn 249 lượt xuất hiện trùng lặp giữa các danh mục.
 - **Giao diện dòng lệnh (CLI):** Cung cấp tham số linh hoạt qua `argparse` cho phép tùy biến đường dẫn lưu trữ và giới hạn số lượng tin cần cào.
 
@@ -49,18 +49,23 @@ Mã nguồn crawler được tái cấu trúc thành các module rõ ràng trong
 
 ### 4.2 Khắc phục lỗi gán nhầm mô hình làm việc vào `raw_experience`
 - **Vấn đề trước đây:** Selector bắt nhầm nhãn mô hình làm việc (`"At office"`, `"Hybrid"`, `"Remote"`) hoặc địa chỉ làm việc vào trường kinh nghiệm.
-- **Kết quả nghiệm thu:** 252/252 bản ghi đều ghi nhận giá trị `null` chuẩn xác, hoàn toàn sạch rác. Việc bóc tách số năm kinh nghiệm sẽ được bàn giao cho module Tiền xử lý & Làm sạch (Stage B) trích xuất từ phần mô tả yêu cầu công việc.
+- **Kết quả nghiệm thu:** 252/252 bản ghi ghi nhận `null` vì trang nguồn không có nhãn kinh nghiệm riêng; không còn giá trị hình thức làm việc bị gán nhầm. Theo quyết định 2026-10-04, schema chỉ giữ `raw_experience` nguyên văn và không bóc tách số năm từ mô tả/yêu cầu.
 
-### 4.3 Độ tương thích với DATA SCHEMA V1
-- Đầy đủ 29 trường theo thứ tự và kiểu dữ liệu chuẩn quy định.
+### 4.3 Độ tương thích với schema 22 trường
+- Đầy đủ 22 trường theo thứ tự và kiểu dữ liệu của `docs/data_schema.md`. File pilot ban đầu theo schema 29 trường; 7 cột đã bỏ khỏi schema (`experience_min_years`, `experience_max_years`, `education`, `salary_raw`, `salary_min`, `salary_max`, `salary_currency`) đều `null` ở cả 252 bản ghi nên được xóa mà không mất dữ liệu, các giá trị còn lại giữ nguyên.
 - Giữ nguyên vẹn toàn bộ tiếng Việt có dấu ở các trường dữ liệu thô (`raw_job_title`, `company`, `raw_location`, `job_description`, `job_requirements`).
 - Các trường phái sinh của các giai đoạn sau (`normalized_*`, `relevance_flag`, `extracted_skills`,...) được khởi tạo mặc định là `null`.
+
+### 4.4 Lưu ý về văn bản thô của file pilot v0.2
+- Parser v0.2 (dùng cho đợt 30/09) đã gộp khoảng trắng và cắt đầu/cuối ở các trường thô (`raw_job_title`, `company`, `raw_location`, `job_description`, `job_requirements`); mô tả/yêu cầu bị nối thành một dòng. Nội dung chữ không đổi nhưng khoảng trắng và xuống dòng gốc không còn.
+- Từ parser v0.3, các trường thô lưu nguyên văn bản như hiển thị trên trang (không strip, không gộp khoảng trắng; mô tả/yêu cầu giữ xuống dòng). Việc làm sạch thuộc các trường phái sinh của cleaner.
+- File pilot hiện tại vẫn mang `parser_version = v0.2`; đợt thu thập chính thức cần chạy lại bằng v0.3.
 
 ---
 
 ## 5. Bàn giao Thông tin cho các Thành viên tiếp nối
 - **Gửi bạn Đức (Làm sạch & Chất lượng dữ liệu - Stage B):**
-  - Dataset gồm 252 tin tuyển dụng sạch sẵn sàng cho việc xây dựng bộ quy tắc lọc relevance và gán nhãn trùng lặp.
+  - Dataset gồm 252 tin tuyển dụng thô sẵn sàng cho việc xây dựng bộ quy tắc lọc relevance và gán nhãn trùng lặp.
   - Trường `raw_location` có các giá trị dạng quận (`Quận 7`, `Quận Đống Đa`...) và trường hợp khuyết (`Not Available`), cần quy tắc chuẩn hóa địa phương.
 - **Gửi bạn Cường (Gán nhãn & Xây dựng Taxonomy kỹ năng - Stage C):**
   - 100% bản ghi đều có `job_requirements` và `job_description` đầy đủ, chi tiết, bao quát các nhóm công nghệ mới nhất về BI, Data Warehouse, Cloud và AI/LLM.

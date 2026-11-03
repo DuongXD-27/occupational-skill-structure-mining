@@ -24,6 +24,44 @@ DEFAULT_HEADERS = {
 }
 
 
+# HTTP status codes that signal the site is refusing automated access.
+# Per docs/data_collection/source_inspection.md the crawl must stop on these
+# instead of retrying or trying to bypass the protection.
+BLOCK_STATUS_CODES = {401, 403, 503}
+
+_CHALLENGE_MARKERS = (
+    "cf-challenge",
+    "challenge-platform",
+    "cf-browser-verification",
+    "just a moment...",
+    "attention required! | cloudflare",
+    "g-recaptcha",
+    "h-captcha",
+)
+
+
+class AccessBlockedError(RuntimeError):
+    """Raised when the source blocks access (HTTP 401/403/503 or a bot challenge)."""
+
+    def __init__(self, url: str, status: Optional[int], reason: str):
+        super().__init__(f"Access blocked at {url} (HTTP {status}): {reason}")
+        self.url = url
+        self.status = status
+        self.reason = reason
+
+
+def detect_block(status: Optional[int], html: Optional[str]) -> Optional[str]:
+    """Return a reason string if the response shows the crawl is blocked, else None."""
+    if status in BLOCK_STATUS_CODES:
+        return f"HTTP {status}"
+    if html:
+        head = html[:20000].lower()
+        for marker in _CHALLENGE_MARKERS:
+            if marker in head:
+                return f"bot challenge ({marker})"
+    return None
+
+
 class PoliteFetcher:
     """Handles HTTP requests with realistic User-Agent, retries, and rate limiting."""
 
@@ -72,4 +110,4 @@ class PoliteFetcher:
                 if attempt == max_retries:
                     return None, None, str(exc)
                 time.sleep(random.uniform(2.0, 3.5))
-        return None, None, "Max retries exceeded"
+        return 429, None, "HTTP 429: max retries exceeded"
