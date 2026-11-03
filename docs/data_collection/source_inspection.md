@@ -116,3 +116,39 @@ ITviec là một **nguồn dữ liệu lý tưởng** cho dự án Khóa luận 
 3. **Hiệu quả bóc tách**: Sự hiện diện của dữ liệu có cấu trúc nhúng JSON-LD giúp tinh gọn đáng kể pipeline trích xuất dữ liệu và bảo vệ pipeline trước các thay đổi giao diện nhỏ.
 
 **Khuyến nghị**: Tiếp tục phát triển module scraper thu thập dữ liệu nhắm vào ITviec làm nguồn mẫu Data/AI chính thức của dự án.
+
+---
+
+## TopCV
+
+Khảo sát ngày 2026-11-03, khi kích hoạt TopCV làm nguồn thứ hai
+([quyết định F.1](../decisions/integration_decisions.md#f-quyết-định-ngày-2026-11-03)).
+
+### robots.txt (`https://www.topcv.vn/robots.txt`)
+* Một nhóm luật `User-agent: *`. Các đường dẫn bị chặn đều liên quan CV/hồ sơ cá nhân:
+  `/cv/get-private-url/`, `/private/`, `/xem-cv/`, `/xem-cv-draft/`, `/sua-cv/`,
+  `/viet-cv/`, `/edit/cv/`, `/cv-ung-vien/`, `/cv-ung-tuyen/`, `/p/`.
+* Không chặn trang danh sách (`/tim-viec-lam-...`) hay trang chi tiết tin (`/viec-lam/...`).
+* Không có `Crawl-delay`; có `Sitemap: https://www.topcv.vn/sitemap.xml`.
+
+### Điều khoản sử dụng (`https://www.topcv.vn/terms-of-service`)
+* Không có điều khoản nhắc trực tiếp tới truy cập tự động, crawler, scraping hay bot.
+* §2.1 định nghĩa "Cơ sở dữ liệu TopCV.vn" bao gồm các bài quảng cáo việc làm đăng trên TopCV.
+* §6.2: người dùng "không được sao chép, sửa đổi, điều chỉnh, chuẩn bị các sản phẩm
+  phái sinh dựa trên" và không được "cấp phép hoặc khai thác Nội dung TopCV".
+* §3, §6.4: TopCV có thể chấm dứt hoặc chặn quyền truy cập khi vi phạm.
+* Không có ngoại lệ cho mục đích nghiên cứu/phi thương mại.
+
+### Cách dùng trong dự án
+* Chỉ dùng cho nghiên cứu học thuật của đề tài. Không công bố lại văn bản tin tuyển
+  dụng; báo cáo chỉ dùng số liệu tổng hợp (đếm chức danh, tần suất kỹ năng, cụm) và
+  trích đoạn ngắn khi cần minh họa, ghi rõ nguồn.
+* Không tải lên dữ liệu thô TopCV ở nơi công khai; repo chỉ giữ mẫu nhỏ phục vụ kiểm thử.
+* Chỉ đọc trang công khai không cần đăng nhập. Không thu thập thông tin cá nhân, CV,
+  hay phần cần tài khoản.
+* Tốc độ lịch sự giống ITviec (1,5–3 giây giữa các yêu cầu, một luồng). Gặp HTTP
+  401/403/503, CAPTCHA hoặc trang thử thách chống bot thì dừng toàn bộ đợt thu, ghi
+  log `ACCESS_BLOCKED` và báo Dương; không dùng stealth/vượt phòng vệ (phạm vi §13).
+* Rủi ro còn lại: §6.2 hạn chế sao chép và sản phẩm phái sinh từ nội dung TopCV. Đây là
+  hạn chế cần ghi trong phần hạn chế của báo cáo; nhóm chịu trách nhiệm cân nhắc và
+  có thể hỏi giảng viên hướng dẫn trước khi thu ở quy mô lớn.
