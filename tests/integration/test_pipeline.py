@@ -381,3 +381,63 @@ def test_source_text_with_salary_or_education_is_preserved(project):
     row = pq.read_table(project.root / "clean.parquet").to_pylist()[0]
     assert row["job_requirements"] == text
     assert "salary_raw" not in row and "education" not in row
+
+
+def test_no_text_record_reaches_cleaner_and_stays_flagged(project):
+    project.raw[3].update(job_description=None, job_requirements=None)
+    project.clean[3].update(job_description=None, job_requirements=None, job_text=None,
+                            relevance_flag=False, exclusion_reason="INSUFFICIENT_TEXT")
+    jsonl(project.root / "raw.jsonl", project.raw)
+    jsonl(project.root / "clean_fixture.jsonl", project.clean)
+    assert run_pipeline(project.path)["status"] == "completed"
+
+
+def test_no_text_record_must_be_excluded_after_cleaning(project):
+    project.raw[0].update(job_description=None, job_requirements=None)
+    project.clean[0].update(job_description=None, job_requirements=None)
+    jsonl(project.root / "raw.jsonl", project.raw)
+    jsonl(project.root / "clean_fixture.jsonl", project.clean)
+    with pytest.raises(PipelineError, match="INSUFFICIENT_TEXT"):
+        run_pipeline(project.path, "clean")
+
+
+def test_matrix_without_skill_columns_when_no_skills(project):
+    for row in project.skills:
+        row.update(extracted_skills=[], skill_count=0)
+    project.matrix[:] = [{"job_id": row["job_id"]} for row in project.matrix]
+    jsonl(project.root / "skills_fixture.jsonl", project.skills)
+    jsonl(project.root / "matrix_fixture.jsonl", project.matrix)
+    assert run_pipeline(project.path)["counts"]["matrix_rows"] == 2
+
+
+def test_matrix_without_columns_rejected_when_skills_exist(project):
+    project.matrix[:] = [{"job_id": row["job_id"]} for row in project.matrix]
+    jsonl(project.root / "matrix_fixture.jsonl", project.matrix)
+    with pytest.raises(PipelineError, match="không có cột kỹ năng"):
+        run_pipeline(project.path)
+
+
+def test_input_hashed_before_module_import(project, monkeypatch):
+    import importlib
+    real_import = importlib.import_module
+
+    def tampering_import(name, *args, **kwargs):
+        if name == "fixture_modules":
+            raw = project.root / "raw.jsonl"
+            raw.write_text(raw.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(importlib, "import_module", tampering_import)
+    with pytest.raises(PipelineError, match="sửa đầu vào chỉ đọc"):
+        run_pipeline(project.path, "clean")
+
+
+def test_quality_log_published_next_to_clean_table(project):
+    def cleaner_with_log(ctx):
+        write_table(ctx.paths["clean"], project.clean)
+        log = ctx.paths["clean"].with_name(ctx.paths["clean"].stem + ".quality_flags.jsonl")
+        jsonl(log, [{"job_id": r["job_id"], "quality_flags": []} for r in project.clean])
+    project.module.clean = cleaner_with_log
+    report = run_pipeline(project.path, "clean")
+    published = project.root / "clean.quality_flags.jsonl"
+    assert published.is_file() and report["stages"]["clean"]["quality_log"] == str(published)
