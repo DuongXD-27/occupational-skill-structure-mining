@@ -11,7 +11,12 @@ Rules (from docs/data_cleaning/data_quality_rules.md §6):
     4. job_description TF-IDF cosine ≥ 0.80  ← primary gate
 - Never delete duplicates; set duplicate_flag=True + duplicate_group_id.
 - SENIORITY_VARIANT flag when seniority level differs but meets threshold.
-- High-confidence JD-only path: JD cosine ≥ 0.95 + same company (Leader proposal).
+- JD-only path (JD cosine ≥ 0.95 + same company, bất kể title/location) là đề xuất
+  gửi Leader, CHƯA được chốt trong QR-05 → tắt mặc định (allow_jd_only=False).
+
+The pipeline runs detect_exact_duplicates() right after QR-01 and
+detect_near_duplicates() only after title/location normalization, so near-duplicate
+decisions never use null normalized fields.
 """
 
 from __future__ import annotations
@@ -92,48 +97,64 @@ def _has_seniority_diff(title_a: Optional[str], title_b: Optional[str]) -> bool:
 
 NEAR_DUP_TITLE_JACCARD = 0.60
 NEAR_DUP_JD_COSINE = 0.80
-HIGH_CONF_JD_COSINE = 0.95  # JD-only path (Leader proposal)
+HIGH_CONF_JD_COSINE = 0.95  # JD-only path — đề xuất gửi Leader, chưa thuộc QR-05
 
 
-def detect_duplicates(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Add duplicate_flag, duplicate_group_id, and quality_flags columns to df.
-
-    Expects columns: job_id, source_url, company, normalized_job_title,
-                     normalized_location, job_description, crawl_timestamp.
-
-    Modifies df IN PLACE (adds/updates columns) and returns it.
-    """
+def _ensure_columns(df: pd.DataFrame) -> None:
     if "duplicate_flag" not in df.columns:
         df["duplicate_flag"] = False
+    df["duplicate_flag"] = df["duplicate_flag"].map(lambda v: bool(v) if v is not None and v == v else False)
     if "duplicate_group_id" not in df.columns:
         df["duplicate_group_id"] = None
     if "quality_flags" not in df.columns:
         df["quality_flags"] = [[] for _ in range(len(df))]
 
-    # -----------------------------------------------------------------------
-    # QR-05a: Exact duplicates (same source_url)
-    # -----------------------------------------------------------------------
-    url_seen: dict[str, str] = {}  # url → canonical job_id
-    for i, row in df.iterrows():
-        url = (row.get("source_url") or "").strip()
+
+def _add_flag(df: pd.DataFrame, i, flag: str) -> None:
+    flags = list(df.at[i, "quality_flags"] or [])
+    if flag not in flags:
+        flags.append(flag)
+    df.at[i, "quality_flags"] = flags
+
+
+def detect_exact_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """QR-05a: same source_url → flag every record after the first one.
+
+    The record kept as canonical is the earliest by crawl_timestamp (ties: input order).
+    """
+    _ensure_columns(df)
+    has_ts = "crawl_timestamp" in df.columns
+    # Stable sort: missing timestamps go last, ties keep input order.
+    order = sorted(df.index, key=lambda i: str(df.at[i, "crawl_timestamp"] or "\uffff") if has_ts else "")
+    url_seen: dict[str, str] = {}
+    for i in order:
+        url = (df.at[i, "source_url"] or "").strip()
         if not url:
             continue
         if url in url_seen:
             df.at[i, "duplicate_flag"] = True
             df.at[i, "duplicate_group_id"] = url_seen[url]
-            flags = list(df.at[i, "quality_flags"] or [])
-            if "DUPLICATE_EXACT" not in flags:
-                flags.append("DUPLICATE_EXACT")
-            df.at[i, "quality_flags"] = flags
+            _add_flag(df, i, "DUPLICATE_EXACT")
         else:
-            url_seen[url] = row["job_id"]
+            url_seen[url] = df.at[i, "job_id"]
+    return df
 
-    # -----------------------------------------------------------------------
-    # QR-05b: Near duplicates
-    # Only compare non-exact-duplicate records (canonical ones)
-    # -----------------------------------------------------------------------
-    # Build TF-IDF vectors for all JDs once
+
+def detect_near_duplicates(df: pd.DataFrame, *, allow_jd_only: bool = False) -> pd.DataFrame:
+    """QR-05b: all four conditions must hold for a near duplicate:
+
+    same company, normalized_job_title Jaccard ≥ 0.60, same normalized_location,
+    job_description TF-IDF cosine ≥ 0.80.
+
+    Requires normalized_job_title / normalized_location to be filled already.
+    ``allow_jd_only=True`` additionally enables the proposed JD-only path
+    (JD cosine ≥ 0.95 + same company); keep it off until the Leader approves it.
+    """
+    _ensure_columns(df)
+    for col in ("normalized_job_title", "normalized_location"):
+        if col not in df.columns:
+            raise ValueError(f"detect_near_duplicates cần cột {col}; chạy QR-02/QR-04 trước")
+
     jd_texts = list(df["job_description"].fillna(""))
     tfidf_vecs = _build_tfidf_vectors(jd_texts)
 
@@ -143,7 +164,7 @@ def detect_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     for a_pos in range(n):
         i = indices[a_pos]
         if df.at[i, "duplicate_flag"]:
-            continue  # already flagged, skip
+            continue
 
         comp_a = (df.at[i, "company"] or "").strip().lower()
         loc_a = df.at[i, "normalized_location"]
@@ -152,46 +173,38 @@ def detect_duplicates(df: pd.DataFrame) -> pd.DataFrame:
         for b_pos in range(a_pos + 1, n):
             j = indices[b_pos]
             if df.at[j, "duplicate_flag"]:
-                continue  # already flagged, skip
+                continue
 
             comp_b = (df.at[j, "company"] or "").strip().lower()
-
-            # Must share company
             if comp_a != comp_b or not comp_a:
                 continue
 
-            jd_cos = _cosine(tfidf_vecs[a_pos], tfidf_vecs[b_pos])
-            title_j = _jaccard(title_a, df.at[j, "normalized_job_title"])
+            title_b = df.at[j, "normalized_job_title"]
             loc_b = df.at[j, "normalized_location"]
+            jd_cos = _cosine(tfidf_vecs[a_pos], tfidf_vecs[b_pos])
 
-            is_near_dup = False
-            dup_notes: list[str] = []
-
-            # Standard path: title Jaccard ≥ 0.60 AND JD cosine ≥ 0.80 AND same location
-            if (
-                title_j >= NEAR_DUP_TITLE_JACCARD
-                and jd_cos >= NEAR_DUP_JD_COSINE
+            standard = (
+                bool(title_a) and bool(title_b)
+                and _jaccard(title_a, title_b) >= NEAR_DUP_TITLE_JACCARD
                 and loc_a == loc_b
-            ):
-                is_near_dup = True
+                and jd_cos >= NEAR_DUP_JD_COSINE
+            )
+            jd_only = allow_jd_only and not standard and jd_cos >= HIGH_CONF_JD_COSINE
+            if not (standard or jd_only):
+                continue
 
-            # High-confidence JD-only path (Leader proposal): JD cosine ≥ 0.95, same company
-            elif jd_cos >= HIGH_CONF_JD_COSINE:
-                is_near_dup = True
-                dup_notes.append("HIGH_CONF_JD_ONLY")
-
-            if is_near_dup:
-                # Canonical = record with earlier index (a_pos)
-                df.at[j, "duplicate_flag"] = True
-                df.at[j, "duplicate_group_id"] = df.at[i, "job_id"]
-                flags_j = list(df.at[j, "quality_flags"] or [])
-                if "DUPLICATE_NEAR" not in flags_j:
-                    flags_j.append("DUPLICATE_NEAR")
-                if dup_notes:
-                    flags_j.extend(dup_notes)
-                if _has_seniority_diff(title_a, df.at[j, "normalized_job_title"]):
-                    if "SENIORITY_VARIANT" not in flags_j:
-                        flags_j.append("SENIORITY_VARIANT")
-                df.at[j, "quality_flags"] = flags_j
+            df.at[j, "duplicate_flag"] = True
+            df.at[j, "duplicate_group_id"] = df.at[i, "job_id"]
+            _add_flag(df, j, "DUPLICATE_NEAR")
+            if jd_only:
+                _add_flag(df, j, "HIGH_CONF_JD_ONLY")
+            if _has_seniority_diff(title_a, title_b):
+                _add_flag(df, j, "SENIORITY_VARIANT")
 
     return df
+
+
+def detect_duplicates(df: pd.DataFrame, *, allow_jd_only: bool = False) -> pd.DataFrame:
+    """Run QR-05a then QR-05b. Normalized title/location must already be present."""
+    detect_exact_duplicates(df)
+    return detect_near_duplicates(df, allow_jd_only=allow_jd_only)

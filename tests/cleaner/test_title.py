@@ -21,10 +21,40 @@ class TestNormalizeTitle:
         title, flags = normalize_title("data engineer")
         assert title == "Data Engineer"
 
-    # ── Title with tech stack in it (preserve) ───────────────────────────────
+    # ── Explicit tech-stack suffix is dropped (decision 2026-10-03 §C) ───────
     def test_title_with_tech_stack(self):
         title, flags = normalize_title("Data Engineer Python/Spark")
-        assert title == "Data Engineer Python/Spark"
+        assert title == "Data Engineer"
+        assert "TECH_SUFFIX_REMOVED" in flags
+
+    def test_bracketed_tech_suffix_removed(self):
+        title, flags = normalize_title("Data Analyst (Azure, SQL, NoSQL, Power BI)")
+        assert title == "Data Analyst"
+
+    def test_bracket_language_requirement_removed(self):
+        title, flags = normalize_title("Data Engineer (Good English)")
+        assert title == "Data Engineer"
+
+    def test_bracket_bi_tools_removed(self):
+        title, flags = normalize_title("Data Analyst (BI, Power BI, SQL, Data Warehouse, ETL)")
+        assert title == "Data Analyst"
+
+    def test_bracket_with_domain_kept(self):
+        title, flags = normalize_title("Senior Data Analyst (CRM & Loyalty)")
+        assert title == "Data Analyst (CRM & Loyalty)"
+
+    def test_specialisation_suffix_kept(self):
+        title, flags = normalize_title("Machine Learning Engineer - Computer Vision")
+        assert title == "Machine Learning Engineer - Computer Vision"
+        assert "TECH_SUFFIX_REMOVED" not in flags
+
+    def test_preserve_to_year_in_title(self):
+        title, flags = normalize_title("Path to 2026 Graduate Program")
+        assert title == "Path to 2026 Graduate Program"
+
+    def test_raw_whitespace_collapsed(self):
+        title, flags = normalize_title("  Data   Analyst\n")
+        assert title == "Data Analyst"
 
     def test_title_cpp(self):
         # C++ must not be broken
@@ -57,13 +87,17 @@ class TestNormalizeTitle:
         assert "English required" not in title
 
     # ── Abbreviation expansion ────────────────────────────────────────────────
-    def test_sr_expansion(self):
+    def test_sr_removed(self):
         title, flags = normalize_title("Sr. Data Engineer")
-        assert title.startswith("Senior")
+        assert title == "Data Engineer"
 
-    def test_jr_expansion(self):
+    def test_jr_removed(self):
         title, flags = normalize_title("Jr. Data Analyst")
-        assert title.startswith("Junior")
+        assert title == "Data Analyst"
+
+    def test_mgr_expansion(self):
+        title, flags = normalize_title("Data Mgr")
+        assert title == "Data Manager"
 
     # ── Ambiguous dual roles ──────────────────────────────────────────────────
     def test_dual_role_ambiguous(self):
@@ -72,15 +106,19 @@ class TestNormalizeTitle:
         assert "Data Engineer" in title
         assert "Data Analyst" in title
 
-    # ── Senior must NOT be stripped ───────────────────────────────────────────
-    def test_senior_preserved(self):
-        title, flags = normalize_title("Senior Data Analyst")
-        assert "Senior" in title
+    # ── Seniority level removed (decision 2026-10-03 §C) ──────────────────────
+    @pytest.mark.parametrize("raw", ["Senior Data Analyst", "Data Analyst", "DATA ANALYST"])
+    def test_decision_c_examples(self, raw):
+        title, flags = normalize_title(raw)
+        assert title == "Data Analyst"
 
-    def test_senior_data_analyst_not_merged(self):
-        # Senior Data Analyst ≠ Data Analyst (must not be stripped to Data Analyst)
-        title, flags = normalize_title("Senior Data Analyst")
-        assert title == "Senior Data Analyst"
+    def test_lead_role_kept(self):
+        title, flags = normalize_title("Senior/Lead Data Engineer")
+        assert title == "Lead Data Engineer"
+
+    def test_distinct_roles_not_merged(self):
+        assert normalize_title("Analytics Engineer")[0] == "Analytics Engineer"
+        assert normalize_title("Machine Learning Engineer")[0] == "Machine Learning Engineer"
 
     # ── Too short ─────────────────────────────────────────────────────────────
     def test_too_short(self):
@@ -108,3 +146,13 @@ class TestNormalizeTitle:
     def test_bi_uppercase(self):
         title, flags = normalize_title("bi analyst")
         assert "BI" in title
+
+    def test_acronym_followed_by_comma_kept_upper(self):
+        title, flags = normalize_title("data analyst (bi, retail)")
+        assert title == "Data Analyst (BI, Retail)"
+
+    def test_long_title_not_truncated(self):
+        raw = "Data Analyst " + "Customer Insights Team " * 6
+        title, flags = normalize_title(raw)
+        assert "TITLE_TOO_LONG" in flags
+        assert len(title) > 100

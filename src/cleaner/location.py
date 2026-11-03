@@ -28,22 +28,24 @@ _MAPPING_PATH = (
     / "location_mapping.csv"
 )
 
-# List of (compiled_pattern, normalized_value) tuples, in file order.
-_LOCATION_RULES: list[tuple[re.Pattern, str]] = []
+LocationRules = list[tuple[re.Pattern, str]]
 
-def _load_mapping(path: Path = _MAPPING_PATH) -> None:
-    """Read location_mapping.csv and compile regex patterns."""
-    _LOCATION_RULES.clear()
+
+def load_mapping(path: Path | str = _MAPPING_PATH) -> LocationRules:
+    """Read a location mapping CSV and return compiled (pattern, normalized) rules in file order."""
+    rules: LocationRules = []
     with open(path, encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             raw_pattern = row["raw_pattern"].strip()
             normalized = row["normalized_location"].strip()
-            compiled = re.compile(raw_pattern, re.IGNORECASE)
-            _LOCATION_RULES.append((compiled, normalized))
+            rules.append((re.compile(raw_pattern, re.IGNORECASE), normalized))
+    return rules
 
 
-_load_mapping()
+# Default rules (docs/data_cleaning/location_mapping.csv). Never mutated at runtime;
+# callers with another mapping pass their own rules to normalize_location().
+_LOCATION_RULES: LocationRules = load_mapping()
 
 # Placeholder patterns that should map to null
 _PLACEHOLDER_RE = re.compile(
@@ -53,7 +55,10 @@ _PLACEHOLDER_RE = re.compile(
 _NA_TOKEN_RE = re.compile(r"not\s+available", re.IGNORECASE)
 
 
-def normalize_location(raw: Optional[str]) -> tuple[Optional[str], list[str]]:
+def normalize_location(
+    raw: Optional[str],
+    rules: Optional[LocationRules] = None,
+) -> tuple[Optional[str], list[str]]:
     """
     Normalize a raw_location string.
 
@@ -83,7 +88,7 @@ def normalize_location(raw: Optional[str]) -> tuple[Optional[str], list[str]]:
     # Resolve each meaningful part independently
     resolved: list[str] = []
     for part in parts:
-        match_result = _match_single(part)
+        match_result = _match_single(part, rules)
         if match_result:
             resolved.append(match_result)
 
@@ -111,12 +116,12 @@ def normalize_location(raw: Optional[str]) -> tuple[Optional[str], list[str]]:
     return "Nhiều địa điểm", flags
 
 
-def _match_single(text: str) -> Optional[str]:
+def _match_single(text: str, rules: Optional[LocationRules] = None) -> Optional[str]:
     """Match a single location token against the mapping table. Returns None if unrecognized."""
     text = text.strip()
     if not text:
         return None
-    for pattern, normalized in _LOCATION_RULES:
+    for pattern, normalized in (_LOCATION_RULES if rules is None else rules):
         if pattern.search(text):
             return normalized
     return None

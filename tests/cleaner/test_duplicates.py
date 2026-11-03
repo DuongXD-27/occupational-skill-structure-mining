@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
 import pytest
 import pandas as pd
-from cleaner.duplicates import detect_duplicates
+from cleaner.duplicates import detect_duplicates, detect_exact_duplicates, detect_near_duplicates
 
 # ── Sample JD texts ─────────────────────────────────────────────────────────
 _JD_DE_1 = (
@@ -86,10 +86,7 @@ class TestNearDuplicates:
     def test_different_location_not_duplicate(self):
         df = _base_df(normalized_location=["Hà Nội", "Hồ Chí Minh"])
         df = detect_duplicates(df)
-        # Different location: standard near-dup path should not trigger
-        # (may still trigger via HIGH_CONF_JD_ONLY path if cosine ≥ 0.95)
-        # Just check it's not flagged via the standard path without location match
-        pass  # behaviour depends on cosine; no assertion here — covered by unit
+        assert df.loc[1, "duplicate_flag"] == False
 
     def test_very_different_jd_not_duplicate(self):
         df = _base_df(job_description=[_JD_DE_1, _JD_BA])
@@ -97,25 +94,43 @@ class TestNearDuplicates:
         assert df.loc[1, "duplicate_flag"] == False
 
     def test_seniority_variant_flag(self):
-        """Senior vs non-senior variant gets SENIORITY_VARIANT flag."""
+        """Titles passing Jaccard ≥ 0.60 but differing in seniority get SENIORITY_VARIANT."""
         df = _base_df(
             normalized_job_title=["Senior Data Engineer", "Data Engineer"]
         )
         df = detect_duplicates(df)
-        if df.loc[1, "duplicate_flag"]:
-            assert "SENIORITY_VARIANT" in df.loc[1, "quality_flags"]
+        assert df.loc[1, "duplicate_flag"] == True
+        assert "SENIORITY_VARIANT" in df.loc[1, "quality_flags"]
 
-    def test_high_conf_jd_only_path(self):
-        """JD cosine ≥ 0.95 + same company → flagged even without title match."""
+    def test_jd_only_path_off_by_default(self):
+        """QR-05 requires all four conditions: different titles → not a duplicate."""
         df = _base_df(
-            normalized_job_title=["Senior AI Expert ML/DL/LLM", "AI Expert CV/NLP/LLM"]
+            normalized_job_title=["AI Expert Machine Learning", "Computer Vision Researcher"]
         )
         df = detect_duplicates(df)
-        # With near-identical JDs and different titles, HIGH_CONF_JD_ONLY path triggers
-        # (this is the MB Bank edge case from the empirical study)
-        if df.loc[1, "duplicate_flag"]:
-            flags = df.loc[1, "quality_flags"]
-            assert "DUPLICATE_NEAR" in flags
+        assert df.loc[1, "duplicate_flag"] == False
+
+    def test_jd_only_path_when_enabled(self):
+        """Proposed JD-only path (cosine ≥ 0.95, same company) only runs when enabled."""
+        df = _base_df(
+            normalized_job_title=["AI Expert Machine Learning", "Computer Vision Researcher"],
+            normalized_location=["Hà Nội", "Hồ Chí Minh"],
+            job_description=[_JD_DE_1, _JD_DE_1],
+        )
+        df = detect_duplicates(df, allow_jd_only=True)
+        assert df.loc[1, "duplicate_flag"] == True
+        assert "HIGH_CONF_JD_ONLY" in df.loc[1, "quality_flags"]
+
+    def test_null_titles_never_near_duplicate(self):
+        """Before title normalization, near-duplicate logic must not match null titles."""
+        df = _base_df(normalized_job_title=[None, None], normalized_location=[None, None])
+        df = detect_near_duplicates(df)
+        assert df.loc[1, "duplicate_flag"] == False
+
+    def test_exact_check_does_not_flag_near_duplicates(self):
+        df = _base_df(normalized_job_title=[None, None], normalized_location=[None, None])
+        df = detect_exact_duplicates(df)
+        assert not df["duplicate_flag"].any()
 
     def test_epam_false_positive_not_flagged(self):
         """EPAM pair: same title structure but different JD content → not duplicate."""
