@@ -280,3 +280,13 @@ def test_synthetic_noise_is_foreign_skill():
         others = set().union(*(set(f["core"]) for k, f in synthetic.FAMILIES.items() if k != fam))
         own = set(synthetic.FAMILIES[fam]["core"])
         assert set(skills) & (others - own)
+
+
+def test_rq3_needs_three_qualifying_titles():
+    """Chốt 2026-11-03: dưới 3 title đạt 5 tin thì RQ3 không được báo cáo."""
+    df = synthetic.generate_jobs(n=40)
+    M = synthetic.build_matrix(df, min_skill_count=1)
+    titles = df.set_index("job_id")["normalized_job_title"].copy()
+    titles[:] = ["Data Engineer"] * 10 + [f"Title {i}" for i in range(30)]
+    out = rq3.run_rq3(M, titles, iterations=10)
+    assert out["status"] != "ok" and "at least 3" in out["status"]

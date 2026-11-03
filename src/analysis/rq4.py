@@ -133,7 +133,7 @@ def select_k(
 
     Thứ tự này quan trọng và spec viết chưa rõ. Bỏ vế silhouette thì trên dữ
     liệu gieo sẵn 4 nghề, code chọn k=3: stability bão hòa ở 1.0 cho cả hai,
-    còn silhouette tách rõ (0.41 so với 0.54). Đã nêu cho leader.
+    còn silhouette tách rõ (0.41 so với 0.54). Leader đã duyệt thứ tự này ngày 2026-11-03.
     """
     cao_nhat = sweep["stability"].max()
     ung_vien = sweep[sweep["stability"] >= cao_nhat - margin]
