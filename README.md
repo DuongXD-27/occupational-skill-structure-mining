@@ -91,13 +91,29 @@ python -m src.pipeline --config config/pipeline.json --stage extract
 ```
 
 Khung tích hợp nằm ở `src/pipeline/`, hỗ trợ chạy riêng `clean`, `rq1`, `extract`,
-`analysis` hoặc toàn chuỗi với `--stage all`. Hiện cleaner chưa được đưa vào
-`main`, RQ1/extractor/analysis chưa bàn giao; cấu hình thật báo thiếu module rõ
-ràng. Kiểm thử tích hợp dùng module giả lập và không thay thế nghiệm thu nghiên cứu.
+`analysis` hoặc toàn chuỗi với `--stage all`. Cấu hình `config/pipeline.json` gọi
+module thật của cleaner/RQ1 (`src/cleaner`), parser (`src/parser`) và phân tích
+(`src/analysis`). Kiểm thử tích hợp dùng module giả lập, không thay thế nghiệm thu nghiên cứu.
 
 - [Quyết định chung](docs/decisions/integration_decisions.md): Đức phụ trách RQ1,
   Triều phụ trách RQ2–RQ4, quy ước title và việc bỏ trường lương/học vấn khỏi schema.
 - [So sánh nguồn](docs/data_collection/source_comparison.md): ITviec chính,
-  TopCV dự phòng, mức bằng chứng hiện có.
+  TopCV là nguồn thứ hai từ 2026-11-03.
 - [Hướng dẫn pipeline và API bàn giao](docs/pipeline/README.md).
 - [Báo cáo bàn giao tích hợp](reports/integration/acceptance.md).
+
+### Trích xuất kỹ năng và đánh giá
+
+```powershell
+python -m pip install -r requirements-parser.txt
+python -m pytest tests/parser -q
+python -m src.parser preview --input data/sample/sample_jobs.jsonl --output-dir data/features/development
+python -m src.parser evaluate --gold data/evaluation/gold_jobs.draft.jsonl --output-dir reports/skill_extraction/draft_gold
+```
+
+Recount và pipeline dùng chung matcher trong `src/parser/`. Có
+[gold dự thảo 50 tin độc lập](data/evaluation/README.md),
+[báo cáo TP/FP/FN và Precision/Recall/F1](reports/skill_extraction/evaluation.md)
+và [hướng dẫn API, xuất artifact từ dữ liệu sạch](docs/skill_extraction/parser.md).
+Nhãn dự thảo do trợ lý gán, chờ người rà soát. Hai bảng trong `development` là
+kết quả thử raw; artifact chính thức cho RQ2–RQ4 chờ dữ liệu sạch được bàn giao.

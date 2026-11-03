@@ -71,3 +71,4 @@ data/features/*
 /reports/integration/latest_run.json
 /reports/analysis/rq1/
 /reports/analysis/rq2_rq4/
+!data/features/development/
