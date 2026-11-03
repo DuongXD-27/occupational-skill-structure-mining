@@ -16,6 +16,7 @@ from typing import Dict, List, Optional, Set
 from src.crawler.fetcher import AccessBlockedError, PoliteFetcher, detect_block
 from src.crawler.listing import DEFAULT_SEED_URLS, ListingCrawler
 from src.crawler.parser import parse_job_html
+from src.crawler import topcv
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -46,13 +47,24 @@ class CrawlerRunner:
         delay_min: float = 1.5,
         delay_max: float = 2.5,
         seed_urls: Optional[List[str]] = None,
+        source: str = "itviec",
+        include_broad: bool = False,
     ):
         self.output_data = output_data
         self.output_log = output_log
         self.max_jobs = max_jobs
         self.parser_version = parser_version
         self.fetcher = PoliteFetcher(delay_min=delay_min, delay_max=delay_max)
-        self.listing = ListingCrawler(self.fetcher, seed_urls=seed_urls)
+        if source == "topcv":
+            self.source_name = topcv.SOURCE
+            self.listing = topcv.TopCVListingCrawler(self.fetcher, seed_urls, include_broad=include_broad)
+            self.parse = topcv.parse_topcv_html
+        elif source == "itviec":
+            self.source_name = "ITviec"
+            self.listing = ListingCrawler(self.fetcher, seed_urls=seed_urls)
+            self.parse = parse_job_html
+        else:
+            raise ValueError(f"Nguồn không hỗ trợ: {source}")
 
         # In-memory deduplication sets
         self.seen_urls: Set[str] = set()
@@ -96,7 +108,7 @@ class CrawlerRunner:
         with open(self.output_log, "a", encoding="utf-8", newline="") as f:
             writer = csv.writer(f)
             writer.writerow([
-                "ITviec",
+                self.source_name,
                 source_url,
                 ts,
                 status,
@@ -183,7 +195,7 @@ class CrawlerRunner:
                 continue
 
             try:
-                is_valid, record, val_err = parse_job_html(
+                is_valid, record, val_err = self.parse(
                     html=html,
                     url=detail_url,
                     crawl_timestamp=crawl_timestamp,
@@ -246,19 +258,32 @@ class CrawlerRunner:
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="ITviec Data & AI Job Crawler - Capstone Project 2026"
+        description="Data & AI Job Crawler (ITviec, TopCV) - Capstone Project 2026"
+    )
+    parser.add_argument(
+        "--source",
+        choices=("itviec", "topcv"),
+        default="itviec",
+        help="Nguồn thu thập (mặc định: itviec). TopCV là nguồn thứ hai từ 2026-11-03.",
+    )
+    parser.add_argument(
+        "--include-broad",
+        action="store_true",
+        help="TopCV: thêm từ khóa rộng 'data', 'ai' (nhiều tin ngoài phạm vi, cleaner sẽ lọc)",
     )
     parser.add_argument(
         "--output-data",
         type=str,
-        default="data/pilot/jobs_pilot.jsonl",
-        help="Đường dẫn file đầu ra JSONL (mặc định: data/pilot/jobs_pilot.jsonl)",
+        default=None,
+        help="File JSONL đầu ra (mặc định: data/raw/<nguồn>/jobs_<nguồn>_<ngày>.jsonl; "
+             "không ghi đè file pilot đã commit)",
     )
     parser.add_argument(
         "--output-log",
         type=str,
-        default="data/pilot/crawl_log.csv",
-        help="Đường dẫn file nhật ký crawl CSV (mặc định: data/pilot/crawl_log.csv)",
+        default=None,
+        help="File log CSV (mặc định: data/raw/<nguồn>/crawl_log_<nguồn>_<ngày>.csv; "
+             "mỗi đợt thu một file theo ngày)",
     )
     parser.add_argument(
         "--max-jobs",
@@ -269,8 +294,8 @@ def parse_args():
     parser.add_argument(
         "--parser-version",
         type=str,
-        default="v0.3",
-        help="Phiên bản parser gán nhãn trong log và record (mặc định: v0.3)",
+        default=None,
+        help="Phiên bản parser ghi vào log/record (mặc định: ITviec v0.3, TopCV topcv-v0.1)",
     )
     parser.add_argument(
         "--delay-min",
@@ -289,13 +314,24 @@ def parse_args():
 
 def main():
     args = parse_args()
+    day = datetime.now(timezone.utc).strftime("%Y%m%d")
+    if args.source == "topcv":
+        output_data = args.output_data or f"data/raw/topcv/jobs_topcv_{day}.jsonl"
+        output_log = args.output_log or f"data/raw/topcv/crawl_log_topcv_{day}.csv"
+        parser_version = args.parser_version or topcv.PARSER_VERSION
+    else:
+        output_data = args.output_data or f"data/raw/itviec/jobs_itviec_{day}.jsonl"
+        output_log = args.output_log or f"data/raw/itviec/crawl_log_itviec_{day}.csv"
+        parser_version = args.parser_version or "v0.3"
     runner = CrawlerRunner(
-        output_data=args.output_data,
-        output_log=args.output_log,
+        output_data=output_data,
+        output_log=output_log,
         max_jobs=args.max_jobs,
-        parser_version=args.parser_version,
+        parser_version=parser_version,
         delay_min=args.delay_min,
         delay_max=args.delay_max,
+        source=args.source,
+        include_broad=args.include_broad,
     )
     runner.run()
     if runner.blocked is not None:
