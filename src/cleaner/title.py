@@ -89,22 +89,26 @@ def _is_place(segment: str) -> bool:
     return bool(parts) and all(normalize_location(p.strip(" ()[]"))[0] for p in parts)
 
 
-def _split_top_level(text: str) -> list[str]:
-    """Tách theo " - ", " – ", " | ", ", " ở cấp ngoài cùng (không cắt trong ngoặc)."""
-    parts, depth, cur, i = [], 0, "", 0
+def _split_top_level(text: str) -> tuple[list[str], list[str]]:
+    """Tách theo " - ", " – ", " | ", ", " ở cấp ngoài cùng (không cắt trong ngoặc).
+
+    Trả (các đoạn, các dấu phân cách gốc) để ghép lại đúng như nguồn."""
+    parts, seps, depth, cur, i = [], [], 0, "", 0
     while i < len(text):
         ch = text[i]
-        depth += ch in "([" ; depth -= ch in ")]"
+        depth += ch in "(["
+        depth -= ch in ")]"
         if depth == 0:
             m = re.match(r"\s+[-–|]\s+|,\s+", text[i:])
             if m:
                 parts.append(cur)
+                seps.append(m.group(0))
                 cur, i = "", i + m.end()
                 continue
         cur += ch
         i += 1
     parts.append(cur)
-    return [p.strip() for p in parts if p.strip()]
+    return parts, seps
 
 
 def _strip_recruitment_noise(text: str) -> tuple[str, bool]:
@@ -119,12 +123,15 @@ def _strip_recruitment_noise(text: str) -> tuple[str, bool]:
         return m.group(0)
 
     text = re.sub(r"[(\[]\s*([^()\[\]]+?)\s*[)\]]", _bracket, text)
-    parts = _split_top_level(text)
+    parts, seps = _split_top_level(text)
     if len(parts) > 1:
-        keep = [parts[0]] + [p for p in parts[1:] if not (_RECRUIT_NOISE_RE.search(p) or _is_place(p))]
-        if len(keep) != len(parts):
-            removed = True
-        text = " - ".join(keep)
+        out = parts[0]
+        for sep, part in zip(seps, parts[1:]):
+            if part.strip() and (_RECRUIT_NOISE_RE.search(part) or _is_place(part)):
+                removed = True
+                continue
+            out += sep + part
+        text = out
     # Inline salary phrase without delimiter: "... Lương Từ 22 - 35 Triệu"
     new = re.sub(r"\s+(lương|thu\s+nhập)\b.*$", "", text, flags=re.IGNORECASE)
     if new != text and new.strip():

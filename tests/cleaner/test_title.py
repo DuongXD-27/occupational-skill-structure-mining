@@ -185,3 +185,11 @@ class TestTopCVTitles:
 
     def test_role_word_never_stripped_away(self):
         assert normalize_title("PowerBI (Business Intelligence)")[0] == "PowerBI (Business Intelligence)"
+
+
+def test_commas_kept_when_no_noise():
+    assert normalize_title("Data Analyst (CRM, Loyalty), Retail")[0] == "Data Analyst (CRM, Loyalty), Retail"
+
+
+def test_unbracketed_tech_list_after_role_removed():
+    assert normalize_title("Data Analyst Azure, SQL, NoSQL, Power BI")[0] == "Data Analyst"
