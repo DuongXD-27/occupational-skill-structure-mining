@@ -93,3 +93,16 @@ python -m src.parser evaluate --gold data/evaluation/gold_jobs.draft.jsonl --out
 
 Lệnh prepare chỉ chọn mẫu và để nhãn trống. Evaluator từ chối tập chưa gán nhãn,
 ID/URL trùng, cặp gần trùng, canonical name/skill ID sai hoặc đoạn bằng chứng sai.
+
+## Trang duyệt (2026-11-03)
+
+Duyệt bằng trang chạy trên máy `tools/gold_review/index.html` (hướng dẫn: `tools/gold_review/README.md`);
+mỗi người xuất `data/evaluation/reviews/gold_review_<tên>.json`, rồi `scripts/merge_gold_reviews.py` gộp thành
+`gold_jobs.reviewed.jsonl` và tính kappa. Mỗi người duyệt có một bản lưu riêng; trang xuất `gold_reviewed_<ngày>.jsonl`
+(chỉ các tin đã đánh dấu duyệt xong) với `gold_skills`, `annotations` (offset trên trường `text`),
+`human_reviewed=true`, quyết định cho từng góp ý lượt hai và ghi chú.
+
+**Nhóm kappa (quyết định F.3):** 18 tin cố định, lấy 18 `job_id` đầu tiên khi sắp xếp theo
+`sha256("kappa-v1:" + job_id)`. Với các tin này, nhãn nháp bị ẩn cho đến khi người duyệt gán độc lập
+xong; trang tính Cohen's kappa (trên mọi cặp tin × 246 kỹ năng taxonomy) và đồng thuận dương giữa
+từng cặp người duyệt.

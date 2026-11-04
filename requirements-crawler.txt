@@ -1,0 +1,3 @@
+# Crawler ITviec/TopCV (src/crawler)
+requests
+beautifulsoup4

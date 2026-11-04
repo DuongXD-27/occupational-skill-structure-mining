@@ -116,9 +116,15 @@ def test_combine_keeps_earliest_crawl_inside_window(tmp_path):
     b.write_text("\n".join(json.dumps(r) for r in [
         _rec("https://x/u1aaaa", "2026-11-01T00:00:00+00:00"),        # thu lại → bỏ
         _rec("https://x/u3cccc", "2026-11-24T00:00:00+00:00"),        # sau khung
-        _rec("https://x/u4dddd", "2026-11-23T23:00:00+00:00", "ITviec"),
+        _rec("https://x/u4dddd", "2026-11-23T16:00:00+00:00", "ITviec"),  # 23:00 giờ VN
     ]) + "\n", encoding="utf-8")
     rows, stats = combine_raw.combine([a, b])
     assert [r["source_url"] for r in rows] == ["https://x/u1aaaa", "https://x/u4dddd"]
     assert rows[0]["crawl_timestamp"].startswith("2026-10-10")
     assert stats["outside_window"] == 2 and stats["same_url_later_crawl"] == 1
+
+
+def test_window_uses_vietnam_date():
+    # 22:10 UTC ngày 29/09 là 05:10 ngày 30/09 ở Việt Nam: vẫn nằm trong khung quan sát
+    assert str(combine_raw.crawl_date("2026-09-29T22:10:16+00:00")) == "2026-09-30"
+    assert str(combine_raw.crawl_date("2026-11-23T18:00:00+00:00")) == "2026-11-24"

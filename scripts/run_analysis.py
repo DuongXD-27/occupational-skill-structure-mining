@@ -30,9 +30,19 @@ def main(argv=None):
     ap.add_argument("--skills", default="data/features/job_skills.parquet")
     ap.add_argument("--taxonomy", default="taxonomy/skills_taxonomy.csv")
     ap.add_argument("--outdir", default="reports/analysis")
+    ap.add_argument("--ignore-quality", action="store_true",
+                    help="vẫn chạy khi kiểm tra chất lượng thất bại (chỉ để gỡ lỗi)")
     args = ap.parse_args(argv)
 
     if args.real:
+        loi = report.run_quality_checks(args.clean, args.skills, args.outdir)
+        if loi:
+            print("\nKIỂM TRA CHẤT LƯỢNG THẤT BẠI — không phân tích (analysis_spec §9):")
+            for dong in loi:
+                print(f"  - {dong}")
+            if not args.ignore_quality:
+                return 1
+            print("  --ignore-quality: vẫn chạy, KẾT QUẢ KHÔNG ĐƯỢC ĐƯA VÀO BÁO CÁO")
         try:
             M = loaders.load_skill_matrix(args.matrix, taxonomy_path=args.taxonomy)
         except FileNotFoundError:

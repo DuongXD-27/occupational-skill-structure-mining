@@ -31,7 +31,23 @@ Runs on synthetic data and prints every result. Takes about 20 seconds.
 python -m pytest tests/analysis/ -q
 ```
 
-Must print `26 passed`.
+Must print `48 passed`.
+
+## What gets written
+
+`python scripts/run_analysis.py` (synthetic) or `--real` writes into `reports/analysis/`
+(the pipeline writes the same files into `paths.analysis`):
+
+| RQ | Tables (CSV) | Charts (PNG) |
+|---|---|---|
+| checks | `quality_checks` (8 checks, analysis_spec §9; `--real` stops if one fails) | — |
+| RQ2 | `rq2_skill_frequency`, `rq2_skills_per_posting`, `rq2_skill_pairs`, `rq2_top_pairs_by_metric`, `rq2_skill_communities`, `rq2_negative_pairs` | `rq2_top_skills`, `rq2_association_heatmap`, `rq2_cooccurrence_network` |
+| RQ3 | `rq3_title_dispersion` (with baseline 5–95%), `rq3_title_similarity`, `rq3_notable_pairs`, `rq3_flagged_pairs` (0.70/0.80/0.90), `rq3_title_profiles`, `rq3_skipped_titles` | `rq3_dispersion_vs_baseline`, `rq3_title_dendrogram`, `rq3_title_similarity`, `rq3_title_profiles` |
+| RQ4 | `rq4_k_sweep`, `rq4_cluster_profiles`, `rq4_cluster_assignment` (K-Means + hierarchical), `rq4_cluster_examples`, `rq4_method_comparison`, `rq4_method_agreement`, `rq4_clusters_with_titles`, `rq4_agreement`, `rq4_cluster_title_crosstab`, `rq4_pca_coordinates` | `rq4_sweep_k`, `rq4_pca`, `rq4_cluster_title_heatmap` |
+
+EDA (data overview before RQ1–RQ4): `python -m src.analysis.eda --raw data/raw/jobs_raw.jsonl --clean data/processed/jobs_clean.parquet --out reports/eda` writes 7 tables and 8 charts (missing fields, text length, language, seniority, posting dates, top companies, skills per posting, skill groups, relevance-filter check); `notebooks/eda.ipynb` walks through them.
+
+Charts that need data the run does not have (e.g. no pair reaches 5 co-occurrences) are skipped, never drawn empty.
 
 ## Common errors
 

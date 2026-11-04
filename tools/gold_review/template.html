@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duyệt gold kỹ năng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Bố cục: thanh trên (người duyệt, tiến độ, xuất) · cột trái danh sách 50 tin · bên phải văn bản tin có tô bút dạ + bảng nhãn. Điện thoại: xếp một cột. */
+:root{
+  --bg:#f4f5f7; --panel:#ffffff; --ink:#1b2230; --muted:#5b6474; --line:#dce0e7; --hover:#eef0f4;
+  --accent:#2c4fb3; --accent-ink:#ffffff;
+  --keep-bg:#d7efe1; --keep:#16674a;
+  --drop-bg:#f7dada; --drop:#a2342f;
+  --sug-bg:#fbe5ad; --sug:#7f5200;
+  --mine-bg:#dbe5ff; --mine:#2c4fb3;
+  --f-ui:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12151b; --panel:#1a1e26; --ink:#e5e8ee; --muted:#9aa3b2; --line:#2b313c; --hover:#232834;
+  --accent:#8fa8ff; --accent-ink:#0e1220;
+  --keep-bg:#163a2a; --keep:#82d6ab; --drop-bg:#45201e; --drop:#f29a93;
+  --sug-bg:#43361a; --sug:#f1c56a; --mine-bg:#1f2a4b; --mine:#a8beff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151b; --panel:#1a1e26; --ink:#e5e8ee; --muted:#9aa3b2; --line:#2b313c; --hover:#232834;
+  --accent:#8fa8ff; --accent-ink:#0e1220;
+  --keep-bg:#163a2a; --keep:#82d6ab; --drop-bg:#45201e; --drop:#f29a93;
+  --sug-bg:#43361a; --sug:#f1c56a; --mine-bg:#1f2a4b; --mine:#a8beff; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.55 var(--f-ui);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 40px}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-size:12px}
+.muted{color:var(--muted)}
+h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em}
+h2{font-size:17px;font-weight:600;margin:0;text-wrap:balance}
+h3{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;max-width:1400px;margin:0 auto 14px}
+.top .grow{flex:1 1 auto}
+.who{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-size:12px;white-space:nowrap;background:var(--panel)}
+.chip.kp{border-color:var(--sug);color:var(--sug)}
+.chip.ho{border-color:var(--mine);color:var(--mine)}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;width:160px}
+.bar i{display:block;height:100%;background:var(--keep)}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:7px;padding:5px 11px;cursor:pointer}
+.btn:hover{background:var(--hover)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.banner{max-width:1400px;margin:0 auto 12px;border:1px solid var(--sug);background:var(--sug-bg);color:var(--ink);border-radius:8px;padding:8px 12px}
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:16px;max-width:1400px;margin:0 auto;align-items:start}
+.list{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;position:sticky;top:max(10px,env(safe-area-inset-top,0px));max-height:calc(100vh - 30px);display:flex;flex-direction:column}
+.filters{display:flex;gap:4px;padding:8px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.filters button{border:0;background:none;padding:2px 8px;border-radius:5px;cursor:pointer;font-size:12px;color:var(--muted)}
+.filters button[aria-pressed="true"]{background:var(--hover);color:var(--ink);font-weight:500}
+.items{overflow:auto}
+.item{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px;padding:7px 10px;border:0;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;cursor:pointer}
+.item:hover{background:var(--hover)}
+.item[aria-current="true"]{background:var(--mine-bg)}
+.item .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+.item .m{font-size:11px;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--line);margin-top:5px}
+.dot.part{border-color:var(--sug);background:linear-gradient(90deg,var(--sug) 50%,transparent 50%)}
+.dot.done{border-color:var(--keep);background:var(--keep)}
+.jobsel{display:none}
+.job{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.jhead{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
+.jhead .grow{flex:1 1 300px;min-width:0}
+.jhead a{color:var(--accent)}
+.step{grid-column:1/-1;border-left:3px solid var(--sug);padding:6px 12px;background:var(--panel);border-radius:0 8px 8px 0}
+.txt{white-space:pre-wrap;word-wrap:break-word;font-size:14.5px;line-height:1.75;max-height:72vh;overflow:auto;max-width:68ch}
+.txt mark{background:none;color:inherit;border-radius:3px;padding:1px 0;cursor:pointer}
+.txt mark.keep{background:var(--keep-bg)}
+.txt mark.drop{background:var(--drop-bg);text-decoration:line-through;text-decoration-color:var(--drop)}
+.txt mark.sug{background:var(--sug-bg);box-shadow:inset 0 -2px 0 var(--sug)}
+.txt mark.mine{background:var(--mine-bg);box-shadow:inset 0 -2px 0 var(--mine)}
+.txt mark.flash{outline:2px solid var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span::before{content:"";display:inline-block;width:12px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.lg-keep::before{background:var(--keep-bg)}.lg-drop::before{background:var(--drop-bg)}.lg-sug::before{background:var(--sug-bg)}.lg-mine::before{background:var(--mine-bg)}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.sec{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .nm{font-weight:500}
+.row .ev{font-family:var(--f-mono);font-size:12px;color:var(--muted);word-break:break-word}
+.row .why{grid-column:1/-1;font-size:12.5px;color:var(--muted)}
+.row.flag .nm::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sug);margin-right:6px;vertical-align:1px}
+.row.flash{background:var(--hover)}
+.choices{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.choices button{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:3px 9px;font-size:12.5px;cursor:pointer}
+.choices button[aria-pressed="true"]{border-color:var(--accent);background:var(--mine-bg);color:var(--ink);font-weight:500}
+.tog{border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;cursor:pointer;background:var(--keep-bg);color:var(--keep);white-space:nowrap}
+.tog.off{background:var(--drop-bg);color:var(--drop)}
+.x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:2px 6px}
+.add{border:1px dashed var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.add input{width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--bg)}
+.hits{display:flex;flex-wrap:wrap;gap:6px}
+.hits button{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:2px 8px;font-size:12.5px;cursor:pointer}
+.hits button:hover{border-color:var(--accent)}
+textarea{width:100%;min-height:62px;border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--bg);resize:vertical}
+.foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.agree{max-width:1400px;margin:16px auto 0}
+.agree table{border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.agree td,.agree th{padding:4px 12px 4px 0;text-align:left;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+.empty{color:var(--muted);font-size:13px}
+@media (max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr)}
+  .list{display:none}
+  .jobsel{display:block;width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--panel);margin-bottom:10px}
+  .job{grid-template-columns:minmax(0,1fr)}
+  .txt{max-height:none}
+  .bar{width:100px}
+}
+@media (prefers-reduced-motion:no-preference){.row,.txt mark{transition:background .15s}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Duyệt gold kỹ năng</h1>
+    <div class="muted" style="font-size:12.5px">50 tin pilot ITviec · 634 nhãn nháp do Codex gán · 99 góp ý lượt hai cần quyết định</div>
+  </div>
+  <div class="grow"></div>
+  <div class="who">
+    <label class="chip" for="reviewer">Người duyệt: <input id="reviewer" type="text" placeholder="nhập tên" style="border:0;background:none;width:9em;font:inherit;color:inherit" autocomplete="off"></label>
+    <span class="chip" id="sync">Đã lưu trong trình duyệt này</span>
+  </div>
+  <div class="who">
+    <div class="bar" title="Tin đã đánh dấu duyệt xong"><i id="prog" style="width:0"></i></div>
+    <span class="mono" id="progtxt">0/50</span>
+    <button class="btn" id="import-btn" type="button">Mở file kết quả</button>
+    <input id="import-file" type="file" accept=".json,application/json" hidden>
+    <button class="btn pri" id="export-file" type="button">Xuất file kết quả</button>
+  </div>
+</header>
+<div class="banner" id="banner" hidden></div>
+<div class="wrap">
+  <nav class="list" aria-label="Danh sách tin">
+    <div class="filters" role="group" aria-label="Lọc">
+      <button type="button" data-f="all" aria-pressed="true">Tất cả</button>
+      <button type="button" data-f="todo" aria-pressed="false">Chưa xong</button>
+      <button type="button" data-f="kp" aria-pressed="false">Nhóm kappa</button>
+      <button type="button" data-f="holdout" aria-pressed="false">Holdout</button>
+    </div>
+    <div class="items" id="items"></div>
+  </nav>
+  <main>
+    <select class="jobsel" id="jobsel" aria-label="Chọn tin"></select>
+    <div class="job" id="job"></div>
+  </main>
+</div>
+<!--DATA-->
+<!--APP-->
+</body>
+</html>

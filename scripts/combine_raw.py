@@ -17,15 +17,23 @@ import collections
 import glob
 import json
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 WINDOW_START = date(2026, 9, 30)
 WINDOW_END = date(2026, 11, 23)
 
 
+# Khung quan sát tính theo ngày ở Việt Nam (UTC+7): đợt pilot chạy 05:10 ngày 30/09 giờ
+# Việt Nam, tức 22:10 ngày 29/09 UTC; lấy ngày theo UTC sẽ loại nhầm cả đợt.
+VN_TZ = timezone(timedelta(hours=7))
+
+
 def crawl_date(value: str) -> date:
-    return datetime.fromisoformat(str(value).replace("Z", "+00:00")).date()
+    ts = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    return ts.astimezone(VN_TZ).date()
 
 
 def combine(paths, start=WINDOW_START, end=WINDOW_END):
