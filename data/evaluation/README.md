@@ -96,8 +96,9 @@ ID/URL trùng, cặp gần trùng, canonical name/skill ID sai hoặc đoạn b�
 
 ## Trang duyệt (2026-11-03)
 
-Duyệt trên trang "Duyệt gold kỹ năng" (artifact riêng tư của Dương; chia sẻ cho người duyệt
-với quyền Contributor). Mỗi người duyệt có một bản lưu riêng; trang xuất `gold_reviewed_<ngày>.jsonl`
+Duyệt bằng trang chạy trên máy `tools/gold_review/index.html` (hướng dẫn: `tools/gold_review/README.md`);
+mỗi người xuất `data/evaluation/reviews/gold_review_<tên>.json`, rồi `scripts/merge_gold_reviews.py` gộp thành
+`gold_jobs.reviewed.jsonl` và tính kappa. Mỗi người duyệt có một bản lưu riêng; trang xuất `gold_reviewed_<ngày>.jsonl`
 (chỉ các tin đã đánh dấu duyệt xong) với `gold_skills`, `annotations` (offset trên trường `text`),
 `human_reviewed=true`, quyết định cho từng góp ý lượt hai và ghi chú.
 
