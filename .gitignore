@@ -72,3 +72,6 @@ data/features/*
 /reports/analysis/rq1/
 /reports/analysis/rq2_rq4/
 !data/features/development/
+
+# Gói git dùng để chuyển nhánh giữa các máy; không đưa vào kho
+*.bundle
