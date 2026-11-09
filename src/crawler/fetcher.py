@@ -25,7 +25,7 @@ DEFAULT_HEADERS = {
 
 
 # HTTP status codes that signal the site is refusing automated access.
-# Per docs/data_collection/source_inspection.md the crawl must stop on these
+# Per report/main.tex §3.1 the crawl must stop on these
 # instead of retrying or trying to bypass the protection.
 BLOCK_STATUS_CODES = {401, 403, 503}
 
