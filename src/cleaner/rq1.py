@@ -1,6 +1,6 @@
 """
 src/cleaner/rq1.py
-RQ1 — Những chức danh nào tồn tại và mức độ phổ biến (docs/analysis/analysis_spec.md §3).
+RQ1 — Những chức danh nào tồn tại và mức độ phổ biến (report/main.tex §4.5).
 
 Chỉ dùng tin relevance_flag=true AND duplicate_flag=false.
 
