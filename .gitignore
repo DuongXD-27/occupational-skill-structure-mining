@@ -51,27 +51,31 @@ venv.bak/
 Thumbs.db
 desktop.ini
 
-# Large dataset files (keep pilot data tracked)
-data/raw/*
-!data/raw/.gitkeep
-data/processed/*
-!data/processed/.gitkeep
-data/interim/*
-!data/interim/.gitkeep
+# Dữ liệu và đầu ra sinh khi chạy: không đưa lên GitHub
+# (chỉ data/sample, data/pilot, data/evaluation, data/labels được theo dõi)
+data/raw/
+data/processed/
+data/interim/
+data/features/
+reports/
 
-# Local skill-taxonomy recount artifacts
-/reports/skill_extraction/skills_taxonomy_evidence.csv
-/tests/test_recount_taxonomy.py
-
-# Kết quả chạy cục bộ và thư mục kiểm thử tạm
+# Thư mục tạm
 .pytest_cache/
 .tmp/
-data/features/*
-!data/features/.gitkeep
-/reports/integration/latest_run.json
-/reports/analysis/rq1/
-/reports/analysis/rq2_rq4/
-!data/features/development/
 
 # Gói git dùng để chuyển nhánh giữa các máy; không đưa vào kho
 *.bundle
+
+# Trang gán nhãn vai trò nhúng văn bản tin tuyển dụng: dựng lại trên máy, không commit
+tools/role_labeling/index.html
+
+# Tệp phụ khi biên dịch báo cáo LaTeX
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.fls
+report/*.fdb_latexmk
+report/*.xdv
+report/*.synctex.gz
+report/*.pdf
