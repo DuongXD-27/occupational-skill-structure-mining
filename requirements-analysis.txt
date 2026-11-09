@@ -1,8 +1,0 @@
-numpy
-pandas
-scikit-learn
-networkx
-scipy
-matplotlib
-pyarrow
-pytest
