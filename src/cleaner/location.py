@@ -2,9 +2,9 @@
 src/cleaner/location.py
 QR-02: Normalize raw_location → normalized_location
 
-Rules (from docs/data_cleaning/data_quality_rules.md §3):
+Rules (QR-02, report/main.tex §3.4 and appendix E):
 - raw_location is immutable; output goes to normalized_location.
-- Mapping driven by docs/data_cleaning/location_mapping.csv (no hardcoded if/else chains).
+- Mapping driven by config/location_mapping.csv (no hardcoded if/else chains).
 - Placeholder strings (Not Available, N/A) → null + flag MISSING_LOCATION.
 - Multi-location (comma/slash between different regions) → "Nhiều địa điểm".
 - Unrecognized → null + flag LOCATION_UNRECOGNIZED.
@@ -23,8 +23,7 @@ from typing import Optional
 
 _MAPPING_PATH = (
     Path(__file__).resolve().parents[2]
-    / "docs"
-    / "data_cleaning"
+    / "config"
     / "location_mapping.csv"
 )
 
@@ -43,7 +42,7 @@ def load_mapping(path: Path | str = _MAPPING_PATH) -> LocationRules:
     return rules
 
 
-# Default rules (docs/data_cleaning/location_mapping.csv). Never mutated at runtime;
+# Default rules (config/location_mapping.csv). Never mutated at runtime;
 # callers with another mapping pass their own rules to normalize_location().
 _LOCATION_RULES: LocationRules = load_mapping()
 
