@@ -5,7 +5,7 @@ tên skill, trong ô chỉ có 0 và 1. Không có gì bảo đảm bản giao s
 đó, nên việc chuyển đổi và kiểm tra gom hết về đây, làm một lần, thay vì mỗi
 module lại tự xoay xở.
 
-Khác biệt đã biết giữa hợp đồng bàn giao (`docs/pipeline/README.md`) và thứ module cần:
+Khác biệt đã biết giữa hợp đồng bàn giao (report/main.tex §4.1) và thứ module cần:
 
   Bàn giao       job_id là một CỘT; cột skill là `skill_id` của taxonomy
                   (SK0001, SK0002, ...), ô là số nguyên 0/1
