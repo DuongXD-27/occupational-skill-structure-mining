@@ -36,7 +36,7 @@ TARGET_MAX_RECORDS = 45
 
 
 # Nguồn từ chối truy cập tự động → dừng toàn bộ đợt thu thập, không thử vượt qua
-# (docs/data_collection/source_inspection.md, project_scope §7 và §13).
+# (report/main.tex §1.4 và §3.1).
 BLOCK_STATUS_CODES = {401, 403, 503}
 CHALLENGE_MARKERS = (
     "cf-challenge", "challenge-platform", "cf-browser-verification",
