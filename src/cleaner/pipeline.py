@@ -2,7 +2,7 @@
 src/cleaner/pipeline.py
 Full cleaning pipeline — orchestrates QR-01 through QR-06 in order.
 
-Execution order (from docs/data_cleaning/data_quality_rules.md §8):
+Execution order (report/main.tex §3.4):
   Step 1: Load raw data (read-only)
   Step 2: QR-01 — Missing value inspection (flag; fatal records are kept and
           excluded via relevance_flag=false, never deleted — scope §6, pipeline contract)
@@ -16,7 +16,7 @@ Execution order (from docs/data_cleaning/data_quality_rules.md §8):
   Step 9: Export the 22-field table + a separate quality-flag log
 
 Never modifies raw fields. All outputs go to derived (Stage B) fields.
-The main table holds exactly the 22 schema fields (docs/data_schema.md §4);
+The main table holds exactly the 22 schema fields (report/main.tex §3.3);
 quality_flags are written to a JSONL log next to it (integration_decisions §D).
 """
 
@@ -45,7 +45,7 @@ WARN_JR_MISSING_PCT = 20.0
 WARN_LOCATION_MISSING_PCT = 30.0
 WARN_DUPLICATE_PCT = 15.0
 
-# The 22-field schema, in order (docs/data_schema.md §4)
+# The 22-field schema, in order (report/main.tex §3.3)
 SCHEMA_FIELDS = (
     "job_id source source_job_id source_url crawl_timestamp parser_version raw_job_title "
     "normalized_job_title company raw_location normalized_location posted_date raw_experience "
