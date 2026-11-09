@@ -42,7 +42,8 @@ def final_annotations(job, doc):
     for li, lab in enumerate(job["L"]):
         si = next((i for i, s in enumerate(job["S"]) if s["k"] == "label" and s.get("li") == li), None)
         if si is not None:
-            sg, ch = job["S"][si], res.get(str(si))
+            sg = job["S"][si]
+            ch = sg.get("auto") or res.get(str(si))
             if ch in (None, "reject"):
                 continue
             if ch == "keep":
@@ -54,7 +55,7 @@ def final_annotations(job, doc):
         elif not rej.get(str(li)):
             out.append(dict(lab))
     for si, sg in enumerate(job["S"]):
-        if sg["k"] == "missing" and res.get(str(si)) == "add":
+        if sg["k"] == "missing" and (sg.get("auto") or res.get(str(si))) == "add":
             out.append({"n": sg["n"], "id": sg["id"], "s": sg["s"], "e": sg["e"]})
     out += [dict(a) for a in doc.get("added", [])]
     first = {}
