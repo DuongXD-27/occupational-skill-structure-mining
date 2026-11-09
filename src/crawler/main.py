@@ -1,7 +1,7 @@
 """
 Main CLI entrypoint for the Data & AI Job Crawler.
 Supports CLI arguments for output data, logs, and max job limit.
-Maintains in-memory deduplication and writes records in the 22-field schema (docs/data_schema.md).
+Maintains in-memory deduplication and writes records in the 22-field schema (report/main.tex §3.3).
 Outputs full summary metrics upon completion.
 """
 
@@ -150,7 +150,7 @@ class CrawlerRunner:
             self._crawl(job_targets)
         except AccessBlockedError as exc:
             # Nguồn chặn truy cập (HTTP 401/403/503 hoặc thử thách chống bot):
-            # dừng toàn bộ đợt thu thập, không thử vượt qua (source_inspection.md, project_scope §7).
+            # dừng toàn bộ đợt thu thập, không thử vượt qua (report/main.tex §1.4, §3.1).
             self.blocked = exc
             print(f"\n[DỪNG] {exc}. Kết thúc đợt thu thập theo quy định nguồn dữ liệu.")
             self.log_result(
