@@ -2,7 +2,7 @@
 
 Dùng chung cho:
 - `scripts/run_analysis.py` (dòng lệnh, dữ liệu giả hoặc thật);
-- pipeline tích hợp: entry point `src.analysis.report:run` (docs/pipeline/README.md §5),
+- pipeline tích hợp: entry point `src.analysis.report:run` (report/main.tex §4.1),
   trả `{"RQ2": ..., "RQ3": ..., "RQ4": ...}` với `status` là `completed` hoặc `skipped`.
 
 RQ nào chưa đủ điều kiện theo analysis_spec §7–§8 thì `skipped` kèm lý do và không
