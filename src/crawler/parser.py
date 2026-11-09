@@ -1,11 +1,11 @@
 """
 Parser module for ITviec job postings.
-Emits records in the 22-field schema (docs/data_schema.md). Raw fields
+Emits records in the 22-field schema (report/main.tex §3.3). Raw fields
 (`raw_job_title`, `company`, `raw_location`, `raw_experience`,
 `job_description`, `job_requirements`) keep the text exactly as rendered on the
 source page: no trimming or whitespace normalization. Cleanup belongs to the
 cleaner's derived fields. Salary and education are not collected (decision
-2026-10-04, docs/decisions/integration_decisions.md §B).
+2026-10-04, report/main.tex appendix B).
 """
 
 import hashlib
@@ -332,7 +332,7 @@ def parse_job_html(
     if not job_description and not job_requirements:
         return False, None, "Missing both job_description and job_requirements"
 
-    # 6. Construct the 22-field record (docs/data_schema.md §4)
+    # 6. Construct the 22-field record (report/main.tex §3.3)
     record = {
         "job_id": job_id,
         "source": "ITviec",
