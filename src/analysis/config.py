@@ -1,10 +1,10 @@
 """Toàn bộ ngưỡng và tham số của phần phân tích nằm ở đây.
 
-analysis_spec_v0.1.md cam kết không để con số nào nằm rải rác trong code.
+Báo cáo (report/main.tex §4.5) cam kết không để con số nào nằm rải rác trong code.
 File này chính là cam kết đó.
 
-Leader đã duyệt giữ nguyên các ngưỡng ngày 2026-11-03 (docs/decisions/
-integration_decisions.md mục F). Khi đổi, ghi lý do và chỉ sửa ở đây, không sửa
+Leader đã duyệt giữ nguyên các ngưỡng ngày 2026-11-03 (report/main.tex
+phụ lục B, mục F). Khi đổi, ghi lý do và chỉ sửa ở đây, không sửa
 trong rq2/rq3/rq4.
 """
 
