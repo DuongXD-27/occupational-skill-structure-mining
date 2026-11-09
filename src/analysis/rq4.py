@@ -1,7 +1,6 @@
 """RQ4 — giấu title, để thuật toán tự gom nhóm job.
 
-Các bước giải thích trong docs/analysis/rq4_lam_tay.md
-Chạy từng bước: python scripts/rq4_tung_buoc.py
+Phương pháp và cách chọn k: report/main.tex §2.6 và §4.5.
 """
 
 import numpy as np

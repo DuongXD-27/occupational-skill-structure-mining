@@ -2,7 +2,7 @@
 src/cleaner/duplicates.py
 QR-05: Detect exact and near duplicates.
 
-Rules (from docs/data_cleaning/data_quality_rules.md §6):
+Rules (QR-05, report/main.tex §3.4):
 - Exact duplicate: same source_url → flag later crawl_timestamp record.
 - Near duplicate (ALL must hold):
     1. Same company (case-insensitive, trimmed)

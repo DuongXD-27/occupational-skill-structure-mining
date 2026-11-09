@@ -1,5 +1,5 @@
 """
-TopCV — nguồn thứ hai (quyết định 2026-11-03, docs/decisions/integration_decisions.md F.1).
+TopCV — nguồn thứ hai (quyết định 2026-11-03, report/main.tex phụ lục B, F.1).
 
 Cấu trúc trang khảo sát ngày 2026-11-03:
 - Trang tìm kiếm: https://www.topcv.vn/tim-viec-lam-<từ khóa>?page=N, mỗi trang tối đa 50 thẻ

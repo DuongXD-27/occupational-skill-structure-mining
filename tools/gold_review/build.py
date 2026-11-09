@@ -24,9 +24,16 @@ PASS2 = ROOT / "data/evaluation/review_pass2.jsonl"
 TAXONOMY = ROOT / "taxonomy/skills_taxonomy.csv"
 KAPPA_SIZE = 18   # quyết định F.3: 15–20 tin gán độc lập
 
+# Quy ước chung chốt sau lượt rà soát hai: góp ý "thiếu" của các kỹ năng này được thêm luôn,
+# người duyệt không phải chọn. Xem report/main.tex phụ lục C.9.
+AUTO_ADD = {
+    "API Design": "Quy ước 05/11 (Cường): tin nhắc tới xây dựng, tích hợp hoặc làm việc với API "
+                  "(REST, RESTful, SOAP, GraphQL…) thì gán API Design.",
+}
+
 
 def kappa_ids(job_ids):
-    """18 tin cố định: thứ tự theo sha256('kappa-v1:' + job_id) (data/evaluation/README.md)."""
+    """18 tin cố định: thứ tự theo sha256('kappa-v1:' + job_id) (report/main.tex §4.4)."""
     return set(sorted(job_ids, key=lambda j: hashlib.sha256(f"kappa-v1:{j}".encode()).hexdigest())[:KAPPA_SIZE])
 
 
@@ -49,6 +56,8 @@ def build_data():
             for src, dst in (("suggested_start", "s"), ("suggested_end", "e"), ("suggested_canonical_name", "rn"), ("suggested_skill_id", "rid")):
                 if src in x:
                     d[dst] = x[src]
+            if x["kind"] == "missing" and x["canonical_name"] in AUTO_ADD:
+                d["auto"], d["autoWhy"] = "add", AUTO_ADD[x["canonical_name"]]
             if x["kind"] == "label":
                 d["li"] = next(i for i, l in enumerate(labels) if l["id"] == x["skill_id"])
             sugs.append(d)

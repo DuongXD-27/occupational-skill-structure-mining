@@ -2,13 +2,13 @@
 src/cleaner/title.py
 QR-04: Normalize raw_job_title → normalized_job_title
 
-Rules (from docs/data_cleaning/data_quality_rules.md §5):
+Rules (QR-04, report/main.tex §3.4):
 - Surface cleaning ONLY. Never merge distinct roles.
 - raw_job_title is immutable.
 - Steps: trim → collapse spaces → strip non-title noise (salary, bonus, punctuation)
   → expand abbreviations → drop seniority level → drop explicit tech-stack suffix
   → Title Case.
-- Decision 2026-10-03 (docs/decisions/integration_decisions.md §C):
+- Decision 2026-10-03 (report/main.tex appendix B):
   "Senior Data Analyst" → "Data Analyst". Only pure seniority levels are removed
   (Senior/Sr/Snr, Junior/Jr, Middle/Mid/Mid-level, Fresher, Entry-level).
   Lead/Principal/Head/Manager/Intern describe a role and are kept.

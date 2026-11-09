@@ -1,6 +1,0 @@
-﻿title_a,title_b,cosine,skill_chung,chi_title_a,chi_title_b
-Business Intelligence Analyst,Data Analyst,0.992,"Excel, Power BI, SQL, Statistics, Tableau",,
-Data Engineer,Senior Data Engineer,0.9902,"AWS, Airflow, Kafka, Python, SQL, Spark",,
-AI Engineer,ML Engineer,0.9528,Python,,YOLO
-AI Engineer,GenAI Engineer,0.8835,Python,,"LLM, LangChain, RAG, Vector Database"
-Computer Vision Engineer,ML Engineer,0.8562,"Python, YOLO","Computer Vision, OpenCV, PyTorch",

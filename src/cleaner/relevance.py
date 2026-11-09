@@ -2,7 +2,7 @@
 src/cleaner/relevance.py
 QR-06: Classify job posting as Data/AI-relevant or not.
 
-Decision flow (from docs/data_cleaning/data_quality_rules.md §7.7):
+Decision flow (QR-06, report/main.tex §3.4):
   Step 1 — Exclusion Title Gate (run FIRST):
       If normalized_job_title matches exclusion patterns → relevance_flag=false.
   Step 2 — Whitelist Check (only if not excluded in Step 1):

@@ -107,7 +107,7 @@ def test_results_are_reproducible(data):
 # --- loaders: bản giao có thể không đúng dạng mình cần ------------------
 
 def _fake_handover(tmp_path, M, as_codes=True, as_bool=True, job_id_column=True):
-    """Dựng file parquet đúng dạng mà data_schema_v1.md mục 14 mô tả."""
+    """Dựng file parquet đúng dạng mà report/main.tex §3.3 mô tả."""
     out = M.copy()
     codes = {}
     if as_codes:

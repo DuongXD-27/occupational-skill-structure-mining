@@ -50,3 +50,14 @@ def test_merge_writes_valid_gold_and_conflicts(tmp_path):
 def test_slug_handles_vietnamese():
     assert m.slug("Hoàng Quốc Cường") == "hoang-quoc-cuong"
     assert m.slug("Nguyễn Tuấn Dương") == "nguyen-tuan-duong"
+
+
+def test_api_design_added_without_reviewer_decision():
+    """Quy ước 05/11: góp ý thiếu API Design được thêm luôn, kể cả khi người duyệt chọn bỏ qua."""
+    autos = [(j, i) for j in DATA["jobs"] for i, s in enumerate(j["S"]) if s.get("auto")]
+    assert len(autos) == 12
+    assert all(j["S"][i]["n"] == "API Design" and j["S"][i]["auto"] == "add" for j, i in autos)
+    job, si = autos[0]
+    for res in ({}, {str(si): "skip"}):
+        ann = m.final_annotations(job, _doc(res=res))
+        assert any(a["n"] == "API Design" for a in ann)

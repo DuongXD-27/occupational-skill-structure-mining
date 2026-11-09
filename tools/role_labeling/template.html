@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gán nhãn vai trò</title>
+<style>
+:root{--bg:#f6f5f1;--card:#fffefb;--ink:#1d2433;--muted:#5d6675;--line:#e1ddd2;--acc:#2c5fb8;--acc2:#a94e12;--ok:#2f7d4f;--warn:#b7791f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:2}
+header h1{font-size:17px;margin:0 8px 0 0}
+header input,header select{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:#fff}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 10px;color:var(--ink)}
+button:hover{border-color:var(--acc)}
+.prog{color:var(--muted);font-size:14px}
+.grow{flex:1}
+main{display:grid;grid-template-columns:200px 1fr 340px;gap:0;height:calc(100vh - 56px)}
+nav{border-right:1px solid var(--line);overflow:auto;padding:8px}
+nav a{display:flex;gap:8px;align-items:center;padding:4px 6px;border-radius:5px;color:var(--ink);text-decoration:none;font-size:13px}
+nav a.cur{background:#e8eefb}
+.dot{width:9px;height:9px;border-radius:50%;background:#cfcabd;flex:none}
+.dot.done{background:var(--ok)}.dot.uns{background:var(--warn)}
+article{overflow:auto;padding:16px 24px}
+article h2{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc2);margin:18px 0 6px}
+article .txt{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+aside{border-left:1px solid var(--line);overflow:auto;padding:12px 14px;background:var(--card)}
+aside h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.role{display:block;width:100%;text-align:left;margin:0 0 6px;padding:7px 10px}
+.role b{display:inline-block;min-width:84px}
+.role small{display:block;color:var(--muted);font-size:12px;line-height:1.35}
+.role.sel{border-color:var(--acc);background:#e8eefb;box-shadow:inset 3px 0 0 var(--acc)}
+.sec{display:inline-block;margin:0 4px 6px 0;padding:4px 8px;font-size:13px}
+.sec.sel{border-color:var(--acc2);background:#f7e9dd}
+textarea{width:100%;min-height:60px;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px}
+.row{display:flex;gap:8px;align-items:center;margin:8px 0}
+.hint{color:var(--muted);font-size:12px}
+.empty{color:var(--muted);padding:40px}
+@media (max-width:900px){main{grid-template-columns:1fr;height:auto}nav{max-height:160px;border-right:0;border-bottom:1px solid var(--line)}aside{border-left:0}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Gán nhãn vai trò</h1>
+  <label>Tên <input id="name" placeholder="vd: Duong" size="10"></label>
+  <label>Lô <select id="batch"></select></label>
+  <span class="prog" id="prog"></span>
+  <span class="grow"></span>
+  <button id="imp">Nhập file</button><input type="file" id="impf" accept=".json" hidden>
+  <button id="exp"><b>Xuất kết quả</b></button>
+</header>
+<main>
+  <nav id="list"></nav>
+  <article id="job"></article>
+  <aside>
+    <div class="row"><button id="prev">← Trước</button><span class="grow"></span><span id="pos" class="prog"></span><span class="grow"></span><button id="next">Sau →</button></div>
+    <h3>Vai trò chính (phím 1–7)</h3>
+    <div id="primary"></div>
+    <h3>Vai trò phụ (nếu là vai trò lai)</h3>
+    <div id="secondary"></div>
+    <div class="row"><label><input type="checkbox" id="unsure"> Phân vân (phím U)</label></div>
+    <textarea id="note" placeholder="Ghi chú / lý do nếu phân vân"></textarea>
+    <p class="hint">Chức danh và tên công ty được ẩn có chủ đích: gán theo việc làm, không theo tên. Xem report/main.tex, phụ lục D.</p>
+  </aside>
+</main>
+<script>const DATA = /*__DATA__*/;</script>
+<script>/*__APP__*/</script>
+</body>
+</html>

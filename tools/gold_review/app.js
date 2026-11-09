@@ -31,7 +31,9 @@ function choicesFor(sg) {
   return [["keep", "Giữ nhãn"], ["reject", "Bỏ nhãn"]];
 }
 function sugForLabel(j, li) { return j.S.findIndex(s => s.k === "label" && s.li === li); }
-function unresolved(j, d) { return j.S.filter((s, i) => !d.res[i]).length; }
+// Góp ý có `auto` đã được chốt theo quy ước chung (ví dụ API Design, 05/11): không cần người duyệt chọn
+const R = (j, d, si) => j.S[si].auto || d.res[si];
+function unresolved(j, d) { return j.S.filter((s, i) => !R(j, d, i)).length; }
 function needsInd(j, d) { return j.kp && !d.indDone; }
 
 function finalAnnotations(j, d) {
@@ -39,14 +41,14 @@ function finalAnnotations(j, d) {
   j.L.forEach((l, li) => {
     const si = sugForLabel(j, li);
     if (si >= 0) {
-      const sg = j.S[si], ch = d.res[si];
+      const sg = j.S[si], ch = R(j, d, si);
       if (!ch || ch === "reject") return;
       if (ch === "keep") out.push({ ...l });
       if (ch === "fix") out.push({ ...l, s: sg.s, e: sg.e });
       if (ch === "replace") out.push({ n: sg.rn, id: sg.rid, s: sg.s, e: sg.e });
     } else if (!d.rej[li]) out.push({ ...l });
   });
-  j.S.forEach((sg, si) => { if (sg.k === "missing" && d.res[si] === "add") out.push({ n: sg.n, id: sg.id, s: sg.s, e: sg.e }); });
+  j.S.forEach((sg, si) => { if (sg.k === "missing" && R(j, d, si) === "add") out.push({ n: sg.n, id: sg.id, s: sg.s, e: sg.e }); });
   d.added.forEach(a => out.push({ ...a }));
   const seen = new Set();
   return out.filter(a => { const k = a.id + ":" + a.s; if (seen.has(k)) return false; seen.add(k); return true; });
@@ -101,13 +103,13 @@ function marks(j, d) {
     const si = sugForLabel(j, li);
     let c = d.rej[li] ? "drop" : "keep", s = l.s, e = l.e;
     if (si >= 0) {
-      const ch = d.res[si];
+      const ch = R(j, d, si);
       c = !ch ? "sug" : ch === "reject" ? "drop" : "keep";
       if (ch === "fix" || ch === "replace") { s = j.S[si].s; e = j.S[si].e; }
     }
     m.push({ s, e, c, k: "L" + li, p: c === "sug" ? 3 : c === "drop" ? 1 : 2 });
   });
-  j.S.forEach((sg, si) => { if (sg.k === "missing" && d.res[si] !== "skip") m.push({ s: sg.s, e: sg.e, c: d.res[si] === "add" ? "keep" : "sug", k: "S" + si, p: 3 }); });
+  j.S.forEach((sg, si) => { if (sg.k === "missing" && R(j, d, si) !== "skip") m.push({ s: sg.s, e: sg.e, c: R(j, d, si) === "add" ? "keep" : "sug", k: "S" + si, p: 3 }); });
   d.added.forEach((a, i) => m.push({ s: a.s, e: a.e, c: "mine", k: "A" + i, p: 4 }));
   return m;
 }
@@ -150,7 +152,7 @@ function addBox(j, d) {
 function rowLabel(j, d, li) {
   const l = j.L[li], si = sugForLabel(j, li), ev = j.x.slice(l.s, l.e);
   if (si >= 0) {
-    const sg = j.S[si], ch = d.res[si];
+    const sg = j.S[si], ch = R(j, d, si);
     return `<div class="row flag" data-row="L${li}"><div><span class="nm">${esc(l.n)}</span> <span class="ev">«${esc(ev)}»</span></div><span class="mono muted">${l.id}</span>
       <div class="why">${esc(sg.why)}${sg.s != null && sg.a !== "xem" ? ` Gợi ý: <span class="mono">«${esc(j.x.slice(sg.s, sg.e))}»</span>` : ""}</div>
       <div class="choices">${choicesFor(sg).map(([v, t]) => `<button type="button" data-res="${si}" data-v="${v}" aria-pressed="${ch === v}">${esc(t)}</button>`).join("")}</div></div>`;
@@ -159,7 +161,9 @@ function rowLabel(j, d, li) {
     <button type="button" class="tog ${d.rej[li] ? "off" : ""}" data-rej="${li}" aria-pressed="${!d.rej[li]}">${d.rej[li] ? "Đã bỏ" : "Giữ"}</button></div>`;
 }
 function rowMissing(j, d, si) {
-  const sg = j.S[si], ch = d.res[si];
+  const sg = j.S[si], ch = R(j, d, si);
+  if (sg.auto) return `<div class="row" data-row="S${si}"><div><span class="nm">${esc(sg.n)}</span> <span class="ev">«${esc(j.x.slice(sg.s, sg.e))}»</span></div><span class="mono muted">đã thêm theo quy ước</span>
+    <div class="why">${esc(sg.autoWhy || "")}</div></div>`;
   return `<div class="row flag" data-row="S${si}"><div><span class="nm">Thiếu: ${esc(sg.n)}</span> <span class="ev">«${esc(j.x.slice(sg.s, sg.e))}»</span></div><span class="mono muted">${sg.lv === "cao" ? "ưu tiên cao" : "xem xét"}</span>
     <div class="why">${esc(sg.why)}</div>
     <div class="choices">${choicesFor(sg).map(([v, t]) => `<button type="button" data-res="${si}" data-v="${v}" aria-pressed="${ch === v}">${esc(t)}</button>`).join("")}</div></div>`;
