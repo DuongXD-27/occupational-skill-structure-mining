@@ -1,0 +1,11 @@
+# Mọi thư viện của đồ án (crawler, cleaner, parser, phân tích, kiểm thử)
+numpy
+pandas
+pyarrow
+scikit-learn
+scipy
+networkx
+matplotlib
+requests
+beautifulsoup4
+pytest
